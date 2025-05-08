@@ -5,7 +5,7 @@
             <span class="font-normal text-red-600">{{ $t('editor.customization.required') }}</span>
         </div>
         <input
-            class="border border-black box-border w-full mt-2 p-2 pr-6"
+            class="border border-black box-border w-full mt-2 p-2 pr-6 placeholder-gray-600"
             :class="{ 'border-red-500': !chartConfig.title.text }"
             :placeholder="$t('editor.customization.titles.placeholder')"
             :aria-label="$t('editor.customization.titles.chart')"
@@ -17,7 +17,7 @@
             {{ $t('editor.customization.titles.subtitle') }}
         </div>
         <input
-            class="border border-black box-border w-full mt-2 p-2 pr-6"
+            class="border border-black box-border w-full mt-2 p-2 pr-6 placeholder-gray-600"
             :placeholder="$t('editor.customization.titles.placeholder')"
             :aria-label="$t('editor.customization.titles.subtitle')"
             type="text"
