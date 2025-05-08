@@ -307,7 +307,7 @@ const exportHighchartsConfig = () => {
 
 <style lang="scss">
 .side-menu {
-    height: 100vh;
+    height: calc(100vh - 60px);
     display: flex;
     flex-direction: column;
     border: 1px solid #ddd;
@@ -315,7 +315,7 @@ const exportHighchartsConfig = () => {
     padding: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-    top: 0;
+    top: 60px;
 }
 
 .side-nav-content {
