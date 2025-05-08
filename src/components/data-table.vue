@@ -12,6 +12,7 @@
             <!-- Row and column actions -->
             <div class="ml-auto">
                 <select
+                    v-if="Object.values(selectedRows).some(row => row)"
                     class="border border-black mr-4 p-2 rounded bg-gray-300 focus:bg-white"
                     v-model="rowAction"
                     @change="handleRowAction()"
@@ -34,6 +35,7 @@
                 </select>
 
                 <select
+                    v-if="Object.values(selectedCols).some(col => col)"
                     class="border border-black p-2 rounded bg-gray-300 focus:bg-white"
                     v-model="colAction"
                     @change="handleColAction()"
