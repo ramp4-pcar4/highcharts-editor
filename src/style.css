@@ -6,6 +6,12 @@
     text-align: center;
 }
 
-.tippy-box[data-animation='chapter-menu'][data-placement^=right] > .tippy-backdrop {
+.tippy-box[data-animation='chapter-menu'][data-placement^=right]>.tippy-backdrop {
     transform-origin: 50% 0 !important;
+}
+
+@layer base {
+    input[type='text'] {
+        @apply placeholder-gray-600;
+    }
 }
