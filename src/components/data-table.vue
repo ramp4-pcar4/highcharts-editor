@@ -2,55 +2,35 @@
     <div>
         <div class="mt-4">{{ $t('editor.data.modify') }}</div>
         <div class="flex mt-4">
-            <button
-                class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-2"
-                @click="emit('back')"
-            >
+            <button class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-2"
+                @click="emit('back')">
                 {{ $t('editor.datatable.uploadNew') }}
             </button>
 
             <!-- Row and column actions -->
             <div class="ml-auto">
-                <select
-                    class="border border-black mr-4 p-2 rounded bg-gray-300 focus:bg-white"
-                    v-model="rowAction"
-                    @change="handleRowAction()"
-                    :aria-label="$t('editor.datatable.rowActions')"
-                >
+                <select class="border border-black mr-4 p-2 rounded bg-gray-300 focus:bg-white" v-model="rowAction"
+                    @change="handleRowAction()" :aria-label="$t('editor.datatable.rowActions')"
+                    :disabled="!Object.values(selectedRows).some((row) => row)">
                     <option value="" hidden>{{ $t('editor.datatable.rowActions') }}</option>
                     <!-- Enable insert when exactly one row is selected, enable delete when any number of rows are selected -->
-                    <option
-                        v-for="action in Object.keys(rowActions)"
-                        :key="action"
-                        :value="action"
-                        :disabled="
-                            action === 'delete'
-                                ? !Object.values(selectedRows).some((row) => row)
-                                : !(Object.values(selectedRows).filter((row) => row).length === 1)
-                        "
-                    >
+                    <option v-for="action in Object.keys(rowActions)" :key="action" :value="action" :disabled="action === 'delete'
+                        ? !Object.values(selectedRows).some((row) => row)
+                        : !(Object.values(selectedRows).filter((row) => row).length === 1)
+                        ">
                         {{ $t(`editor.datatable.rowActions.${action}`) }}
                     </option>
                 </select>
 
-                <select
-                    class="border border-black p-2 rounded bg-gray-300 focus:bg-white"
-                    v-model="colAction"
-                    @change="handleColAction()"
-                    :aria-label="$t('editor.datatable.colActions')"
-                >
+                <select class="border border-black p-2 rounded bg-gray-300 focus:bg-white" v-model="colAction"
+                    @change="handleColAction()" :aria-label="$t('editor.datatable.colActions')"
+                    :disabled="!Object.values(selectedCols).some((col) => col)">
                     <option value="" hidden>{{ $t('editor.datatable.colActions') }}</option>
                     <!-- Enable insert when exactly one col is selected, enable delete when any number of cols are selected -->
-                    <option
-                        v-for="action in Object.keys(colActions)"
-                        :key="action"
-                        :value="action"
-                        :disabled="
-                            action === 'delete'
-                                ? !Object.values(selectedCols).some((col) => col)
-                                : !(Object.values(selectedCols).filter((col) => col).length === 1)
-                        "
-                    >
+                    <option v-for="action in Object.keys(colActions)" :key="action" :value="action" :disabled="action === 'delete'
+                        ? !Object.values(selectedCols).some((col) => col)
+                        : !(Object.values(selectedCols).filter((col) => col).length === 1)
+                        ">
                         {{ $t(`editor.datatable.colActions.${action}`) }}
                     </option>
                 </select>
@@ -65,37 +45,19 @@
                         <th class="border border-gray-400 w-16 p-2 text-left align-middle">
                             <span class="sr-only">{{ $t('editor.datatable.selectRow') }}</span>
                         </th>
-                        <th
-                            class="border border-gray-400 p-2 text-left align-middle"
-                            v-for="(header, colIdx) in headers"
-                            :key="colIdx"
-                        >
+                        <th class="border border-gray-400 p-2 text-left align-middle"
+                            v-for="(header, colIdx) in headers" :key="colIdx">
                             <div class="flex items-center w-full">
-                                <span
-                                    class="col-header flex-grow truncate"
-                                    v-if="editingHeader !== colIdx"
-                                    tabindex="0"
-                                    @click="editColHeader(colIdx)"
-                                    @focus="editColHeader(colIdx)"
-                                >
+                                <span class="col-header flex-grow truncate" v-if="editingHeader !== colIdx" tabindex="0"
+                                    @click="editColHeader(colIdx)" @focus="editColHeader(colIdx)">
                                     {{ header || $t('editor.untitled') }}
                                 </span>
-                                <input
-                                    v-else
-                                    :ref="(el) => (headerInput[colIdx] = el as HTMLInputElement | null)"
+                                <input v-else :ref="(el) => (headerInput[colIdx] = el as HTMLInputElement | null)"
                                     class="col-header flex-grow w-0 max-w-[80%] box-border border border-black p-1"
-                                    type="text"
-                                    v-model="headers[colIdx]"
-                                    @input="updateHeader(colIdx, headers[colIdx])"
-                                    @blur="escEditCell"
-                                    @keyup.enter="escEditCell"
-                                />
-                                <input
-                                    class="ml-2"
-                                    type="checkbox"
-                                    v-model="selectedCols[colIdx]"
-                                    :aria-label="$t('editor.datatable.selectCol')"
-                                />
+                                    type="text" v-model="headers[colIdx]" @input="updateHeader(colIdx, headers[colIdx])"
+                                    @blur="escEditCell" @keyup.enter="escEditCell" />
+                                <input class="ml-2" type="checkbox" v-model="selectedCols[colIdx]"
+                                    :aria-label="$t('editor.datatable.selectCol')" />
                             </div>
                         </th>
                     </tr>
@@ -103,44 +65,25 @@
                 <tbody>
                     <tr class="even:bg-gray-50" v-for="(row, rowIdx) in gridData" :key="rowIdx">
                         <td class="border border-gray-400 p-2 text-left">
-                            <input
-                                type="checkbox"
-                                v-model="selectedRows[rowIdx]"
-                                :aria-label="$t('editor.datatable.selectRow')"
-                            />
+                            <input type="checkbox" v-model="selectedRows[rowIdx]"
+                                :aria-label="$t('editor.datatable.selectRow')" />
                         </td>
-                        <td
-                            class="grid-cell border border-gray-400 p-2 text-left align-middle"
-                            v-for="(value, colIdx) in row"
-                            :key="colIdx"
-                            @click="editCell(rowIdx, colIdx, value)"
-                        >
+                        <td class="grid-cell border border-gray-400 p-2 text-left align-middle"
+                            v-for="(value, colIdx) in row" :key="colIdx" @click="editCell(rowIdx, colIdx, value)">
                             <div class="flex items-center w-full">
-                                <span
-                                    class="grid-cell flex-grow truncate"
-                                    v-if="editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx"
-                                    tabindex="0"
-                                    @click="editCell(rowIdx, colIdx, value)"
-                                    @focus="editCell(rowIdx, colIdx, value)"
-                                >
+                                <span class="grid-cell flex-grow truncate"
+                                    v-if="editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx" tabindex="0"
+                                    @click="editCell(rowIdx, colIdx, value)" @focus="editCell(rowIdx, colIdx, value)">
                                     {{ value }}
                                 </span>
 
-                                <input
-                                    v-else
-                                    :ref="
-                                        (el) =>
-                                            (gridCellInput[rowIdx * headers.length + colIdx] =
-                                                el as HTMLInputElement | null)
-                                    "
-                                    class="grid-cell flex-grow w-0 max-w-[80%] box-border border border-black p-1"
-                                    type="text"
-                                    v-model="editingVal"
-                                    tabindex="0"
+                                <input v-else :ref="(el) =>
+                                (gridCellInput[rowIdx * headers.length + colIdx] =
+                                    el as HTMLInputElement | null)
+                                    " class="grid-cell flex-grow w-0 max-w-[80%] box-border border border-black p-1"
+                                    type="text" v-model="editingVal" tabindex="0"
                                     @input="updateCell(rowIdx, colIdx, ($event.target as HTMLInputElement).value)"
-                                    @blur="escEditCell"
-                                    @keyup.enter="escEditCell"
-                                />
+                                    @blur="escEditCell" @keyup.enter="escEditCell" />
                             </div>
                         </td>
                     </tr>
@@ -301,6 +244,7 @@ const handleRowAction = (): void => {
         case rowActions.delete: {
             dataStore.deleteRows(rowIdxs);
             chartStore.deleteRow(rowIdxs.map((rowIdx) => parseInt(rowIdx)));
+            selectedRows = reactive({}); // reset the selections
             break;
         }
         case rowActions.insertBelow: {
@@ -311,12 +255,12 @@ const handleRowAction = (): void => {
         case rowActions.insertAbove: {
             dataStore.addNewRow(rowIdxs[0], false);
             chartStore.insertRow(parseInt(rowIdxs[0]));
+            const newIdx = (parseInt(rowIdxs[0]) + 1).toString();
+            selectedRows[rowIdxs[0]] = false;
+            selectedRows[newIdx] = true; //reselect the previous selected row
             break;
         }
     }
-
-    // clear row action selection
-    selectedRows = reactive({});
     rowAction.value = '';
 };
 
@@ -326,6 +270,7 @@ const handleColAction = (): void => {
         case colActions.delete: {
             dataStore.deleteCols(colIdxs);
             chartStore.deleteColumn(colIdxs.map((colIdx) => parseInt(colIdx)));
+            selectedCols = reactive({}); // reset the selections
             break;
         }
         case colActions.insertRight: {
@@ -336,12 +281,14 @@ const handleColAction = (): void => {
         case colActions.insertLeft: {
             dataStore.addNewCol(colIdxs[0], false);
             chartStore.insertColumn(parseInt(colIdxs[0]));
+            const newIdx = (parseInt(colIdxs[0]) + 1).toString();
+            selectedCols[colIdxs[0]] = false;
+            selectedCols[newIdx] = true; //reselect the previous selected col
             break;
         }
     }
 
     // clear col action selection
-    selectedCols = reactive({});
     colAction.value = '';
 };
 </script>
