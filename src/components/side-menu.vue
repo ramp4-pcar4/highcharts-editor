@@ -6,6 +6,7 @@
         <div class="flex items-center mt-4 mb-12">
             <button
                 class="flex items-center flex-shrink-0 px-2 py-1 mx-1 overflow-hidden"
+                :class="{ 'bg-gray-200 rounded-md': expanded }"
                 :aria-label="expanded ? $t('editor.collapse') : $t('editor.expand')"
                 @click="expanded = !expanded"
                 v-tippy="{
@@ -37,15 +38,18 @@
                 <router-link
                     class="flex items-center px-2 my-6 mx-1"
                     :to="{ name: 'Data' }"
+                    @click="((dataPage = true), (templatesPage = false), (customizationPage = false))"
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
                         content: $t('editor.data.title'),
+                        onShow: () => !expanded,
                         animateFill: true
                     }"
                 >
                     <svg
                         class="flex-shrink-0"
+                        :class="{ 'bg-gray-200 rounded-md': dataPage }"
                         width="24"
                         height="24"
                         viewBox="0 0 24 24"
@@ -71,15 +75,18 @@
                     :class="{ disabled: btnDisabled }"
                     :tabIndex="btnDisabled ? -1 : 0"
                     :to="{ name: 'ChartType' }"
+                    @click="((dataPage = false), (templatesPage = true), (customizationPage = false))"
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
                         content: $t('editor.toc.chartType'),
+                        onShow: () => !expanded,
                         animateFill: true
                     }"
                 >
                     <svg
                         class="flex-shrink-0"
+                        :class="{ 'bg-gray-200 rounded-md': templatesPage}"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
@@ -117,15 +124,18 @@
                     :class="{ disabled: btnDisabled }"
                     :tabIndex="btnDisabled ? -1 : 0"
                     :to="{ name: 'Customization' }"
+                    @click="((dataPage = false), (templatesPage = false), (customizationPage = true))"
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
                         content: $t('editor.toc.chartCustomize'),
+                        onShow: () => !expanded,
                         animateFill: true
                     }"
                 >
                     <svg
                         class="flex-shrink-0"
+                        :class="{ 'bg-gray-200 rounded-md': customizationPage}"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
@@ -247,6 +257,9 @@ const btnDisabled = computed(() => !uploaded.value && Object.keys(chartStore.cha
 
 const highchartsInput = ref<HTMLInputElement | null>(null);
 const expanded = ref(false);
+const dataPage = ref(true);
+const templatesPage = ref(false);
+const customizationPage = ref(false);
 
 // upload an existing highcharts configured JSON
 const uploadHighchartsConfig = () => {
