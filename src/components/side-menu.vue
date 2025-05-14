@@ -6,6 +6,7 @@
         <div class="flex items-center mt-4 mb-12">
             <button
                 class="flex items-center flex-shrink-0 px-2 py-1 mx-1 overflow-hidden"
+                :class="{ 'bg-gray-200 rounded-md': expanded }"
                 :aria-label="expanded ? $t('editor.collapse') : $t('editor.expand')"
                 @click="expanded = !expanded"
                 v-tippy="{
@@ -41,11 +42,13 @@
                         delay: '200',
                         placement: 'right',
                         content: $t('editor.data.title'),
+                        onShow: () => !expanded,
                         animateFill: true
                     }"
                 >
                     <svg
                         class="flex-shrink-0"
+                        :class="{ 'bg-gray-200 rounded-md': currentRoute === 'data' }"
                         width="24"
                         height="24"
                         viewBox="0 0 24 24"
@@ -75,11 +78,13 @@
                         delay: '200',
                         placement: 'right',
                         content: $t('editor.toc.chartType'),
+                        onShow: () => !expanded,
                         animateFill: true
                     }"
                 >
                     <svg
                         class="flex-shrink-0"
+                        :class="{ 'bg-gray-200 rounded-md': currentRoute === 'templates'}"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
@@ -121,11 +126,13 @@
                         delay: '200',
                         placement: 'right',
                         content: $t('editor.toc.chartCustomize'),
+                        onShow: () => !expanded,
                         animateFill: true
                     }"
                 >
                     <svg
                         class="flex-shrink-0"
+                        :class="{ 'bg-gray-200 rounded-md': currentRoute === 'customization'}"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
@@ -232,6 +239,22 @@ import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
 import { saveAs } from 'file-saver';
 import { HighchartsConfig } from '../definitions';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const currentRoute = computed(() => {
+    switch (route.name) {
+        case 'Data':
+            return 'data';
+        case 'ChartType':
+            return 'templates';
+        case 'Customization':
+            return 'customization';
+        default:
+            return null;
+    }
+});
 
 const chartStore = useChartStore();
 
