@@ -2,7 +2,7 @@
     <div class="chart-customization m-6" v-if="Object.keys(chartConfig).length">
         <div class="text-2xl font-bold">{{ $t('editor.customization.title') }}</div>
         <!-- header nav section for customization options -->
-        <div class="mt-8 w-1/2">
+        <div class="mt-8 w-full">
             <div class="flex justify-around">
                 <div
                     v-for="(section, idx) in sections"
