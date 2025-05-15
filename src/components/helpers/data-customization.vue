@@ -2,7 +2,7 @@
     <div class="graph-customization">
         <slot></slot>
         <div class="font-bold mt-6">{{ $t('editor.customization.dataSeries') }}</div>
-        <div class="relative mt-2" :class="hybrid ? 'w-2/3' : 'w-1/5'">
+        <div class="relative mt-2" style="width: 220px;">
             <select
                 class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                 v-model="activeDataSeries"
@@ -18,7 +18,7 @@
 
         <h2 class="font-bold mt-6">{{ $t('editor.customization.data.format') }}</h2>
         <div class="font-bold mt-4">{{ $t('editor.customization.data.seriesType') }}</div>
-        <div class="relative mt-2" :class="hybrid ? 'w-1/2' : 'w-1/6'">
+        <div class="relative mt-2" style="width: 220px;">
             <input
                 disabled
                 type="text"
@@ -45,7 +45,7 @@
 
         <div v-if="chartType !== 'pie'">
             <div class="font-bold mt-4">{{ $t('editor.customization.data.colour') }}</div>
-            <div class="flex flex-col mt-2" :class="hybrid ? 'w-1/2' : 'w-1/6'">
+            <div class="flex flex-col mt-2" style="width: 220px;">
                 <div
                     class="colour-dropdown w-full rounded border border-gray-500 flex items-center justify-between cursor-pointer"
                     @click="() => (showColourPicker = !showColourPicker)"
@@ -81,7 +81,7 @@
             </div>
 
             <div class="font-bold mt-4">{{ $t('editor.customization.data.dashStyle') }}</div>
-            <div class="relative mt-2" :class="hybrid ? 'w-1/2' : 'w-1/6'">
+            <div class="relative mt-2" style="width: 220px;">
                 <select
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="(activeSeries as SeriesData).dashStyle"
@@ -95,7 +95,7 @@
             </div>
 
             <div class="font-bold mt-4">{{ $t('editor.customization.data.pointMarker') }}</div>
-            <div class="relative mt-2" :class="hybrid ? 'w-1/2' : 'w-1/6'">
+            <div class="relative mt-2" style="width: 220px;">
                 <select
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="(activeSeries as SeriesData).marker!.symbol"
