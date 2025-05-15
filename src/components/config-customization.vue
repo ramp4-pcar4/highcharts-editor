@@ -220,7 +220,11 @@ const addAriaLabel = () => {
 }
 
 :deep(.jsoneditor-vue) {
-    height: 100vh;
+    height: 60vh;
+    resize: vertical;
+    overflow: auto;
+    min-height: 20vh;
+    max-height: 80vh;
 }
 
 :deep(.jsoneditor-modes) {
