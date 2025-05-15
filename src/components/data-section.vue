@@ -8,6 +8,8 @@
             <div
                 class="upload-file flex flex-col items-center justify-center mt-8 p-12 bg-gray-100 border-4 border-dashed border-gray-300"
                 @drop.prevent="uploadFile($event)"
+                @dragover.prevent
+                @dragleave.prevent
             >
                 <div class="align-middle pb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 -2 30 30">
@@ -45,6 +47,7 @@
                         :disabled="fileName !== ''"
                     />
                 </div>
+                <div v-if="uploadError" class="mt-2 text-red-600">{{ $t('editor.data.unsupported') }}</div>
                 <div class="mt-4 text-gray-600">{{ $t('editor.data.supported') }}</div>
                 <div v-if="fileName">
                     <div class="relative w-full">
@@ -136,6 +139,8 @@ const pastedData = ref<string>('');
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
+const uploadError = ref(false);
+
 onMounted(() => {
     if (dataStore.gridData && dataStore.gridData.length) {
         dataStore.setDatatableView(true);
@@ -146,12 +151,24 @@ const onFileUpload = (event: Event) => {
     const uploadedFile = Array.from((event.target as HTMLInputElement).files as ArrayLike<File>)[0];
     dataFile.value = uploadedFile ? uploadedFile : undefined;
     fileName.value = uploadedFile.name;
+    uploadError.value = false;
 };
 
 const uploadFile = (event: DragEvent) => {
+    const allowedTypes = [
+        'text/csv',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ];
+    
     if (event.dataTransfer !== null) {
-        dataFile.value = event.dataTransfer.files[0];
-        fileName.value = dataFile.value.name;
+        if (allowedTypes.includes(event.dataTransfer.files[0].type)) {
+            dataFile.value = event.dataTransfer.files[0];
+            fileName.value = dataFile.value.name;
+            uploadError.value = false;
+        } else {
+            uploadError.value = true;
+        }
     }
 };
 
