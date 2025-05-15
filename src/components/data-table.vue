@@ -220,7 +220,21 @@ const colActions: Record<string, string> = {
 };
 
 onMounted(() => {
-    if (props.uploadedFile || props.pastedFile) {
+    if (Object.keys(chartStore.chartConfig).length > 0) {
+        const config = chartStore.chartConfig;
+
+        const headers = [chartStore.categoryLabel || ''].concat(config.series.map((s) => s.name));
+        dataStore.setHeaders(headers);
+
+        const categories = config.xAxis?.categories || [];
+        const seriesData = config.series.map((s) => s.data || []);
+
+        const gridData = categories.map((cat, rowIdx) => {
+            return [cat].concat(seriesData.map((s) => s[rowIdx] ?? ''));
+        });
+
+        dataStore.setGridData(gridData);
+    } else if (props.uploadedFile || props.pastedFile) {
         // parse uploaded file or pasted data
         $papa.parse(props.uploadedFile || props.pastedFile, {
             header: true, // first row headers
@@ -234,7 +248,12 @@ onMounted(() => {
                 const seriesData = dataStore.headers
                     .slice(1)
                     .map((_, colIdx) => dataStore.gridData.map((row) => parseFloat(row[colIdx + 1])));
-                chartStore.setupConfig(Object.values(dataStore.headers).slice(1), categories, seriesData);
+                chartStore.setupConfig(
+                    Object.values(dataStore.headers).slice(1),
+                    categories,
+                    seriesData,
+                    dataStore.headers[0]
+                );
             },
             error: (err) => {
                 console.error('Error parsing file: ', err);
