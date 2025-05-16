@@ -15,6 +15,7 @@ export const useChartStore = defineStore('chartProperties', {
     state: () => ({
         chartType: 'line' as string,
         hybridChartType: '' as string,
+        categoryLabel: '' as string,
         chartSeries: [] as string[],
         chartConfig: {} as HighchartsConfig,
         defaultColours: [
@@ -87,7 +88,7 @@ export const useChartStore = defineStore('chartProperties', {
         },
 
         /* Set default highcharts config **/
-        setupConfig(seriesNames: string[], cats: string[], seriesData: number[][]): void {
+        setupConfig(seriesNames: string[], cats: string[], seriesData: number[][], categoryLabel = ''): void {
             this.chartConfig = {
                 title: {
                     text: 'Basic Chart'
@@ -118,6 +119,7 @@ export const useChartStore = defineStore('chartProperties', {
                 }))
             };
             this.setChartType('line');
+            this.categoryLabel = categoryLabel;
         },
 
         /* Update highcharts configuration for chart type **/
