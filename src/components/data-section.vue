@@ -80,10 +80,12 @@
                     class="bg-slate-600 text-white border border-black hover:bg-gray-400 font-bold p-4"
                     :class="{ 'disabled hover:bg-gray-400': !fileName }"
                     :disabled="!fileName"
-                    @click="() => {
-                        dataStore.setDatatableView(true);
-                        dataStore.toggleUploaded(true);
-                    }"
+                    @click="
+                        () => {
+                            dataStore.setDatatableView(true);
+                            dataStore.toggleUploaded(true);
+                        }
+                    "
                 >
                     {{ $t('editor.data.import') }}
                 </button>
@@ -140,6 +142,11 @@ const pastedData = ref<string>('');
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const uploadError = ref(false);
+const allowedTypes = [
+    'text/csv',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+];
 
 onMounted(() => {
     if (dataStore.gridData && dataStore.gridData.length) {
@@ -149,24 +156,30 @@ onMounted(() => {
 
 const onFileUpload = (event: Event) => {
     const uploadedFile = Array.from((event.target as HTMLInputElement).files as ArrayLike<File>)[0];
-    dataFile.value = uploadedFile ? uploadedFile : undefined;
-    fileName.value = uploadedFile.name;
-    uploadError.value = false;
+
+    if (uploadedFile && allowedTypes.includes(uploadedFile.type)) {
+        dataFile.value = uploadedFile;
+        fileName.value = uploadedFile.name;
+        uploadError.value = false;
+    } else {
+        dataFile.value = undefined;
+        uploadError.value = true;
+    }
+
+    if (fileInput.value) {
+        fileInput.value.value = '';
+    }
 };
 
 const uploadFile = (event: DragEvent) => {
-    const allowedTypes = [
-        'text/csv',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    ];
-    
     if (event.dataTransfer !== null) {
         if (allowedTypes.includes(event.dataTransfer.files[0].type)) {
             dataFile.value = event.dataTransfer.files[0];
             fileName.value = dataFile.value.name;
             uploadError.value = false;
         } else {
+            dataFile.value = undefined;
+            fileName.value = '';
             uploadError.value = true;
         }
     }
