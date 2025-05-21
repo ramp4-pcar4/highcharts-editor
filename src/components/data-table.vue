@@ -168,11 +168,14 @@
 import { computed, reactive, ref, inject, onBeforeUnmount, onMounted, nextTick } from 'vue';
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
+import { useI18n } from 'vue-i18n';
 
 import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
 
 dataModule(Highcharts);
+
+const { t } = useI18n();
 
 const props = defineProps({
     uploadedFile: {
@@ -233,6 +236,7 @@ onMounted(() => {
                     .slice(1)
                     .map((_, colIdx) => dataStore.gridData.map((row) => parseFloat(row[colIdx + 1])));
                 chartStore.setupConfig(Object.values(dataStore.headers).slice(1), categories, seriesData);
+                chartStore.chartConfig.title.text = t('editor.customization.titles.chartTitle');
             },
             error: (err) => {
                 console.error('Error parsing file: ', err);
