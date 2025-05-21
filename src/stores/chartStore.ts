@@ -419,10 +419,11 @@ export const useChartStore = defineStore('chartProperties', {
             this.setHybridChartType(hybridType);
             this.chartConfig.series.forEach((series, index) => {
                 if (hybridSeries.includes(series.name)) {
+                    const isHybrid = hybridSeries.includes(series.name);
                     // TODO: may need to adjust based on what hybrid options become available in the future
                     const baseConfig = {
                         name: series.name,
-                        type: hybridType,
+                        type: isHybrid ? hybridType : this.chartType,
                         color: series.color,
                         dashStyle: 'solid',
                         data: series.data,

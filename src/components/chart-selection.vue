@@ -215,6 +215,7 @@ const handleHybridSelection = (): void => {
     if (hybridChartType.value !== chartType.value && hybridChartType.value !== 'none') {
         const hybridSeries = enableMultiselect.value ? selectedHybridSeries.value : [seriesNames.value[1]];
         chartStore.updateHybridChart(hybridSeries, hybridChartType.value);
+        handleChartSelection();
     } else {
         // set all data series to original chart type (case for hybrid chart type being 'none' or same as main chart type)
         chartStore.setHybridChartType('none');
