@@ -27,11 +27,28 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useChartStore } from '../../stores/chartStore';
 
+const { t, locale } = useI18n();
 const chartStore = useChartStore();
 const chartConfig = computed(() => chartStore.chartConfig);
+
+if (!chartStore.chartConfig.title.text) {
+    chartStore.chartConfig.title.text = t('editor.customization.titles.chartTitle');
+}
+
+// watching for language change and update depending on language
+let prevTitle = t('editor.customization.titles.chartTitle');
+
+watch(locale, () => {
+    const title = t('editor.customization.titles.chartTitle');
+    if (!chartStore.chartConfig.title.text || chartStore.chartConfig.title.text === prevTitle) {
+        chartStore.chartConfig.title.text = title;
+    }
+    prevTitle = title;
+});
 </script>
 
 <style lang="scss"></style>

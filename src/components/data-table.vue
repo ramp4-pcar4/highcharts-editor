@@ -165,7 +165,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, inject, onBeforeUnmount, onMounted, nextTick } from 'vue';
+import { computed, reactive, ref, inject, onBeforeUnmount, onMounted, nextTick, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
 
@@ -173,6 +174,8 @@ import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
 
 dataModule(Highcharts);
+
+const { t, locale } = useI18n();
 
 const props = defineProps({
     uploadedFile: {
@@ -192,6 +195,16 @@ const chartStore = useChartStore();
 const headers = computed(() => dataStore.headers);
 const gridData = computed(() => dataStore.gridData);
 const chartConfig = computed(() => chartStore.chartConfig);
+
+let prevTitle = t('editor.customization.titles.chartTitle');
+
+watch(locale, () => {
+    const title = t('editor.customization.titles.chartTitle');
+    if (!chartStore.chartConfig.title.text || chartStore.chartConfig.title.text === prevTitle) {
+        chartStore.chartConfig.title.text = title;
+    }
+    prevTitle = title;
+});
 
 const headerInput = ref<(HTMLInputElement | null)[]>([]);
 const gridCellInput = ref<(HTMLInputElement | null)[]>([]);
@@ -233,6 +246,7 @@ onMounted(() => {
                     .slice(1)
                     .map((_, colIdx) => dataStore.gridData.map((row) => parseFloat(row[colIdx + 1])));
                 chartStore.setupConfig(Object.values(dataStore.headers).slice(1), categories, seriesData);
+                chartStore.chartConfig.title.text = t('editor.customization.titles.chartTitle');
             },
             error: (err) => {
                 console.error('Error parsing file: ', err);

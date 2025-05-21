@@ -111,8 +111,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onBeforeMount, onMounted } from 'vue';
+import { computed, ref, onBeforeMount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useChartStore } from '../stores/chartStore';
 import { useDataStore } from '../stores/dataStore';
 
@@ -121,8 +122,20 @@ import dataModule from 'highcharts/modules/data';
 
 dataModule(Highcharts);
 
+const { t, locale } = useI18n();
+
 const chartStore = useChartStore();
 const chartConfig = computed(() => chartStore.chartConfig);
+
+let prevTitle = t('editor.customization.titles.chartTitle');
+
+watch(locale, () => {
+    const title = t('editor.customization.titles.chartTitle');
+    if (!chartStore.chartConfig.title.text || chartStore.chartConfig.title.text === prevTitle) {
+        chartStore.chartConfig.title.text = title;
+    }
+    prevTitle = title;
+});
 
 const dataStore = useDataStore();
 const seriesNames = computed(() => Object.values(dataStore.headers).slice(1));
