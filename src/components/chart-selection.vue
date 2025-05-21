@@ -130,11 +130,11 @@ const seriesNames = computed(() => Object.values(dataStore.headers).slice(1));
 const router = useRouter();
 
 const enableHybrid = computed(() => {
-    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length >= 2;
+    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length >= 2 && chartType.value != 'pie';
 });
 
 const enableMultiselect = computed(() => {
-    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length > 2;
+    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length >= 2 && chartType.value != 'pie';
 });
 
 const chartType = ref<string>('');

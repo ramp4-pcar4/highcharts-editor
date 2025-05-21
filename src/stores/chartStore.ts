@@ -269,6 +269,7 @@ export const useChartStore = defineStore('chartProperties', {
                       }
                     : series
             );
+            this.chartConfig.legend = { enabled: true };
         },
 
         /* Update highcharts configuration for bar chart **/
@@ -287,6 +288,7 @@ export const useChartStore = defineStore('chartProperties', {
                       }
                     : series
             );
+            this.chartConfig.legend = { enabled: true };
         },
 
         /* Update highcharts configuration for scatter plot **/
@@ -340,6 +342,7 @@ export const useChartStore = defineStore('chartProperties', {
                         : series
                 );
             }
+            this.chartConfig.legend = { enabled: true };
         },
 
         /* Update highcharts configuration for column chart **/
@@ -358,6 +361,7 @@ export const useChartStore = defineStore('chartProperties', {
                       }
                     : series
             );
+            this.chartConfig.legend = { enabled: true };
         },
 
         /* Update highcharts configuration for area chart **/
@@ -374,6 +378,7 @@ export const useChartStore = defineStore('chartProperties', {
                       }
                     : series
             );
+            this.chartConfig.legend = { enabled: true };
         },
 
         /* Update highcharts configuration for spline chart **/
@@ -390,6 +395,7 @@ export const useChartStore = defineStore('chartProperties', {
                       }
                     : series
             );
+            this.chartConfig.legend = { enabled: true };
         },
 
         /* Update highcharts configuration for pie chart **/
@@ -398,20 +404,28 @@ export const useChartStore = defineStore('chartProperties', {
             // this.chartConfig.series = this.chartConfig.series.map((series, index) =>
             //     seriesNames.includes(series.name) ? { name: seriesNames[0], type: 'pie', data: seriesData[index] } : series
             // );
-            this.chartConfig = {
-                title: { text: 'Basic Chart' },
-                subtitle: {
-                    text: ''
-                },
-                series: [
-                    {
-                        name: seriesNames[0],
+
+            // TODO: this is the default selection: make it so that user can choose which series to display
+            const selectedSeries = seriesNames[0];
+
+            this.chartConfig.series = this.chartConfig.series.map((series) => {
+                if (series.name === selectedSeries) {
+                    return {
+                        ...series,
                         type: 'pie',
                         data: seriesData,
-                        colors: this.defaultColours
-                    }
-                ]
-            };
+                        color: this.defaultColours[0]
+                    };
+                } else {
+                    return {
+                        ...series,
+                        data: [],
+                        type: 'line'
+                    };
+                }
+            });
+
+            this.chartConfig.legend = { enabled: false };
         },
 
         /* Update highcharts configuration for hybrid chart **/
