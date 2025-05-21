@@ -130,11 +130,11 @@ const seriesNames = computed(() => Object.values(dataStore.headers).slice(1));
 const router = useRouter();
 
 const enableHybrid = computed(() => {
-    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length >= 2;
+    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length >= 2 && chartType.value != 'pie';
 });
 
 const enableMultiselect = computed(() => {
-    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length > 2;
+    return Array.isArray(chartConfig.value.series) && chartConfig.value.series.length >= 2 && chartType.value != 'pie';
 });
 
 const chartType = ref<string>('');
@@ -197,6 +197,11 @@ const handleChartSelection = (): void => {
     loading.value = true;
     const otherSeries = enableMultiselect.value ? selectedHybridSeries.value : [seriesNames.value[1]];
     const seriesToUpdate = seriesNames.value.filter((name) => !otherSeries.includes(name));
+
+    if (chartType.value === 'pie') {
+        hybridChartType.value = 'none';
+        selectedHybridSeries.value = [];
+    }
 
     chartStore.updateConfig(chartType.value, seriesToUpdate, dataStore.headers, dataStore.gridData);
 

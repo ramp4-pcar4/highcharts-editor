@@ -217,8 +217,11 @@ onBeforeMount(() => {
     activeDataSeries.value = props.dataSeries[0];
     chartType.value = (activeSeries.value as SeriesData).type;
     if (chartType.value === 'pie') {
-        for (let i = 0; i < (activeSeries.value as SeriesData).colors!.length; i++) {
-            showPieColourPicker[i] = false;
+        const activeSeriesColors = (activeSeries.value as SeriesData)?.colors;
+        if (activeSeriesColors) {
+            for (let i = 0; i < activeSeriesColors.length; i++) {
+                showPieColourPicker[i] = false;
+            }
         }
     }
 });
