@@ -170,11 +170,14 @@
 import { computed, reactive, ref, inject, onBeforeUnmount, onMounted, nextTick } from 'vue';
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
+import { useI18n } from 'vue-i18n';
 
 import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
 
 dataModule(Highcharts);
+
+const { t } = useI18n();
 
 const props = defineProps({
     uploadedFile: {
@@ -240,6 +243,7 @@ onMounted(() => {
                     seriesData,
                     dataStore.headers[0]
                 );
+                chartStore.chartConfig.title.text = t('editor.customization.titles.chartTitle');
             },
             error: (err) => {
                 console.error('Error parsing file: ', err);

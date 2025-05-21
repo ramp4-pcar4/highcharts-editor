@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useChartStore } from './stores/chartStore';
 import { useI18n } from 'vue-i18n';
 
@@ -68,6 +68,16 @@ const i18n = useI18n();
 const chartStore = useChartStore();
 const appLang = ref('');
 const saving = ref<boolean>(false);
+
+let prevTitle = i18n.t('editor.customization.titles.chartTitle');
+
+watch(i18n.locale, () => {
+    const title = i18n.t('editor.customization.titles.chartTitle');
+    if (!chartStore.chartConfig.title.text || chartStore.chartConfig.title.text === prevTitle) {
+        chartStore.chartConfig.title.text = title;
+    }
+    prevTitle = title;
+});
 
 onMounted(() => {
     appLang.value = props.lang || 'en';
