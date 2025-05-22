@@ -1,5 +1,5 @@
 <template>
-    <div class="graph-customization">
+    <div class="graph-customization" v-if="activeSeries">
         <slot></slot>
         <div class="font-bold mt-6">{{ $t('editor.customization.dataSeries') }}</div>
         <div class="relative mt-2" :class="hybrid ? 'w-2/3' : 'w-1/5'">
@@ -56,9 +56,9 @@
                         <div
                             class="rounded border-r border-gray-400 w-10"
                             tabindex="0"
-                            :style="{ 'background-color': (activeSeries as SeriesData).color }"
+                            :style="{ 'background-color': activeSeries?.color ?? '#000000' }"
                         ></div>
-                        <div class="flex items-center px-3">{{ (activeSeries as SeriesData).color }}</div>
+                        <div class="flex items-center px-3">{{ activeSeries?.color ?? '' }}</div>
                         <div class="flex items-center justify-center pr-2 ml-auto">
                             <span class="select-arrow"></span>
                         </div>
@@ -69,7 +69,7 @@
                     class="w-full items-center justify-center border border-gray-300 rounded-md p-2 shadow-sm"
                 >
                     <ColorPicker
-                        :color="(activeSeries as SeriesData).color"
+                        :color="activeSeries?.color ?? '#000000'"
                         alpha-channel="hide"
                         :visible-formats="['hex']"
                         default-format="hex"
@@ -84,7 +84,7 @@
             <div class="relative mt-2" :class="hybrid ? 'w-1/2' : 'w-1/6'">
                 <select
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
-                    v-model="(activeSeries as SeriesData).dashStyle"
+                    v-model="activeSeries!.dashStyle"
                     :aria-label="$t('editor.customization.data.dashStyle')"
                 >
                     <option v-for="dashStyle in Object.keys(dashOptions)" :key="dashStyle" :value="dashStyle">
@@ -98,7 +98,7 @@
             <div class="relative mt-2" :class="hybrid ? 'w-1/2' : 'w-1/6'">
                 <select
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
-                    v-model="(activeSeries as SeriesData).marker!.symbol"
+                    v-model="activeSeries!.marker!.symbol"
                     :aria-label="$t('editor.customization.data.pointMarker')"
                 >
                     <option v-for="pointMarker in Object.keys(markerOptions)" :key="pointMarker" :value="pointMarker">
@@ -112,7 +112,7 @@
         <div v-else>
             <div class="font-bold mt-4">{{ $t('editor.customization.data.colours') }}</div>
             <div class="flex flex-col mt-2 w-1/6">
-                <div class="flex flex-col" v-for="(color, index) in (activeSeries as SeriesData).colors" :key="index">
+                <div class="flex flex-col" v-for="(color, index) in activeSeries?.colors ?? []" :key="index">
                     <div
                         class="colour-dropdown w-full rounded border border-gray-500 flex items-center justify-between cursor-pointer mb-2"
                         @click="() => (showPieColourPicker[index] = !showPieColourPicker[index])"
@@ -155,7 +155,6 @@
 import { computed, onBeforeMount, ref } from 'vue';
 import { useDataStore } from '../../stores/dataStore';
 import { useChartStore } from '../../stores/chartStore';
-import { SeriesData } from '../../definitions';
 
 const props = defineProps({
     dataSeries: {
@@ -214,21 +213,25 @@ const markerOptions: Record<string, string> = {
 };
 
 onBeforeMount(() => {
-    activeDataSeries.value = props.dataSeries[0];
-    chartType.value = (activeSeries.value as SeriesData).type;
-    if (chartType.value === 'pie') {
-        for (let i = 0; i < (activeSeries.value as SeriesData).colors!.length; i++) {
+    activeDataSeries.value = props.dataSeries[0] ?? '';
+    chartType.value = activeSeries.value?.type ?? '';
+    if (chartType.value === 'pie' && Array.isArray(activeSeries.value?.colors)) {
+        for (let i = 0; i < activeSeries.value.colors.length; i++) {
             showPieColourPicker[i] = false;
         }
     }
 });
 
 const updateColour = (eventData: any) => {
-    (activeSeries.value as SeriesData).color = eventData.cssColor;
+    if (activeSeries.value) {
+        activeSeries.value.color = eventData.cssColor;
+    }
 };
 
 const updatePieColour = (index: number, color: string) => {
-    (activeSeries.value as SeriesData).colors![index] = color;
+    if (activeSeries.value?.colors) {
+        activeSeries.value.colors[index] = color;
+    }
 };
 
 const changeChartType = () => {
@@ -240,8 +243,8 @@ const changeChartType = () => {
         emit('loading', false);
     }, 100);
 
-    if (chartType.value === 'pie') {
-        for (let i = 0; i < (activeSeries.value as SeriesData).colors!.length; i++) {
+    if (chartType.value === 'pie' && activeSeries.value?.colors) {
+        for (let i = 0; i < activeSeries.value.colors.length; i++) {
             showPieColourPicker[i] = false;
         }
     }
