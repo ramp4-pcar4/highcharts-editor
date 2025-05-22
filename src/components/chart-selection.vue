@@ -202,6 +202,7 @@ const handleChartSelection = (): void => {
 
     if (enableHybrid.value && hybridChartType.value === chartType.value) {
         chartStore.setHybridChartType('none');
+        selectedHybridSeries.value = [];
     }
 
     // set brief timeout to allow chart to re-render
@@ -212,13 +213,17 @@ const handleChartSelection = (): void => {
 
 // modify the chart config to adapt to hybrid chart setup
 const handleHybridSelection = (): void => {
-    if (hybridChartType.value !== chartType.value && hybridChartType.value !== 'none') {
-        const hybridSeries = enableMultiselect.value ? selectedHybridSeries.value : [seriesNames.value[1]];
-        chartStore.updateHybridChart(hybridSeries, hybridChartType.value);
+    if (
+        hybridChartType.value !== chartType.value &&
+        hybridChartType.value !== 'none' &&
+        selectedHybridSeries.value.length > 0
+    ) {
+        chartStore.updateHybridChart(selectedHybridSeries.value, hybridChartType.value);
+        handleChartSelection();
     } else {
-        // set all data series to original chart type (case for hybrid chart type being 'none' or same as main chart type)
         chartStore.setHybridChartType('none');
         selectedHybridSeries.value = [];
+
         handleChartSelection();
     }
 };
