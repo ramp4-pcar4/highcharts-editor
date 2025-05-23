@@ -2,7 +2,7 @@
     <div class="chart-customization m-6" v-if="Object.keys(chartConfig).length">
         <div class="text-2xl font-bold">{{ $t('editor.customization.title') }}</div>
         <!-- header nav section for customization options -->
-        <div class="mt-8 w-1/2">
+        <div class="mt-8 w-full">
             <div class="flex justify-around">
                 <div
                     v-for="(section, idx) in sections"
@@ -47,16 +47,16 @@
                     :dataSeries="mainDataSeries"
                     :hybrid="true"
                     :chartType="chartStore.chartType"
-                    class="bg-gray-200 rounded p-4 pb-8 mr-16 w-1/3"
+                    class="bg-gray-200 rounded p-4 pb-8 mr-16 flex-1"
                 >
                     <h2 class="font-bold mb-4">{{ $t('editor.graph', { num: 1 }) }}</h2>
                 </data-customization>
-
+                <span class="inline-block w-[64px]"></span>
                 <data-customization
                     :dataSeries="hybridDataSeries"
                     :hybrid="true"
                     :chartType="chartStore.hybridChartType"
-                    class="bg-gray-200 rounded p-4 pb-8 mr-16 w-1/3"
+                    class="bg-gray-200 rounded p-4 pb-8 mr-16 flex-1"
                 >
                     <h2 class="font-bold mb-4">{{ $t('editor.graph', { num: 2 }) }}</h2>
                 </data-customization>
