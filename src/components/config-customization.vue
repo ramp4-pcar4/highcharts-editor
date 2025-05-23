@@ -41,7 +41,7 @@
         <template v-else-if="activeSection === 'dataSeries'">
             <div
                 class="flex mt-4"
-                v-if="chartStore.hybridChartType && chartStore.hybridChartType !== chartStore.chartType"
+                v-if="chartStore.hybridChartType && chartStore.hybridChartType !== chartStore.chartType && hybridDataSeries.length > 0"
             >
                 <data-customization
                     :dataSeries="mainDataSeries"
