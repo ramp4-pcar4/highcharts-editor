@@ -18,6 +18,7 @@ export const useChartStore = defineStore('chartProperties', {
         categoryLabel: '' as string,
         chartSeries: [] as string[],
         chartConfig: {} as HighchartsConfig,
+        selectedHybridSeries: [] as string[],
         defaultColours: [
             '#2caffe',
             '#544fc5',
@@ -449,6 +450,13 @@ export const useChartStore = defineStore('chartProperties', {
                     this.chartConfig.series[index] = baseConfig;
                 }
             });
+        },
+        setSelectedHybridSeries(series: string[]) {
+            this.selectedHybridSeries = series;
+        },
+
+        getSelectedHybridSeries() {
+            return this.selectedHybridSeries;
         }
     }
 });

@@ -159,7 +159,10 @@ const hybridChartTemplates: Record<string, string> = {
     spline: 'spline'
 };
 
-let selectedHybridSeries = ref<string[]>([]);
+const selectedHybridSeries = computed({
+  get: () => chartStore.selectedHybridSeries,
+  set: (val: string[]) => chartStore.setSelectedHybridSeries(val),
+});
 
 const loading = ref<boolean>(true);
 
