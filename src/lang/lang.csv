@@ -64,6 +64,7 @@ editor.customization.axes.na,No axes available for this chart type,1,Aucun axe d
 editor.customization.required,(required),1,(obligatoire),1
 editor.customization.optional,(optional),1,(facultatif),1
 editor.customization.titles.chart,Chart title,1,Titre du graphique,1
+editor.customization.titles.chartTitle,Basic Chart,1,Graphique de Base,1
 editor.customization.titles.subtitle,Chart sub-title,1,Sous-titre du graphique,1
 editor.customization.titles.placeholder,Untitled chart,1,Graphique sans titre,1
 editor.customization.advanced,Advanced,1,Avancé,1

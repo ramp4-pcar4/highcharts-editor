@@ -91,7 +91,7 @@ export const useChartStore = defineStore('chartProperties', {
         setupConfig(seriesNames: string[], cats: string[], seriesData: number[][], categoryLabel = ''): void {
             this.chartConfig = {
                 title: {
-                    text: 'Basic Chart'
+                    text: ''
                 },
                 subtitle: {
                     text: ''
