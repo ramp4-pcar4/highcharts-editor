@@ -50,4 +50,5 @@ export interface SeriesData {
     };
     dashStyle?: string;
     data?: number[];
+    visible?: boolean;
 }
