@@ -123,7 +123,13 @@ export const useChartStore = defineStore('chartProperties', {
         },
 
         /* Update highcharts configuration for chart type **/
-        updateConfig(type: string, series: string[], headers: string[], gridData: string[][]): void {
+        updateConfig(
+            type: string,
+            series: string[],
+            headers: string[],
+            gridData: string[][],
+            selectedSeries?: string
+        ): void {
             switch (type) {
                 case chartTemplates.area: {
                     this.setChartType('area');
@@ -192,13 +198,14 @@ export const useChartStore = defineStore('chartProperties', {
                 }
                 case chartTemplates.pie: {
                     this.setChartType('pie');
+                    const selectedSeriesIndex = headers.indexOf(selectedSeries || series[0]);
                     const data = gridData.map((row) => ({
                         name: row[0],
-                        y: parseFloat(row[1])
+                        y: parseFloat(row[selectedSeriesIndex])
                     }));
 
                     const seriesNames = Object.values(headers).slice(1);
-                    this.updatePieChart(seriesNames, data);
+                    this.updatePieChart(seriesNames, selectedSeriesIndex - 1, data);
                     break;
                 }
             }
@@ -401,28 +408,26 @@ export const useChartStore = defineStore('chartProperties', {
         },
 
         /* Update highcharts configuration for pie chart **/
-        updatePieChart(seriesNames: string[], seriesData: { name: string; y: number }[]): void {
+        updatePieChart(seriesNames: string[], seriesIndex: number, seriesData: { name: string; y: number }[]): void {
             // following would support pie chart as part of hybrid charts
             // this.chartConfig.series = this.chartConfig.series.map((series, index) =>
             //     seriesNames.includes(series.name) ? { name: seriesNames[0], type: 'pie', data: seriesData[index] } : series
             // );
 
-            // TODO: this is the default selection: make it so that user can choose which series to display
-            const selectedSeries = seriesNames[0];
-
-            this.chartConfig.series = this.chartConfig.series.map((series) => {
-                if (series.name === selectedSeries) {
+            this.chartConfig.series = this.chartConfig.series.map((series, index) => {
+                if (index === seriesIndex) {
                     return {
-                        ...series,
+                        name: seriesNames[seriesIndex],
                         type: 'pie',
                         data: seriesData,
-                        color: this.defaultColours[0]
+                        colors: this.defaultColours.slice(0, seriesData.length)
                     };
                 } else {
                     return {
                         ...series,
                         data: [],
-                        type: 'line'
+                        type: 'pie',
+                        visible: false
                     };
                 }
             });

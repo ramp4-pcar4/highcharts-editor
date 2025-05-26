@@ -7,11 +7,19 @@
                 class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                 v-model="activeDataSeries"
                 :aria-label="$t('editor.customization.dataSeries')"
+                @change="changeChartType(false)"
             >
                 <!-- Enable insert when exactly one row is selected, enable delete when any number of rows are selected -->
-                <option v-for="series in dataSeries" :value="series">
-                    {{ series }}
-                </option>
+                <template v-if="chartType === 'pie'">
+                    <option v-for="series in allSeriesNames" :key="series" :value="series">
+                        {{ series }}
+                    </option>
+                </template>
+                <template v-else>
+                    <option v-for="series in dataSeries" :value="series">
+                        {{ series }}
+                    </option>
+                </template>
             </select>
             <div class="select-arrow absolute right-2 top-1/2"></div>
         </div>
@@ -33,7 +41,7 @@
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="chartType"
                     :aria-label="$t('editor.customization.data.seriesType')"
-                    @change="changeChartType"
+                    @change="changeChartType()"
                 >
                     <option v-for="series in Object.keys(seriesOptions)" :key="series" :value="series">
                         {{ $t(`editor.customization.data.series.${series}`) }}
@@ -186,6 +194,14 @@ const activeSeries = computed(() => {
         return chartConfig.value.series;
     }
 });
+
+const allSeriesNames = computed(() => {
+    if (Array.isArray(chartConfig.value.series)) {
+        return chartConfig.value.series.map((s) => s.name);
+    }
+    return [];
+});
+
 const showColourPicker = ref<boolean>(false);
 const showPieColourPicker = ref<boolean[]>([]);
 
@@ -234,14 +250,24 @@ const updatePieColour = (index: number, color: string) => {
     (activeSeries.value as SeriesData).colors![index] = color;
 };
 
-const changeChartType = () => {
-    emit('loading', true);
-    const seriesNames = Object.values(dataStore.headers).slice(1);
-    chartStore.updateConfig(chartType.value, seriesNames, dataStore.headers, dataStore.gridData);
-    // set brief timeout to allow chart to re-render
-    setTimeout(() => {
-        emit('loading', false);
-    }, 100);
+const changeChartType = (updateChart = true) => {
+    if (updateChart || chartType.value === 'pie') {
+        emit('loading', true);
+        const selectedSeries = activeDataSeries.value;
+        const seriesNames = Object.values(dataStore.headers).slice(1);
+
+        chartStore.updateConfig(
+            chartType.value,
+            seriesNames,
+            dataStore.headers,
+            dataStore.gridData,
+            chartType.value === 'pie' ? selectedSeries : undefined
+        );
+        // set brief timeout to allow chart to re-render
+        setTimeout(() => {
+            emit('loading', false);
+        }, 100);
+    }
 
     if (chartType.value === 'pie') {
         for (let i = 0; i < (activeSeries.value as SeriesData).colors!.length; i++) {

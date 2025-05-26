@@ -220,6 +220,16 @@ const colActions: Record<string, string> = {
 };
 
 onMounted(() => {
+    const config = chartStore.chartConfig;
+
+    let seriesArray: any[] = [];
+    if (Array.isArray(config.series)) {
+        seriesArray = config.series;
+    } else if (config.series && 'data' in config.series && Array.isArray(config.series.data)) {
+        seriesArray = config.series.data;
+    }
+    const isPieChart = seriesArray.length >= 1 && seriesArray[0].type === 'pie';
+
     if (props.uploadedFile || props.pastedFile) {
         // parse uploaded file or pasted data
         $papa.parse(props.uploadedFile || props.pastedFile, {
@@ -245,9 +255,8 @@ onMounted(() => {
                 console.error('Error parsing file: ', err);
             }
         });
-    }else if (Object.keys(chartStore.chartConfig).length > 0) {
-        const config = chartStore.chartConfig;
-
+        // TODO: will need a case for pie charts as well 
+    } else if (Object.keys(chartStore.chartConfig).length > 0 && !isPieChart) {
         const headers = [chartStore.categoryLabel || ''].concat(config.series.map((s) => s.name));
         dataStore.setHeaders(headers);
 
