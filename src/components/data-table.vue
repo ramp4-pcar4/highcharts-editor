@@ -16,7 +16,6 @@
                     v-model="rowAction"
                     @change="handleRowAction()"
                     :aria-label="$t('editor.datatable.rowActions')"
-                    :disabled="!Object.values(selectedRows).some((row) => row)"
                 >
                     <option value="" hidden>{{ $t('editor.datatable.rowActions') }}</option>
                     <!-- Enable insert when exactly one row is selected, enable delete when any number of rows are selected -->
@@ -25,9 +24,15 @@
                         :key="action"
                         :value="action"
                         :disabled="
-                            action === 'delete'
-                                ? !Object.values(selectedRows).some((row) => row)
-                                : !(Object.values(selectedRows).filter((row) => row).length === 1)
+                            action === 'selectAll'
+                                ? false //always enabled
+                                : action === 'deselectAll'
+                                  ? !Object.values(selectedRows).some((row) => row) //enabled only if any rows selected
+                                  : ['insertAbove', 'insertBelow'].includes(action)
+                                    ? Object.values(selectedRows).filter((row) => row).length !== 1
+                                    : action === 'delete'
+                                      ? !Object.values(selectedRows).some((row) => row)
+                                      : false
                         "
                     >
                         {{ $t(`editor.datatable.rowActions.${action}`) }}
@@ -39,7 +44,6 @@
                     v-model="colAction"
                     @change="handleColAction()"
                     :aria-label="$t('editor.datatable.colActions')"
-                    :disabled="!Object.values(selectedCols).some((col) => col)"
                 >
                     <option value="" hidden>{{ $t('editor.datatable.colActions') }}</option>
                     <!-- Enable insert when exactly one col is selected, enable delete when any number of cols are selected -->
@@ -48,9 +52,15 @@
                         :key="action"
                         :value="action"
                         :disabled="
-                            action === 'delete'
-                                ? !Object.values(selectedCols).some((col) => col)
-                                : !(Object.values(selectedCols).filter((col) => col).length === 1)
+                            action === 'selectAll'
+                                ? false //always enabled
+                                : action === 'deselectAll'
+                                  ? !Object.values(selectedCols).some((col) => col) //enabled only if any cols selected
+                                  : ['insertLeft', 'insertRight'].includes(action)
+                                    ? Object.values(selectedCols).filter((col) => col).length !== 1
+                                    : action === 'delete'
+                                      ? !Object.values(selectedCols).some((col) => col)
+                                      : false
                         "
                     >
                         {{ $t(`editor.datatable.colActions.${action}`) }}
@@ -210,13 +220,19 @@ const colAction = ref<string>('');
 const rowActions: Record<string, string> = {
     delete: 'delete',
     insertAbove: 'insertAbove',
-    insertBelow: 'insertBelow'
+    insertBelow: 'insertBelow',
+    insertEnd: 'insertEnd',
+    selectAll: 'selectAll',
+    deselectAll: 'deselectAll'
 };
 
 const colActions: Record<string, string> = {
     delete: 'delete',
     insertLeft: 'insertLeft',
-    insertRight: 'insertRight'
+    insertRight: 'insertRight',
+    insertEnd: 'insertEnd',
+    selectAll: 'selectAll',
+    deselectAll: 'deselectAll'
 };
 
 onMounted(() => {
@@ -245,7 +261,7 @@ onMounted(() => {
                 console.error('Error parsing file: ', err);
             }
         });
-    }else if (Object.keys(chartStore.chartConfig).length > 0) {
+    } else if (Object.keys(chartStore.chartConfig).length > 0) {
         const config = chartStore.chartConfig;
 
         const headers = [chartStore.categoryLabel || ''].concat(config.series.map((s) => s.name));
@@ -259,8 +275,7 @@ onMounted(() => {
         });
 
         dataStore.setGridData(gridData);
-    } else
-    document.addEventListener('click', handleMouseClick);
+    } else document.addEventListener('click', handleMouseClick);
 });
 
 onBeforeUnmount(() => {
@@ -338,6 +353,23 @@ const handleRowAction = (): void => {
             selectedRows[newIdx] = true; //reselect the previous selected row
             break;
         }
+        case rowActions.insertEnd: {
+            dataStore.addNewRow(gridData.value.length, true); //insert at the end
+            chartStore.insertRow(gridData.value.length);
+            break;
+        }
+        case rowActions.selectAll: {
+            for (let i = 0; i < gridData.value.length; i++) {
+                selectedRows[i] = true;
+            }
+            break;
+        }
+        case rowActions.deselectAll: {
+            for (let i = 0; i < gridData.value.length; i++) {
+                selectedRows[i] = false;
+            }
+            break;
+        }
     }
     rowAction.value = '';
 };
@@ -362,6 +394,23 @@ const handleColAction = (): void => {
             const newIdx = (parseInt(colIdxs[0]) + 1).toString();
             selectedCols[colIdxs[0]] = false;
             selectedCols[newIdx] = true; //reselect the previous selected col
+            break;
+        }
+        case colActions.insertEnd: {
+            dataStore.addNewCol(headers.value.length, true); //insert at the end
+            chartStore.insertColumn(headers.value.length);
+            break;
+        }
+        case colActions.selectAll: {
+            for (let i = 0; i < headers.value.length; i++) {
+                selectedCols[i] = true;
+            }
+            break;
+        }
+        case colActions.deselectAll: {
+            for (let i = 0; i < headers.value.length; i++) {
+                selectedCols[i] = false;
+            }
             break;
         }
     }

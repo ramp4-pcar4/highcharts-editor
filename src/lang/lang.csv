@@ -38,10 +38,16 @@ editor.datatable.rowActions,Row actions,1,Actions sur les lignes,1
 editor.datatable.rowActions.delete,Delete row(s),1,Supprimer des lignes,1
 editor.datatable.rowActions.insertBelow,Insert below,1,Insérer ci-dessous,1
 editor.datatable.rowActions.insertAbove,Insert above,1,Insérer ci-dessus,1
+editor.datatable.rowActions.insertEnd,Insert at the end,1,Insérer à la fin,1
+editor.datatable.rowActions.selectAll,Select all rows,1,Sélectionner toutes les lignes,1
+editor.datatable.rowActions.deselectAll,Deselect all rows,1,Désélectionner toutes les lignes,1
 editor.datatable.colActions,Column actions,1,Actions de colonne,1
 editor.datatable.colActions.delete,Delete column(s),1,Supprimer des colonnes,1
 editor.datatable.colActions.insertLeft,Insert left,1,Insérer à gauche,1
 editor.datatable.colActions.insertRight,Insert right,1,Insérer à droite,1
+editor.datatable.colActions.insertEnd,Insert at the end,1,Insérer à la fin,1
+editor.datatable.colActions.selectAll,Select all columns,1,Sélectionner toutes les colonnes,1
+editor.datatable.colActions.deselectAll,Deselect all columns,1,Désélectionner toutes les colonnes,1
 editor.datatable.templates,Choose templates,1,Choisir un modèle,1
 editor.selection.title,Templates,1,Modèles,1
 editor.selection.template,Select chart template,1,Sélection d'un modèle de graphique,1
