@@ -61,12 +61,17 @@
 
         <!-- Datatable -->
         <div class="overflow-x-auto">
-            <table class="table-auto border-collapse border border-black w-full mt-8">
+            <table class="table-auto border-collapse border-dotted border border-black w-full mt-8">
                 <thead>
                     <tr class="bg-gray-200">
-                        <th class="border border-gray-400 w-16 p-2 text-left align-middle">
-                            <span class="sr-only">{{ $t('editor.datatable.selectRow') }}</span>
-                        </th>
+                        <td class="border border-gray-400 w-16 p-2 text-left align-middle">
+                            <input
+                                type="checkbox"
+                                :checked="allRowsSelected"
+                                @change="toggleAllRows"
+                                :aria-label="$t('editor.datatable.selectAllRows')"
+                            />
+                        </td>
                         <th
                             class="border border-gray-400 p-2 text-left align-middle"
                             v-for="(header, colIdx) in headers"
@@ -99,6 +104,12 @@
                                     :aria-label="$t('editor.datatable.selectCol')"
                                 />
                             </div>
+                        </th>
+                        <th
+                            class="border cursor-pointer border-dotted border-gray-400 p-2 text-center text-gray-600 w-[25px]"
+                            @click="addNewCol"
+                        >
+                            + {{ $t('editor.datatable.addNewCol') }}
                         </th>
                     </tr>
                 </thead>
@@ -145,6 +156,25 @@
                                 />
                             </div>
                         </td>
+                        <td
+                            class="border border-dotted border-gray-400 p-2"
+                            :aria-label="$t('editor.datatable.addNewCol')"
+                        >
+                        </td>
+                    </tr>
+                    <tr :class="gridData.length % 2 === 0 ? 'bg-gray-50' : ''">
+                        <td
+                            class="border cursor-pointer border-dotted border-gray-400 p-2 text-center font-bold text-gray-600"
+                            @click="addNewRow"
+                        >
+                            + {{ $t('editor.datatable.addNewRow') }}
+                        </td>
+                        <td
+                            v-for="(header, colIdx) in headers"
+                            :key="colIdx"
+                            class="border border-dotted border-gray-400 p-2"
+                        ></td>
+                        <td class="border border-dotted border-gray-400 p-2"></td>
                     </tr>
                 </tbody>
             </table>
@@ -206,7 +236,27 @@ let selectedRows = reactive({});
 let selectedCols = reactive({});
 const rowAction = ref<string>('');
 const colAction = ref<string>('');
+const allRowsSelected = computed(
+    () =>
+        gridData.value.length > 0 &&
+        Object.keys(selectedRows).length === gridData.value.length &&
+        Object.values(selectedRows).every((val) => val)
+);
 
+const toggleAllRows = () => {
+    const shouldSelectAll = !allRowsSelected.value;
+    for (let i = 0; i < gridData.value.length; i++) {
+        selectedRows[i] = shouldSelectAll;
+    }
+};
+const addNewRow = () => {
+    dataStore.addNewRow(gridData.value.length - 1, true);
+    chartStore.insertRow(gridData.value.length);
+}
+const addNewCol = () => {
+    dataStore.addNewCol(headers.value.length - 1, true); 
+    chartStore.insertColumn(headers.value.length); 
+}
 const rowActions: Record<string, string> = {
     delete: 'delete',
     insertAbove: 'insertAbove',
@@ -245,7 +295,7 @@ onMounted(() => {
                 console.error('Error parsing file: ', err);
             }
         });
-    }else if (Object.keys(chartStore.chartConfig).length > 0) {
+    } else if (Object.keys(chartStore.chartConfig).length > 0) {
         const config = chartStore.chartConfig;
 
         const headers = [chartStore.categoryLabel || ''].concat(config.series.map((s) => s.name));
@@ -259,8 +309,7 @@ onMounted(() => {
         });
 
         dataStore.setGridData(gridData);
-    } else
-    document.addEventListener('click', handleMouseClick);
+    } else document.addEventListener('click', handleMouseClick);
 });
 
 onBeforeUnmount(() => {
