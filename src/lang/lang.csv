@@ -34,10 +34,13 @@ editor.data.modify,"Here, you can modify your dataset. The default standard is t
 editor.datatable.uploadNew,Upload new data,1,Télécharger de nouvelles données,1
 editor.datatable.selectRow,Select row,1,Sélectionner une ligne,1
 editor.datatable.selectCol,Select column,1,Sélectionner une colonne,1
+editor.datatable.addNewCol,Add column, 1,Ajouter une colonne,1
+editor.datatable.addNewRow,Add row,1,Ajouter une ligne,1
 editor.datatable.rowActions,Row actions,1,Actions sur les lignes,1
 editor.datatable.rowActions.delete,Delete row(s),1,Supprimer des lignes,1
 editor.datatable.rowActions.insertBelow,Insert below,1,Insérer ci-dessous,1
 editor.datatable.rowActions.insertAbove,Insert above,1,Insérer ci-dessus,1
+editor.datatable.selectAllRows,Select all rows,1,Sélectionner toutes les lignes,1
 editor.datatable.colActions,Column actions,1,Actions de colonne,1
 editor.datatable.colActions.delete,Delete column(s),1,Supprimer des colonnes,1
 editor.datatable.colActions.insertLeft,Insert left,1,Insérer à gauche,1
