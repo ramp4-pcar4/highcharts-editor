@@ -3,11 +3,11 @@
         <div class="text-2xl font-bold">{{ $t('editor.customization.title') }}</div>
         <!-- header nav section for customization options -->
         <div class="mt-8 w-full">
-            <div class="flex justify-around">
+            <div class="tab-container grid grid-cols-4 gap-4">
                 <div
                     v-for="(section, idx) in sections"
                     :key="idx"
-                    class="cursor-pointer py-2 px-4 flex-1 text-center"
+                    class="tab-label cursor-pointer py-2 px-4 flex-1 text-center"
                     tabindex="0"
                     :class="{ 'font-semibold': activeSection === section }"
                     @click="() => {
@@ -19,10 +19,15 @@
                     @keydown.enter="() => (activeSection = section)"
                 >
                     {{ $t(`editor.customization.${section}`) }}
+                     <!-- small screen nav bar -->
+                    <div 
+                        class="nav-underline h-1 flex-1 transition-all" 
+                        :class="activeSection === section ? 'bg-black' : 'bg-gray-300'">
+                    </div>
                 </div>
             </div>
-            <!-- nav bar -->
-            <div class="flex">
+            <!-- big screen nav bar -->
+            <div class="nav-tab flex">
                 <div
                     v-for="section in sections"
                     :key="section"
@@ -231,7 +236,7 @@ const addAriaLabel = () => {
     display: none;
 }
 
-:deep(.jsoneditor-poweredBy) {
+:deep(.jsoneditor-poweredBy), .nav-underline {
     display: none;
 }
 
@@ -245,5 +250,35 @@ const addAriaLabel = () => {
 
 :deep(.ace-jsoneditor .ace_constant.ace_numeric) {
     color: #8B0000;
+}
+
+@media (max-width: 472px) {
+    .tab-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nav-tab {
+        display: none;
+    }
+
+    .tab-label {
+        align-self: flex-end;
+    }
+
+    .nav-underline {
+        display: flex;  
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 280px) {
+    .tab-container {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .nav-underline {
+        display: none;
+    }
 }
 </style>
