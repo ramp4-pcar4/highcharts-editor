@@ -78,27 +78,19 @@
                             :key="colIdx"
                         >
                             <div class="flex items-center w-full">
-                                <span
-                                    class="col-header flex-grow truncate"
-                                    v-if="editingHeader !== colIdx"
-                                    tabindex="0"
-                                    @click="editColHeader(colIdx)"
-                                    @focus="editColHeader(colIdx)"
-                                >
-                                    {{ header || $t('editor.untitled') }}
-                                </span>
                                 <input
-                                    v-else
                                     :ref="(el) => (headerInput[colIdx] = el as HTMLInputElement | null)"
-                                    class="col-header flex-grow w-0 max-w-[80%] box-border border border-black p-1"
+                                    class="col-header max-w-[calc(100%-21px)] box-border border border-transparent p-1 bg-transparent focus:border-black focus:bg-white"
                                     type="text"
                                     v-model="headers[colIdx]"
-                                    @input="updateHeader(colIdx, headers[colIdx])"
+                                    :style="{ width: Math.max(header.length + 2, 33) + 'ch' }"
+                                    :readonly="editingHeader !== colIdx"
+                                    @focus="editColHeader(colIdx)"
                                     @blur="escEditCell"
                                     @keyup.enter="escEditCell"
                                 />
                                 <input
-                                    class="ml-2"
+                                    class="ml-auto"
                                     type="checkbox"
                                     v-model="selectedCols[colIdx]"
                                     :aria-label="$t('editor.datatable.selectCol')"
@@ -129,28 +121,18 @@
                             @click="editCell(rowIdx, colIdx, value)"
                         >
                             <div class="flex items-center w-full">
-                                <span
-                                    class="grid-cell flex-grow truncate"
-                                    v-if="editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx"
-                                    tabindex="0"
-                                    @click="editCell(rowIdx, colIdx, value)"
-                                    @focus="editCell(rowIdx, colIdx, value)"
-                                >
-                                    {{ value }}
-                                </span>
-
                                 <input
-                                    v-else
                                     :ref="
                                         (el) =>
                                             (gridCellInput[rowIdx * headers.length + colIdx] =
                                                 el as HTMLInputElement | null)
                                     "
-                                    class="grid-cell flex-grow w-0 max-w-[80%] box-border border border-black p-1"
+                                    class="grid-cell max-w-[calc(100%-2px)] box-border border border-transparent p-1 bg-transparent focus:border-black focus:bg-white"
                                     type="text"
-                                    v-model="editingVal"
-                                    tabindex="0"
-                                    @input="updateCell(rowIdx, colIdx, ($event.target as HTMLInputElement).value)"
+                                    v-model="gridData[rowIdx][colIdx]"
+                                    :style="{ width: Math.max(gridData[rowIdx][colIdx].length + 2, 33) + 'ch' }"
+                                    :readonly="editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx"
+                                    @focus="editCell(rowIdx, colIdx, gridData[rowIdx][colIdx])"
                                     @blur="escEditCell"
                                     @keyup.enter="escEditCell"
                                 />
@@ -159,8 +141,7 @@
                         <td
                             class="border border-dotted border-gray-400 p-2"
                             :aria-label="$t('editor.datatable.addNewCol')"
-                        >
-                        </td>
+                        ></td>
                     </tr>
                     <tr :class="gridData.length % 2 === 0 ? 'bg-gray-50' : ''">
                         <td
@@ -255,11 +236,11 @@ const toggleAllRows = () => {
 const addNewRow = () => {
     dataStore.addNewRow(gridData.value.length - 1, true);
     chartStore.insertRow(gridData.value.length);
-}
+};
 const addNewCol = () => {
-    dataStore.addNewCol(headers.value.length - 1, true); 
-    chartStore.insertColumn(headers.value.length); 
-}
+    dataStore.addNewCol(headers.value.length - 1, true);
+    chartStore.insertColumn(headers.value.length);
+};
 const rowActions: Record<string, string> = {
     delete: 'delete',
     insertAbove: 'insertAbove',
