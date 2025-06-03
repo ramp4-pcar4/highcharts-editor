@@ -77,7 +77,7 @@
                             v-for="(header, colIdx) in headers"
                             :key="colIdx"
                         >
-                            <div class="flex items-center w-full">
+                            <div class="flex items-center justify-between">
                                 <span
                                     class="col-header flex-grow truncate"
                                     v-if="editingHeader !== colIdx"
@@ -90,7 +90,8 @@
                                 <input
                                     v-else
                                     :ref="(el) => (headerInput[colIdx] = el as HTMLInputElement | null)"
-                                    class="col-header flex-grow w-0 max-w-[80%] box-border border border-black p-1"
+                                    :style="{ width: `max(7ch, ${headers[colIdx]?.length + 1}ch)` }"
+                                    class="col-header box-border border border-black p-1"
                                     type="text"
                                     v-model="headers[colIdx]"
                                     @input="updateHeader(colIdx, headers[colIdx])"
@@ -128,7 +129,7 @@
                             :key="colIdx"
                             @click="editCell(rowIdx, colIdx, value)"
                         >
-                            <div class="flex items-center w-full">
+                            <div class="flex items-center">
                                 <span
                                     class="grid-cell flex-grow truncate"
                                     v-if="editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx"
@@ -146,7 +147,8 @@
                                             (gridCellInput[rowIdx * headers.length + colIdx] =
                                                 el as HTMLInputElement | null)
                                     "
-                                    class="grid-cell flex-grow w-0 max-w-[80%] box-border border border-black p-1"
+                                    :style="{ width: `max(${editingVal.length + 1}ch, 7ch)` }"
+                                    class="grid-cell box-border border border-black p-1"
                                     type="text"
                                     v-model="editingVal"
                                     tabindex="0"
@@ -159,8 +161,7 @@
                         <td
                             class="border border-dotted border-gray-400 p-2"
                             :aria-label="$t('editor.datatable.addNewCol')"
-                        >
-                        </td>
+                        ></td>
                     </tr>
                     <tr :class="gridData.length % 2 === 0 ? 'bg-gray-50' : ''">
                         <td
@@ -255,11 +256,11 @@ const toggleAllRows = () => {
 const addNewRow = () => {
     dataStore.addNewRow(gridData.value.length - 1, true);
     chartStore.insertRow(gridData.value.length);
-}
+};
 const addNewCol = () => {
-    dataStore.addNewCol(headers.value.length - 1, true); 
-    chartStore.insertColumn(headers.value.length); 
-}
+    dataStore.addNewCol(headers.value.length - 1, true);
+    chartStore.insertColumn(headers.value.length);
+};
 const rowActions: Record<string, string> = {
     delete: 'delete',
     insertAbove: 'insertAbove',
