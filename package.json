@@ -1,7 +1,11 @@
 {
-    "name": "highcharts-editor",
-    "version": "0.1.0",
+    "name": "highcharts-accessible-configuration-kit",
+    "version": "1.1.0",
     "private": false,
+    "license": "MIT",
+    "type": "module",
+    "repository": "https://github.com/ramp4-pcar4/highcharts-editor",
+    "bugs": "https://github.com/ramp4-pcar4/highcharts-editor/issues",
     "scripts": {
         "dev": "vite",
         "serve": "vite preview",
@@ -9,6 +13,11 @@
         "build-plugin": "vite build --mode plugin",
         "lint": "vite lint"
     },
+    "main": "./dist/highcharts-editor.umd.cjs",
+    "module": "./dist/highcharts-editor.js",
+    "files": [
+        "dist"
+    ],
     "dependencies": {
         "core-js": "^3.8.3",
         "file-saver": "^2.0.5",
@@ -43,7 +52,7 @@
         "prettier": "^3.3.3",
         "tailwindcss": "^3.4.14",
         "typescript": "~5.6.3",
-        "vite": "^6.2.6",
+        "vite": "^6.2.7",
         "vue-eslint-parser": "^9.3.1"
     }
 }

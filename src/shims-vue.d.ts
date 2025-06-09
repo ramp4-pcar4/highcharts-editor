@@ -10,6 +10,7 @@ declare module '*lang.csv' {
 }
 
 declare module 'highcharts-vue';
+declare module 'file-saver';
 declare module 'vue-tippy';
 declare module 'vue-accessible-color-picker';
 declare module 'vue-papa-parse';

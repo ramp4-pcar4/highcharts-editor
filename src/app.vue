@@ -1,16 +1,17 @@
 <template>
-    <div id="app" class="app-container">
+    <div id="highcharts-editor-app" class="highcharts-app-container border border-gray-500">
         <header
-            class="editor-header sticky top-0 flex border-b border-black bg-gray-200 py-2 px-2 justify-between z-40"
+            class="editor-header top-0 flex border-b border-black bg-gray-200 py-2 px-2 justify-between z-40"
+            :class="{ sticky: !props.plugin }"
         >
             <h1 class="w-mobile-full flex items-center truncate">
-                <span class="font-semibold text-lg m-1">{{ $t('editor.title') }}</span>
+                <span class="font-semibold text-lg m-1">{{ $t('editor.highcharts') }}</span>
             </h1>
 
             <button
                 @click="changeLang"
                 class="bg-white border border-black hover:bg-gray-100 font-bold p-2 ml-auto mr-4"
-                v-if="!props.editor"
+                v-if="!props.plugin"
             >
                 {{ appLang === 'en' ? $t('editor.lang.fr') : $t('editor.lang.en') }}
             </button>
@@ -37,9 +38,22 @@
         </header>
 
         <div class="items-stretch flex">
-            <SideMenu :lang="appLang"></SideMenu>
+            <SideMenu
+                :lang="appLang"
+                :plugin="props.plugin"
+                :pluginView="currentView"
+                @change-view="changeView"
+            ></SideMenu>
             <div class="grid-container z-20 w-full flex-grow min-w-0">
-                <router-view :key="$route.path" :lang="appLang"></router-view>
+                <router-view :key="$route.path" v-if="!props.plugin"></router-view>
+                <div v-else>
+                    <component
+                        :is="getTemplate()"
+                        :lang="props.lang"
+                        :plugin="props.plugin"
+                        @change-view="changeView"
+                    ></component>
+                </div>
             </div>
         </div>
     </div>
@@ -47,17 +61,31 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import type { Component, PropType } from 'vue';
+
 import { useChartStore } from './stores/chartStore';
+import { useDataStore } from './stores/dataStore';
 import { useI18n } from 'vue-i18n';
+import { CurrentView, HighchartsConfig } from './definitions';
 
 import SideMenu from './components/side-menu.vue';
 import Spinner from './components/helpers/spinner.vue';
+import DataSection from '@/components/data-section.vue';
+import ChartSelection from '@/components/chart-selection.vue';
+import ConfigCustomization from '@/components/config-customization.vue';
 
 const props = defineProps({
-    editor: {
+    plugin: {
         type: Boolean
     },
     lang: {
+        type: String
+    },
+    config: {
+        type: Object as PropType<HighchartsConfig>,
+        default: () => ({})
+    },
+    title: {
         type: String
     }
 });
@@ -66,31 +94,61 @@ const emit = defineEmits(['cancel', 'saved']);
 
 const i18n = useI18n();
 const chartStore = useChartStore();
+const dataStore = useDataStore();
 const appLang = ref('');
 const saving = ref<boolean>(false);
+const currentView = ref<CurrentView>(CurrentView.Data);
 
-let prevTitle = i18n.t('editor.customization.titles.chartTitle');
+const getTemplate = (): Component => {
+    const pluginComponent: Record<CurrentView | string, Component> = {
+        [CurrentView.Data]: DataSection,
+        [CurrentView.Template]: ChartSelection,
+        [CurrentView.Customization]: ConfigCustomization
+    };
 
-watch(i18n.locale, () => {
-    const title = i18n.t('editor.customization.titles.chartTitle');
-    if (!chartStore.chartConfig || !chartStore.chartConfig.title) {
-        chartStore.chartConfig = chartStore.chartConfig || {};
-        chartStore.chartConfig.title = chartStore.chartConfig.title || { text: '' };
-    }
-    if (!chartStore.chartConfig.title.text || chartStore.chartConfig.title.text === prevTitle) {
-        chartStore.chartConfig.title.text = title;
-    }
-    prevTitle = title;
-});
+    return pluginComponent[currentView.value];
+};
+
+if (!props.title) {
+    let prevTitle = i18n.t('editor.customization.titles.chartTitle');
+
+    watch(i18n.locale, () => {
+        const title = i18n.t('editor.customization.titles.chartTitle');
+        if (!chartStore.chartConfig || !chartStore.chartConfig.title) {
+            chartStore.chartConfig = chartStore.chartConfig || {};
+            chartStore.chartConfig.title = chartStore.chartConfig.title || { text: '' };
+        }
+        if (!chartStore.chartConfig.title.text || chartStore.chartConfig.title.text === prevTitle) {
+            chartStore.chartConfig.title.text = title;
+        }
+        prevTitle = title;
+    });
+}
 
 onMounted(() => {
     appLang.value = props.lang || 'en';
     i18n.locale.value = appLang.value;
+
+    // if passed an existing highcharts config as prop, load and jump to datatable view
+    if (props.config && Object.keys(chartStore.chartConfig).length) {
+        chartStore.setChartConfig(props.config);
+        dataStore.extractGridData(props.config);
+        dataStore.setDatatableView(true);
+    }
+
+    // if passed title as prop, set it as default chart title
+    if (props.title) {
+        chartStore.setDefaultTitle(props.title);
+    }
 });
 
 const changeLang = (): void => {
     appLang.value = appLang.value === 'en' ? 'fr' : 'en';
     i18n.locale.value = appLang.value;
+};
+
+const changeView = (view: CurrentView): void => {
+    currentView.value = view;
 };
 
 const saveChanges = (): void => {
@@ -103,7 +161,7 @@ const saveChanges = (): void => {
 </script>
 
 <style lang="scss">
-#app {
+#highcharts-editor-app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
