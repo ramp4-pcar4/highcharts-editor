@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { HighchartsConfig } from '@/definitions';
 
 export const useDataStore = defineStore('chartData', {
     state: () => ({
@@ -28,6 +29,27 @@ export const useDataStore = defineStore('chartData', {
             this.uploaded = uploaded;
         },
 
+        // extract grid data from highcharts config file
+        extractGridData(config: HighchartsConfig): void {
+            if (config.series && Array.isArray(config.series)) {
+                const headers: string[] = config.series.map((series) => series.name);
+                this.setHeaders(headers);
+
+                const gridData: string[][] = [];
+                config.series.forEach((series, colIdx) => {
+                    series.data?.forEach((value, rowIdx) => {
+                        if (!gridData[rowIdx]) {
+                            gridData[rowIdx] = [];
+                        }
+                        gridData[rowIdx][colIdx] = value.toString();
+                    });
+                });
+                this.setGridData(gridData);
+            } else {
+                console.error('Invalid highcharts config file structure uploaded');
+            }
+        },
+
         /* Update cell value in grid data **/
         updateCell(row: number, col: number, value: string): void {
             if (this.gridData[row]) {
@@ -55,14 +77,17 @@ export const useDataStore = defineStore('chartData', {
         /* Delete column(s) from grid data **/
         deleteCols(selectedColIdxs: string[]): void {
             // sort indices in descending to avoid issues with shifting
-            const selectedIdxs = selectedColIdxs.map((idx: string) => parseInt(idx)).sort().reverse();
-        
+            const selectedIdxs = selectedColIdxs
+                .map((idx: string) => parseInt(idx))
+                .sort()
+                .reverse();
+
             // for each col delete its header and all col values from grid
-            selectedIdxs.forEach(idx => {
+            selectedIdxs.forEach((idx) => {
                 this.headers.splice(idx, 1);
             });
-            this.gridData.forEach(row => {
-                selectedIdxs.forEach(idx => {
+            this.gridData.forEach((row) => {
+                selectedIdxs.forEach((idx) => {
                     row.splice(idx, 1);
                 });
             });
@@ -74,7 +99,7 @@ export const useDataStore = defineStore('chartData', {
             // determine new position based on insert right/left
             const newIdx = right ? parseInt(selectedColIdx) + 1 : parseInt(selectedColIdx);
             // add new header and empty col of values
-            this.headers.splice(newIdx, 0, newCol); 
+            this.headers.splice(newIdx, 0, newCol);
             this.gridData.forEach((row) => {
                 row.splice(newIdx, 0, '');
             });

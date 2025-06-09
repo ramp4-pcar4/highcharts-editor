@@ -187,11 +187,18 @@
         </div>
 
         <div class="flex items-center mt-4">
-            <router-link class="ml-auto" :to="{ name: 'ChartType' }">
+            <router-link class="ml-auto" :to="{ name: 'ChartType' }" v-if="!props.plugin">
                 <button class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto">
                     {{ $t('editor.datatable.templates') }}
                 </button>
             </router-link>
+            <button
+                class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto"
+                @click="emit('change-view', CurrentView.Template)"
+                v-else
+            >
+                {{ $t('editor.datatable.templates') }}
+            </button>
         </div>
     </div>
 </template>
@@ -201,6 +208,7 @@ import { computed, reactive, ref, inject, onBeforeUnmount, onMounted, nextTick }
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
 import { useI18n } from 'vue-i18n';
+import { CurrentView } from '../definitions';
 
 import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
@@ -215,10 +223,16 @@ const props = defineProps({
     },
     pastedFile: {
         type: String
+    },
+    plugin: {
+        type: Boolean
+    },
+    lang: {
+        type: String
     }
 });
 
-const emit = defineEmits(['back']);
+const emit = defineEmits(['back', 'change-view']);
 
 const $papa: any = inject('$papa');
 const dataStore = useDataStore();
@@ -226,7 +240,9 @@ const chartStore = useChartStore();
 
 const headers = computed(() => dataStore.headers);
 const gridData = computed(() => dataStore.gridData);
-const chartConfig = computed(() => chartStore.chartConfig);
+const chartConfig = computed(() => {
+    return chartStore.chartConfig
+});
 
 const headerInput = ref<(HTMLInputElement | null)[]>([]);
 const gridCellInput = ref<(HTMLInputElement | null)[]>([]);
@@ -303,7 +319,9 @@ onMounted(() => {
                     seriesData,
                     dataStore.headers[0]
                 );
-                chartStore.chartConfig.title.text = t('editor.customization.titles.chartTitle');
+
+                // set a non-empty default chart title
+                chartStore.chartConfig.title.text = chartStore.defaultTitle || t('editor.customization.titles.chartTitle');
             },
             error: (err) => {
                 console.error('Error parsing file: ', err);
