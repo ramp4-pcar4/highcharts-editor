@@ -77,7 +77,7 @@
 
             <div class="flex mt-4">
                 <button
-                    class="bg-slate-600 text-white border border-black hover:bg-gray-400 font-bold p-4"
+                    class="bg-black text-white border border-black hover:bg-gray-400 font-bold p-4"
                     :class="{ 'disabled hover:bg-gray-400': !fileName }"
                     :disabled="!fileName"
                     @click="
@@ -112,12 +112,15 @@
             <data-table
                 :uploadedFile="dataFile"
                 :pastedFile="pastedData"
+                :lang="props.lang"
+                :plugin="props.plugin"
                 @back="
                     () => {
                         dataStore.setDatatableView(false);
                         dataStore.toggleUploaded(false);
                     }
                 "
+                @change-view="emit('change-view', CurrentView.Template)"
             ></data-table>
         </template>
     </div>
@@ -128,9 +131,21 @@ import { ref, onMounted } from 'vue';
 import { VueFinalModal } from 'vue-final-modal';
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
+import { CurrentView } from '../definitions';
 
 import PasteData from './helpers/paste-data.vue';
 import DataTable from './data-table.vue';
+
+const emit = defineEmits(['change-view']);
+
+const props = defineProps({
+    plugin: {
+        type: Boolean
+    },
+    lang: {
+        type: String
+    }
+});
 
 const chartStore = useChartStore();
 const dataStore = useDataStore();

@@ -26,6 +26,8 @@ function fold(rows: csvRows): LocaleMessages {
     );
 }
 
+export const highchartsMessages = fold(rows);
+
 const i18n = createI18n({
     legacy: false,
     locale: lang || undefined,

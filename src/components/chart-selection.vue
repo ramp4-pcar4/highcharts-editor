@@ -47,7 +47,7 @@
             <div class="font-bold mt-6">{{ $t('editor.selection.multiseries') }}</div>
             <div class="flex flex-col w-1/2 mt-2" v-if="Array.isArray(chartConfig.series)">
                 <div
-                    class="flex border border-black w-full h-[40px] rounded items-center justify-between cursor-pointer"
+                    class="hybrid-chart-select flex border border-black w-full rounded items-center justify-between cursor-pointer"
                     @click="openMultiSelect = !openMultiSelect"
                 >
                     <div class="flex w-full h-full">
@@ -101,11 +101,16 @@
 
         <!-- Navigate to customization page -->
         <div class="flex items-center mt-4">
-            <router-link class="ml-auto" :to="{ name: 'Customization' }">
+            <router-link class="ml-auto" :to="{ name: 'Customization' }" v-if="!props.plugin">
                 <button class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto">
                     {{ $t('editor.customization.title') }}
                 </button>
             </router-link>
+            <button
+                class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto"
+                @click="emit('change-view', CurrentView.Customization)"
+                v-else
+            >{{ $t('editor.customization.title') }}</button>
         </div>
     </div>
 </template>
@@ -115,11 +120,22 @@ import { computed, ref, onBeforeMount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChartStore } from '../stores/chartStore';
 import { useDataStore } from '../stores/dataStore';
+import { CurrentView } from '../definitions';
 
 import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
 
 dataModule(Highcharts);
+
+const emit = defineEmits(['change-view']);
+const props = defineProps({
+    plugin: {
+        type: Boolean
+    },
+    lang: {
+        type: String
+    }
+});
 
 const chartStore = useChartStore();
 const chartConfig = computed(() => chartStore.chartConfig);
@@ -262,5 +278,9 @@ select {
     -moz-appearance: none;
     appearance: none;
     background: none;
+}
+
+.hybrid-chart-select {
+    height: 40px;
 }
 </style>

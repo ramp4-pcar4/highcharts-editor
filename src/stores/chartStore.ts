@@ -14,6 +14,7 @@ const chartTemplates: Record<string, string> = {
 export const useChartStore = defineStore('chartProperties', {
     state: () => ({
         chartType: 'line' as string,
+        defaultTitle: '' as string,
         hybridChartType: '' as string,
         categoryLabel: '' as string,
         chartSeries: [] as string[],
@@ -42,6 +43,11 @@ export const useChartStore = defineStore('chartProperties', {
         /* Set hybrid highcharts type **/
         setHybridChartType(chartType: string): void {
             this.hybridChartType = chartType;
+        },
+
+        /* Set default title for highcharts **/
+        setDefaultTitle(title: string): void {
+            this.defaultTitle = title;
         },
 
         /* Clear highcharts config **/
@@ -121,6 +127,7 @@ export const useChartStore = defineStore('chartProperties', {
             };
             this.setChartType('line');
             this.categoryLabel = categoryLabel;
+            console.log('SETUP CONFIG IN PLUGIN: ', this.chartConfig);
         },
 
         /* Update highcharts configuration for chart type **/
@@ -249,12 +256,12 @@ export const useChartStore = defineStore('chartProperties', {
                 type: this.chartType,
                 data: defaultData
             };
-            this.chartConfig.series.splice(colIdx - 1, 0, newSeries);
+            (this.chartConfig.series as SeriesData[]).splice(colIdx - 1, 0, newSeries);
         },
 
         /* Update header (series names) value **/
         updateHeader(colIdx: number, name: string): void {
-            this.chartConfig.series[colIdx - 1].name = name;
+            (this.chartConfig.series as SeriesData[])[colIdx - 1].name = name;
         },
 
         /* Update a single series value after data grid cell has been modified **/
@@ -312,7 +319,8 @@ export const useChartStore = defineStore('chartProperties', {
             if (typeof seriesData === 'object') {
                 this.chartConfig = {
                     title: {
-                        text: 'Basic Chart'
+                        text: this.defaultTitle || ''
+
                     },
                     subtitle: {
                         text: ''

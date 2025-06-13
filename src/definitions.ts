@@ -1,5 +1,5 @@
 export interface HighchartsConfig {
-    chart: {
+    chart?: {
         type: string;
     };
     title: {
@@ -38,7 +38,6 @@ export interface HighchartsConfig {
     };
     series: SeriesData[] | { data: SeriesData[] };
 }
-
 export interface SeriesData {
     name: string;
     type: string;
@@ -51,4 +50,10 @@ export interface SeriesData {
     dashStyle?: string;
     data?: number[];
     visible?: boolean;
+}
+
+export enum CurrentView {
+    Data = 'data',
+    Template = 'template',
+    Customization = 'customization'
 }
