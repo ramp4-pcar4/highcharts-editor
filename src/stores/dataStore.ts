@@ -9,6 +9,14 @@ export const useDataStore = defineStore('chartData', {
         datatableView: false
     }),
     actions: {
+        /* Reset store to initial state **/
+        resetStore(): void {
+            this.headers = [];
+            this.gridData = [];
+            this.uploaded = false;
+            this.datatableView = false;
+        },
+
         /* Initially set column headers **/
         setHeaders(headers: string[]): void {
             this.headers = headers;
@@ -44,6 +52,19 @@ export const useDataStore = defineStore('chartData', {
                         gridData[rowIdx][colIdx] = value.toString();
                     });
                 });
+
+                // check for categories and add them as first column if present
+                // TODO: handle cases where categories is missing (fill with default values?)
+                if (config.xAxis && config.xAxis.categories) {
+                    const categories = config.xAxis.categories;
+                    // insert categories as first column
+                    gridData.forEach((row, idx) => {
+                        row.unshift(categories[idx] as string);
+                    });
+                    // add category header
+                    this.headers.unshift('Category');
+                }
+
                 this.setGridData(gridData);
             } else {
                 console.error('Invalid highcharts config file structure uploaded');

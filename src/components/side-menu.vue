@@ -1,7 +1,7 @@
 <template>
     <nav
-        :class="[{ 'w-72': expanded }, { 'sticky': !plugin }]"
-        class="side-menu self-start w-16 duration-500 ease-in-out transition-width"
+        :class="[{ 'w-72': expanded, 'self-start standalone': !plugin, 'self-stretch': plugin }]"
+        class="highcharts-side-menu w-16 duration-500 ease-in-out transition-width"
     >
         <div class="flex items-center mt-4 mb-12">
             <button
@@ -421,8 +421,7 @@ const exportHighchartsConfig = () => {
 </script>
 
 <style lang="scss">
-.side-menu {
-    height: calc(100vh - 60px);
+.highcharts-side-menu {
     display: flex;
     flex-direction: column;
     border: 1px solid #ddd;
@@ -431,6 +430,11 @@ const exportHighchartsConfig = () => {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     top: 60px;
+}
+
+.highcharts-side-menu.standalone {
+    height: calc(100vh - 60px);
+    position: sticky;
 }
 
 .side-nav-content {

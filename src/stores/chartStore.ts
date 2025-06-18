@@ -35,6 +35,29 @@ export const useChartStore = defineStore('chartProperties', {
     }),
 
     actions: {
+        /* Reset store to initial state **/
+        resetStore(): void {
+            this.chartType = 'line';
+            this.defaultTitle = '';
+            this.hybridChartType = '';
+            this.categoryLabel = '';
+            this.chartSeries = [];
+            this.chartConfig = {} as HighchartsConfig;
+            this.selectedHybridSeries = [];
+            this.defaultColours = [
+                '#2caffe',
+                '#544fc5',
+                '#00e272',
+                '#fe6a35',
+                '#6b8abc',
+                '#d568fb',
+                '#2ee0ca',
+                '#fa4b42',
+                '#feb56a',
+                '#91e8e1'
+            ];
+        },
+
         /* Set highcharts type **/
         setChartType(chartType: string): void {
             this.chartType = chartType;
@@ -320,7 +343,6 @@ export const useChartStore = defineStore('chartProperties', {
                 this.chartConfig = {
                     title: {
                         text: this.defaultTitle || ''
-
                     },
                     subtitle: {
                         text: ''
