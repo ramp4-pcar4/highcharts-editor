@@ -125,6 +125,7 @@ import { SeriesData } from '../definitions';
 import { Vue3JsonEditor } from 'vue3-json-editor';
 import { Validator } from 'jsonschema';
 import { useI18n } from 'vue-i18n';
+import schema from '../../HighchartsSchema.json';
 
 import TitlesCustomization from './helpers/titles-customization.vue';
 import DataCustomization from './helpers/data-customization.vue';
@@ -161,18 +162,7 @@ onBeforeMount(() => {
 
 onMounted(() => {
     // import highcharts schema for validation
-    const schemaUrl = './HighchartsSchema.json';
-    fetch(schemaUrl).then((schema) => {
-        // parse JSON schema
-        schema.json().then(
-            (res: any) => {
-                highchartsSchema.value = res;
-            },
-            (err) => {
-                console.error(err);
-            }
-        );
-    });
+    highchartsSchema.value = schema as any;
     updatedConfig.value = chartConfig.value; 
 });
 

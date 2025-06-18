@@ -127,10 +127,19 @@ if (!props.title) {
 
 onMounted(() => {
     appLang.value = props.lang || 'en';
-    i18n.locale.value = appLang.value;
+    // set locale only when standalone usage
+    if (!props.plugin) {
+        i18n.locale.value = appLang.value;
+    }
+
+    // clear store state (required for shared store state for multi-instance charts)
+    if (props.plugin) {
+        dataStore.resetStore();
+        chartStore.resetStore();
+    }
 
     // if passed an existing highcharts config as prop, load and jump to datatable view
-    if (props.config && Object.keys(chartStore.chartConfig).length) {
+    if (props.config && Object.keys(props.config).length) {
         chartStore.setChartConfig(props.config);
         dataStore.extractGridData(props.config);
         dataStore.setDatatableView(true);
