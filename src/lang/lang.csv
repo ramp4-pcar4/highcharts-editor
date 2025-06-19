@@ -45,6 +45,8 @@ editor.datatable.colActions,Column actions,1,Actions de colonne,1
 editor.datatable.colActions.delete,Delete column(s),1,Supprimer des colonnes,1
 editor.datatable.colActions.insertLeft,Insert left,1,Insérer à gauche,1
 editor.datatable.colActions.insertRight,Insert right,1,Insérer à droite,1
+editor.datatable.colHeaders,Column Headers,1, En-têtes de colonnes,1
+editor.datatable.gridcells,Grid cell,1, Cellule de grille, 1
 editor.datatable.templates,Choose templates,1,Choisir un modèle,1
 editor.selection.title,Templates,1,Modèles,1
 editor.selection.template,Select chart template,1,Sélection d'un modèle de graphique,1
