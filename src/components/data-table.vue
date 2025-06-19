@@ -72,8 +72,8 @@
                                 :aria-label="$t('editor.datatable.selectAllRows')"
                             />
                         </td>
-                        <th
-                            class="border border-gray-400 p-2 text-left align-middle"
+                        <td
+                            class="border border-gray-400 p-2 text-left align-middle font-bold"
                             v-for="(header, colIdx) in headers"
                             :key="colIdx"
                         >
@@ -83,6 +83,7 @@
                                     class="col-header max-w-[calc(100%-21px)] box-border border border-transparent p-1 bg-transparent focus:border-black focus:bg-white"
                                     type="text"
                                     v-model="headers[colIdx]"
+                                    :aria-label="$t('editor.datatable.colHeaders')"
                                     :style="{ width: Math.max(header.length + 2, 8) + 'ch' }"
                                     :readonly="editingHeader !== colIdx"
                                     @input="updateHeader(colIdx, headers[colIdx])"
@@ -97,7 +98,7 @@
                                     :aria-label="$t('editor.datatable.selectCol')"
                                 />
                             </div>
-                        </th>
+                        </td>
                         <th
                             class="border cursor-pointer border-dotted border-gray-400 p-2 text-center text-gray-600 w-[25px]"
                             @click="addNewCol"
@@ -131,6 +132,7 @@
                                     class="grid-cell max-w-[calc(100%-2px)] box-border border border-transparent p-1 bg-transparent focus:border-black focus:bg-white"
                                     type="text"
                                     v-model="gridData[rowIdx][colIdx]"
+                                    :aria-label="$t('editor.datatable.gridcells')"
                                     :style="{ width: Math.max(gridData[rowIdx][colIdx].length + 2, 8) + 'ch' }"
                                     :readonly="editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx"
                                     @input="updateCell(rowIdx, colIdx, ($event.target as HTMLInputElement).value)"
