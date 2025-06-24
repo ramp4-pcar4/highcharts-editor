@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="mt-4">{{ $t('editor.data.modify') }}</div>
+        <div class="mt-4">{{ $t('HACK.data.modify') }}</div>
         <div class="flex mt-4">
             <button
                 class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-2"
                 @click="emit('back')"
             >
-                {{ $t('editor.datatable.uploadNew') }}
+                {{ $t('HACK.datatable.uploadNew') }}
             </button>
 
             <!-- Row and column actions -->
@@ -15,10 +15,10 @@
                     class="border border-black mr-4 p-2 rounded bg-gray-300 focus:bg-white"
                     v-model="rowAction"
                     @change="handleRowAction()"
-                    :aria-label="$t('editor.datatable.rowActions')"
+                    :aria-label="$t('HACK.datatable.rowActions')"
                     :disabled="!Object.values(selectedRows).some((row) => row)"
                 >
-                    <option value="" hidden>{{ $t('editor.datatable.rowActions') }}</option>
+                    <option value="" hidden>{{ $t('HACK.datatable.rowActions') }}</option>
                     <!-- Enable insert when exactly one row is selected, enable delete when any number of rows are selected -->
                     <option
                         v-for="action in Object.keys(rowActions)"
@@ -30,7 +30,7 @@
                                 : !(Object.values(selectedRows).filter((row) => row).length === 1)
                         "
                     >
-                        {{ $t(`editor.datatable.rowActions.${action}`) }}
+                        {{ $t(`HACK.datatable.rowActions.${action}`) }}
                     </option>
                 </select>
 
@@ -38,10 +38,10 @@
                     class="border border-black p-2 rounded bg-gray-300 focus:bg-white"
                     v-model="colAction"
                     @change="handleColAction()"
-                    :aria-label="$t('editor.datatable.colActions')"
+                    :aria-label="$t('HACK.datatable.colActions')"
                     :disabled="!Object.values(selectedCols).some((col) => col)"
                 >
-                    <option value="" hidden>{{ $t('editor.datatable.colActions') }}</option>
+                    <option value="" hidden>{{ $t('HACK.datatable.colActions') }}</option>
                     <!-- Enable insert when exactly one col is selected, enable delete when any number of cols are selected -->
                     <option
                         v-for="action in Object.keys(colActions)"
@@ -53,7 +53,7 @@
                                 : !(Object.values(selectedCols).filter((col) => col).length === 1)
                         "
                     >
-                        {{ $t(`editor.datatable.colActions.${action}`) }}
+                        {{ $t(`HACK.datatable.colActions.${action}`) }}
                     </option>
                 </select>
             </div>
@@ -69,7 +69,7 @@
                                 type="checkbox"
                                 :checked="allRowsSelected"
                                 @change="toggleAllRows"
-                                :aria-label="$t('editor.datatable.selectAllRows')"
+                                :aria-label="$t('HACK.datatable.selectAllRows')"
                             />
                         </td>
                         <td
@@ -83,7 +83,7 @@
                                     class="col-header max-w-[calc(100%-21px)] box-border border border-transparent font-bold p-1 bg-transparent focus:border-black focus:bg-white"
                                     type="text"
                                     v-model="headers[colIdx]"
-                                    :aria-label="$t('editor.datatable.colHeaders')"
+                                    :aria-label="$t('HACK.datatable.colHeaders')"
                                     :style="{ width: Math.max(header.length + 2, 8) + 'ch' }"
                                     :readonly="editingHeader !== colIdx"
                                     @input="updateHeader(colIdx, headers[colIdx])"
@@ -95,7 +95,7 @@
                                     class="ml-auto"
                                     type="checkbox"
                                     v-model="selectedCols[colIdx]"
-                                    :aria-label="$t('editor.datatable.selectCol')"
+                                    :aria-label="$t('HACK.datatable.selectCol')"
                                 />
                             </div>
                         </td>
@@ -103,7 +103,7 @@
                             class="border cursor-pointer border-dotted border-gray-400 p-2 text-center text-gray-600 w-[25px]"
                             @click="addNewCol"
                         >
-                            + {{ $t('editor.datatable.addNewCol') }}
+                            + {{ $t('HACK.datatable.addNewCol') }}
                         </th>
                     </tr>
                 </thead>
@@ -113,7 +113,7 @@
                             <input
                                 type="checkbox"
                                 v-model="selectedRows[rowIdx]"
-                                :aria-label="$t('editor.datatable.selectRow')"
+                                :aria-label="$t('HACK.datatable.selectRow')"
                             />
                         </td>
                         <td
@@ -132,7 +132,7 @@
                                     class="grid-cell max-w-[calc(100%-2px)] box-border border border-transparent p-1 bg-transparent focus:border-black focus:bg-white"
                                     type="text"
                                     v-model="gridData[rowIdx][colIdx]"
-                                    :aria-label="$t('editor.datatable.gridcells')"
+                                    :aria-label="$t('HACK.datatable.gridcells')"
                                     :style="{ width: Math.max(gridData[rowIdx][colIdx].length + 2, 8) + 'ch' }"
                                     :readonly="editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx"
                                     @input="updateCell(rowIdx, colIdx, ($event.target as HTMLInputElement).value)"
@@ -144,7 +144,7 @@
                         </td>
                         <td
                             class="border border-dotted border-gray-400 p-2"
-                            :aria-label="$t('editor.datatable.addNewCol')"
+                            :aria-label="$t('HACK.datatable.addNewCol')"
                         ></td>
                     </tr>
                     <tr :class="gridData.length % 2 === 0 ? 'bg-gray-50' : ''">
@@ -152,7 +152,7 @@
                             class="border cursor-pointer border-dotted border-gray-400 p-2 text-center font-bold text-gray-600"
                             @click="addNewRow"
                         >
-                            + {{ $t('editor.datatable.addNewRow') }}
+                            + {{ $t('HACK.datatable.addNewRow') }}
                         </td>
                         <td
                             v-for="(header, colIdx) in headers"
@@ -165,7 +165,7 @@
             </table>
         </div>
 
-        <div class="font-bold mt-8">{{ $t('editor.preview') }}</div>
+        <div class="font-bold mt-8">{{ $t('HACK.preview') }}</div>
         <!-- Preview of chart -->
         <div class="dv-chart-container items-stretch h-full w-full mt-2">
             <highchart :options="chartConfig"></highchart>
@@ -174,7 +174,7 @@
         <div class="flex items-center mt-4">
             <router-link class="ml-auto" :to="{ name: 'ChartType' }" v-if="!props.plugin">
                 <button class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto">
-                    {{ $t('editor.datatable.templates') }}
+                    {{ $t('HACK.datatable.templates') }}
                 </button>
             </router-link>
             <button
@@ -182,7 +182,7 @@
                 @click="emit('change-view', CurrentView.Template)"
                 v-else
             >
-                {{ $t('editor.datatable.templates') }}
+                {{ $t('HACK.datatable.templates') }}
             </button>
         </div>
     </div>
@@ -306,7 +306,7 @@ onMounted(() => {
                 );
 
                 // set a non-empty default chart title
-                chartStore.chartConfig.title.text = chartStore.defaultTitle || t('editor.customization.titles.chartTitle');
+                chartStore.chartConfig.title.text = chartStore.defaultTitle || t('HACK.customization.titles.chartTitle');
             },
             error: (err) => {
                 console.error('Error parsing file: ', err);

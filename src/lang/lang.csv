@@ -1,98 +1,98 @@
 key,enValue,enValid,frValue,frValid
-editor.lang.en,English,1,Anglais,1
-editor.lang.fr,French,1,Français,1
-editor.saveChanges,Save Changes,1,Enregistrer les modifications,1
-editor.highcharts,Highcharts Accessible Configuration Kit,1,Trousse de Configuration Accessible Highcharts,1
-editor.untitled,Untitled,1,Sans titre,1
-editor.expand,Expand,1,Développer,1
-editor.preview,Preview,1,Apéro,1
-editor.graph,Graph {num},1,Graphique {num},1
-editor.collapse,Collapse,1,Effondrement,1
-editor.save.warning,Chart cannot be saved,1,Le graphique ne peut pas être enregistré,1
-editor.save.warning.text,"In order to save a chart, you must upload data and set your chart name.",1,"Pour enregistrer un graphique, vous devez télécharger des données et définir le nom de votre graphique.",1
-editor.label.or,or,1,ou,1
-editor.label.cancel,Cancel,1,Annuler,1
-editor.label.import,Import data,1,Importer des données,1
-editor.toc.chartType,Templates,1,Modèles,1
-editor.toc.chartCustomize,Customize Chart,1,Personnaliser le Graphique,1
-editor.toc.importChart,Import existing chart,1,Importer un graphique existant,1
-editor.toc.exportConfig,Export configuration (.json),1,Configuration de l'exportateur (.json),1
-editor.data.title,Data,1,Données,1
-editor.data.description,"Upload your data to start creating a highchart. You may either import data by uploading a file or pasting your data directly.",1,"Téléchargez vos données pour commencer à créer un graphique. Vous pouvez soit importer des données en téléchargeant un fichier, soit en collant vos données directement.",1
-editor.data.drag,Drag and drop file here,1,Glissez et déposez le fichier ici,1
-editor.data.filename,File name,1,Nom de fichier,1
-editor.data.upload,Select file from device,1,Sélectionner un fichier sur l'appareil,1
-editor.data.supported,"Supported file types: csv, xls, xlsx",1,"Types de fichiers pris en charge : csv, xls, xlsx",1
-editor.data.unsupported,"Unsupported file type. Please upload a csv, xls, or xlsx file.",1,"Type de fichier non pris en charge. Veuillez télécharger un fichier csv, xls ou xlsx.",1
-editor.data.import,Import data from file,1,Importer des données à partir d'un fichier,1
-editor.data.import.instructions,You may only upload one file at a time. You may remove this file to select another.,1,Vous ne pouvez télécharger qu'un seul fichier à la fois. Vous pouvez supprimer ce fichier pour en sélectionner un autre.,1
-editor.data.paste,Paste your data,1,Collez vos données,1
-editor.data.paste.label,Use pasted data,1,Utiliser des données collées,1
-editor.data.paste.description,"Copy data from a CSV or Excel file, then paste in the box below. Please use comma separated values to best avoid errors. Note that the first row should correspond to axis/category titles.",1,"Copiez les données d'un fichier CSV ou Excel, puis collez-les dans le champ ci-dessous. Veuillez utiliser des valeurs séparées par des virgules pour éviter les erreurs. Notez que la premiÃ¨re ligne doit correspondre aux titres des axes/catégories.",1
-editor.data.paste.placeholder,Paste data here,1,Collez les données ici,1
-editor.data.modify,"Here, you can modify your dataset. The default standard is that the first column will be reserved for category labels.",1,"Ici, vous pouvez modifier votre ensemble de données. Par défaut, la première colonne est réservée aux libellés des catégories.",1
-editor.datatable.uploadNew,Upload new data,1,Télécharger de nouvelles données,1
-editor.datatable.selectRow,Select row,1,Sélectionner une ligne,1
-editor.datatable.selectCol,Select column,1,Sélectionner une colonne,1
-editor.datatable.addNewCol,Add column, 1,Ajouter une colonne,1
-editor.datatable.addNewRow,Add row,1,Ajouter une ligne,1
-editor.datatable.rowActions,Row actions,1,Actions sur les lignes,1
-editor.datatable.rowActions.delete,Delete row(s),1,Supprimer des lignes,1
-editor.datatable.rowActions.insertBelow,Insert below,1,Insérer ci-dessous,1
-editor.datatable.rowActions.insertAbove,Insert above,1,Insérer ci-dessus,1
-editor.datatable.selectAllRows,Select all rows,1,Sélectionner toutes les lignes,1
-editor.datatable.colActions,Column actions,1,Actions de colonne,1
-editor.datatable.colActions.delete,Delete column(s),1,Supprimer des colonnes,1
-editor.datatable.colActions.insertLeft,Insert left,1,Insérer à gauche,1
-editor.datatable.colActions.insertRight,Insert right,1,Insérer à droite,1
-editor.datatable.colHeaders,Column Headers,1,En-têtes de colonnes,1
-editor.datatable.gridcells,Grid cell,1,Cellule de grille, 1
-editor.datatable.templates,Choose templates,1,Choisir un modèle,1
-editor.selection.title,Templates,1,Modèles,1
-editor.selection.template,Select chart template,1,Sélection d'un modèle de graphique,1
-editor.selection.template1,Select template for graph 1,1,Sélectionner un modèle pour le graphique 1,1
-editor.selection.template2,Select template for graph 2,1,Sélectionner un modèle pour le graphique 2,1
-editor.selection.multiseries,Select data series for graph 2,1,Sélectionner la série de données pour le graphique 2,1
-editor.selection.area,Area chart,1,Graphique en aires,1
-editor.selection.bar,Bar chart,1,Graphique Ã barres,1
-editor.selection.column,Column chart,1,Diagramme Ã colonnes,1
-editor.selection.line,Line chart,1,Graphique linéaire,1
-editor.selection.scatter,Scatter plot,1,Nuage de points,1
-editor.selection.spline,Spline chart,1,Graphique spline,1
-editor.selection.pie,Pie chart,1,Diagramme circulaire,1
-editor.selection.none,None,1,Aucun,1
-editor.customization.title,Customize Chart,1,Personnaliser le Graphique,1
-editor.customization.chartTitles,Chart titles,1,Titres des graphiques,1
-editor.customization.dataSeries,Data series,1,Série de données,1
-editor.customization.axes,Axes,1,Axes,1
-editor.customization.axes.na,No axes available for this chart type,1,Aucun axe disponible pour ce type de graphique,1
-editor.customization.required,(required),1,(obligatoire),1
-editor.customization.optional,(optional),1,(facultatif),1
-editor.customization.titles.chart,Chart title,1,Titre du graphique,1
-editor.customization.titles.chartTitle,Basic Chart,1,Graphique de Base,1
-editor.customization.titles.subtitle,Chart sub-title,1,Sous-titre du graphique,1
-editor.customization.titles.placeholder,Untitled chart,1,Graphique sans titre,1
-editor.customization.advanced,Advanced,1,Avancé,1
-editor.customization.advanced.editor,JSON editor,1,Éditeur JSON,1
-editor.customization.data.format,Format data,1,Formater les données,1
-editor.customization.data.seriesType,Series type,1,Type de série,1
-editor.customization.data.series.area,Area,1,Aires,1
-editor.customization.data.series.bar,Bar,1,Barres,1 
-editor.customization.data.series.column,Column,1,Colonnes,1
-editor.customization.data.series.line,Line,1,Linéaire,1
-editor.customization.data.series.scatter,Scatter,1,Dispersion,1
-editor.customization.data.series.spline,Spline,1,Spline,1
-editor.customization.data.series.pie,Pie,1,Circulaire,1
-editor.customization.data.colour,Data colour,1,Couleur des données,1
-editor.customization.data.colours,Data colours,1,Couleurs des données,1
-editor.customization.data.dashStyle,Dash style,1,Style de tiret,1
-editor.customization.data.dot,Dotted,1,Pointé,1
-editor.customization.data.dash,Dashed,1,Pointillé,1
-editor.customization.data.solid,Solid,1,Solide,1
-editor.customization.data.pointMarker,Point marker symbol,1,Symbole de marqueur de point,1
-editor.customization.data.square,Square,1,Carré,1
-editor.customization.data.circle,Circle,1,Cercle,1
-editor.customization.data.triangle,Triangle,1,Triangle,1
-editor.customization.axes.yaxis,Y-axis title,1,Titre de l'axe Y,1
-editor.customization.axes.xaxis,X-axis title,1,Titre de l'axe X,1
-editor.customization.axes.placeholder,Untitled axis,1,Axes sans titre,1
+HACK.lang.en,English,1,Anglais,1
+HACK.lang.fr,French,1,Français,1
+HACK.saveChanges,Save Chart,1,Enregistrer le Graphique,1
+HACK.highcharts,Highcharts Accessible Configuration Kit,1,Trousse de Configuration Accessible Highcharts,1
+HACK.untitled,Untitled,1,Sans titre,1
+HACK.expand,Expand,1,Développer,1
+HACK.preview,Preview,1,Apéro,1
+HACK.graph,Graph {num},1,Graphique {num},1
+HACK.collapse,Collapse,1,Effondrement,1
+HACK.save.warning,Chart cannot be saved,1,Le graphique ne peut pas être enregistré,1
+HACK.save.warning.text,"In order to save a chart, you must upload data and set your chart name.",1,"Pour enregistrer un graphique, vous devez télécharger des données et définir le nom de votre graphique.",1
+HACK.label.or,or,1,ou,1
+HACK.label.cancel,Cancel,1,Annuler,1
+HACK.label.import,Import data,1,Importer des données,1
+HACK.toc.chartType,Templates,1,Modèles,1
+HACK.toc.chartCustomize,Customize Chart,1,Personnaliser le Graphique,1
+HACK.toc.importChart,Import existing chart,1,Importer un graphique existant,1
+HACK.toc.exportConfig,Export configuration (.json),1,Configuration de l'exportateur (.json),1
+HACK.data.title,Data,1,Données,1
+HACK.data.description,"Upload your data to start creating a highchart. You may either import data by uploading a file or pasting your data directly.",1,"Téléchargez vos données pour commencer à créer un graphique. Vous pouvez soit importer des données en téléchargeant un fichier, soit en collant vos données directement.",1
+HACK.data.drag,Drag and drop file here,1,Glissez et déposez le fichier ici,1
+HACK.data.filename,File name,1,Nom de fichier,1
+HACK.data.upload,Select file from device,1,Sélectionner un fichier sur l'appareil,1
+HACK.data.supported,"Supported file types: csv, xls, xlsx",1,"Types de fichiers pris en charge : csv, xls, xlsx",1
+HACK.data.unsupported,"Unsupported file type. Please upload a csv, xls, or xlsx file.",1,"Type de fichier non pris en charge. Veuillez télécharger un fichier csv, xls ou xlsx.",1
+HACK.data.import,Import data from file,1,Importer des données à partir d'un fichier,1
+HACK.data.import.instructions,You may only upload one file at a time. You may remove this file to select another.,1,Vous ne pouvez télécharger qu'un seul fichier à la fois. Vous pouvez supprimer ce fichier pour en sélectionner un autre.,1
+HACK.data.paste,Paste your data,1,Collez vos données,1
+HACK.data.paste.label,Use pasted data,1,Utiliser des données collées,1
+HACK.data.paste.description,"Copy data from a CSV or Excel file, then paste in the box below. Please use comma separated values to best avoid errors. Note that the first row should correspond to axis/category titles.",1,"Copiez les données d'un fichier CSV ou Excel, puis collez-les dans le champ ci-dessous. Veuillez utiliser des valeurs séparées par des virgules pour éviter les erreurs. Notez que la premiÃ¨re ligne doit correspondre aux titres des axes/catégories.",1
+HACK.data.paste.placeholder,Paste data here,1,Collez les données ici,1
+HACK.data.modify,"Here, you can modify your dataset. The default standard is that the first column will be reserved for category labels.",1,"Ici, vous pouvez modifier votre ensemble de données. Par défaut, la première colonne est réservée aux libellés des catégories.",1
+HACK.datatable.uploadNew,Upload new data,1,Télécharger de nouvelles données,1
+HACK.datatable.selectRow,Select row,1,Sélectionner une ligne,1
+HACK.datatable.selectCol,Select column,1,Sélectionner une colonne,1
+HACK.datatable.addNewCol,Add column, 1,Ajouter une colonne,1
+HACK.datatable.addNewRow,Add row,1,Ajouter une ligne,1
+HACK.datatable.rowActions,Row actions,1,Actions sur les lignes,1
+HACK.datatable.rowActions.delete,Delete row(s),1,Supprimer des lignes,1
+HACK.datatable.rowActions.insertBelow,Insert below,1,Insérer ci-dessous,1
+HACK.datatable.rowActions.insertAbove,Insert above,1,Insérer ci-dessus,1
+HACK.datatable.selectAllRows,Select all rows,1,Sélectionner toutes les lignes,1
+HACK.datatable.colActions,Column actions,1,Actions de colonne,1
+HACK.datatable.colActions.delete,Delete column(s),1,Supprimer des colonnes,1
+HACK.datatable.colActions.insertLeft,Insert left,1,Insérer à gauche,1
+HACK.datatable.colActions.insertRight,Insert right,1,Insérer à droite,1
+HACK.datatable.gridcells,Grid cell,1,Cellule de grille, 1
+HACK.datatable.templates,Choose templates,1,Choisir un modèle,1
+HACK.datatable.templates,Choose templates,1,Choisir un modèle,1
+HACK.selection.title,Templates,1,Modèles,1
+HACK.selection.template,Select chart template,1,Sélection d'un modèle de graphique,1
+HACK.selection.template1,Select template for graph 1,1,Sélectionner un modèle pour le graphique 1,1
+HACK.selection.template2,Select template for graph 2,1,Sélectionner un modèle pour le graphique 2,1
+HACK.selection.multiseries,Select data series for graph 2,1,Sélectionner la série de données pour le graphique 2,1
+HACK.selection.area,Area chart,1,Graphique en aires,1
+HACK.selection.bar,Bar chart,1,Graphique Ã barres,1
+HACK.selection.column,Column chart,1,Diagramme Ã colonnes,1
+HACK.selection.line,Line chart,1,Graphique linéaire,1
+HACK.selection.scatter,Scatter plot,1,Nuage de points,1
+HACK.selection.spline,Spline chart,1,Graphique spline,1
+HACK.selection.pie,Pie chart,1,Diagramme circulaire,1
+HACK.selection.none,None,1,Aucun,1
+HACK.customization.title,Customize Chart,1,Personnaliser le Graphique,1
+HACK.customization.chartTitles,Chart titles,1,Titres des graphiques,1
+HACK.customization.dataSeries,Data series,1,Série de données,1
+HACK.customization.axes,Axes,1,Axes,1
+HACK.customization.axes.na,No axes available for this chart type,1,Aucun axe disponible pour ce type de graphique,1
+HACK.customization.required,(required),1,(obligatoire),1
+HACK.customization.optional,(optional),1,(facultatif),1
+HACK.customization.titles.chart,Chart title,1,Titre du graphique,1
+HACK.customization.titles.chartTitle,Basic Chart,1,Graphique de Base,1
+HACK.customization.titles.subtitle,Chart sub-title,1,Sous-titre du graphique,1
+HACK.customization.titles.placeholder,Untitled chart,1,Graphique sans titre,1
+HACK.customization.advanced,Advanced,1,Avancé,1
+HACK.customization.advanced.HACK,JSON HACK,1,Éditeur JSON,1
+HACK.customization.data.format,Format data,1,Formater les données,1
+HACK.customization.data.seriesType,Series type,1,Type de série,1
+HACK.customization.data.series.area,Area,1,Aires,1
+HACK.customization.data.series.bar,Bar,1,Barres,1 
+HACK.customization.data.series.column,Column,1,Colonnes,1
+HACK.customization.data.series.line,Line,1,Linéaire,1
+HACK.customization.data.series.scatter,Scatter,1,Dispersion,1
+HACK.customization.data.series.spline,Spline,1,Spline,1
+HACK.customization.data.series.pie,Pie,1,Circulaire,1
+HACK.customization.data.colour,Data colour,1,Couleur des données,1
+HACK.customization.data.colours,Data colours,1,Couleurs des données,1
+HACK.customization.data.dashStyle,Dash style,1,Style de tiret,1
+HACK.customization.data.dot,Dotted,1,Pointé,1
+HACK.customization.data.dash,Dashed,1,Pointillé,1
+HACK.customization.data.solid,Solid,1,Solide,1
+HACK.customization.data.pointMarker,Point marker symbol,1,Symbole de marqueur de point,1
+HACK.customization.data.square,Square,1,Carré,1
+HACK.customization.data.circle,Circle,1,Cercle,1
+HACK.customization.data.triangle,Triangle,1,Triangle,1
+HACK.customization.axes.yaxis,Y-axis title,1,Titre de l'axe Y,1
+HACK.customization.axes.xaxis,X-axis title,1,Titre de l'axe X,1
+HACK.customization.axes.placeholder,Untitled axis,1,Axes sans titre,1

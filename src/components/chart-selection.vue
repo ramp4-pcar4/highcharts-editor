@@ -1,21 +1,21 @@
 <template>
     <div class="chart-selection m-6">
-        <div class="text-2xl font-bold">{{ $t('editor.selection.title') }}</div>
+        <div class="text-2xl font-bold">{{ $t('HACK.selection.title') }}</div>
 
         <!-- Main chart type selection (if only one chart type) -->
         <div class="font-bold mt-6">
-            {{ enableHybrid ? $t('editor.selection.template1') : $t('editor.selection.template') }}
-            <span class="text-red-600" v-if="enableHybrid">{{ $t('editor.customization.required') }}</span>
+            {{ enableHybrid ? $t('HACK.selection.template1') : $t('HACK.selection.template') }}
+            <span class="text-red-600" v-if="enableHybrid">{{ $t('HACK.customization.required') }}</span>
         </div>
         <div class="relative w-1/2 mt-2">
             <select
                 class="border border-black w-full mt-2 p-2 rounded"
                 v-model="chartType"
-                :aria-label="enableHybrid ? $t('editor.selection.template1') : $t('editor.selection.template')"
+                :aria-label="enableHybrid ? $t('HACK.selection.template1') : $t('HACK.selection.template')"
                 @change="handleChartSelection"
             >
                 <option v-for="template in Object.keys(chartTemplates)" :key="template" :value="template">
-                    {{ $t(`editor.selection.${template}`) }}
+                    {{ $t(`HACK.selection.${template}`) }}
                 </option>
             </select>
             <div class="select-arrow absolute right-2 top-1/2"></div>
@@ -24,18 +24,18 @@
         <!-- Second chart type selection for hybrid charts -->
         <div v-if="enableHybrid">
             <div class="font-bold mt-6">
-                {{ $t('editor.selection.template2') }}
-                <span class="font-normal">{{ $t('editor.customization.optional') }}</span>
+                {{ $t('HACK.selection.template2') }}
+                <span class="font-normal">{{ $t('HACK.customization.optional') }}</span>
             </div>
             <div class="relative w-1/2 mt-2">
                 <select
                     class="border border-black w-full mt-2 p-2 rounded"
                     v-model="hybridChartType"
-                    :aria-label="$t('editor.selection.template2')"
+                    :aria-label="$t('HACK.selection.template2')"
                     @change="handleHybridSelection"
                 >
                     <option v-for="template in Object.keys(hybridChartTemplates)" :key="template" :value="template">
-                        {{ $t(`editor.selection.${template}`) }}
+                        {{ $t(`HACK.selection.${template}`) }}
                     </option>
                 </select>
                 <div class="select-arrow absolute right-2 top-1/2"></div>
@@ -44,7 +44,7 @@
 
         <!-- Select which data series belongs to second chart type -->
         <div v-if="enableMultiselect && chartType !== hybridChartType && hybridChartType !== 'none'">
-            <div class="font-bold mt-6">{{ $t('editor.selection.multiseries') }}</div>
+            <div class="font-bold mt-6">{{ $t('HACK.selection.multiseries') }}</div>
             <div class="flex flex-col w-1/2 mt-2" v-if="Array.isArray(chartConfig.series)">
                 <div
                     class="hybrid-chart-select flex border border-black w-full rounded items-center justify-between cursor-pointer"
@@ -93,7 +93,7 @@
 
         <!-- Preview of chart -->
         <div v-if="!loading">
-            <div class="font-bold mt-6">{{ $t('editor.preview') }}</div>
+            <div class="font-bold mt-6">{{ $t('HACK.preview') }}</div>
             <div class="dv-chart-container items-stretch h-full w-full mt-2">
                 <highchart :options="chartConfig"></highchart>
             </div>
@@ -103,14 +103,14 @@
         <div class="flex items-center mt-4">
             <router-link class="ml-auto" :to="{ name: 'Customization' }" v-if="!props.plugin">
                 <button class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto">
-                    {{ $t('editor.customization.title') }}
+                    {{ $t('HACK.customization.title') }}
                 </button>
             </router-link>
             <button
                 class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto"
                 @click="emit('change-view', CurrentView.Customization)"
                 v-else
-            >{{ $t('editor.customization.title') }}</button>
+            >{{ $t('HACK.customization.title') }}</button>
         </div>
     </div>
 </template>

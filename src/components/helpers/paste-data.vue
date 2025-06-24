@@ -1,14 +1,14 @@
 <template>
     <div class="h-full">
-        <div class="font-bold text-lg">{{ $t('editor.data.paste.label') }}</div>
-        <div class="mt-2">{{ $t('editor.data.paste.description') }}</div>
+        <div class="font-bold text-lg">{{ $t('HACK.data.paste.label') }}</div>
+        <div class="mt-2">{{ $t('HACK.data.paste.description') }}</div>
 
         <textarea
             class="paste-box border border-black h-2/3 w-full mt-4 p-2"
             @keydown="handleKeyDown"
             v-model="pastedData"
-            :placeholder="$t('editor.data.paste.placeholder')"
-            :aria-label="$t('editor.data.paste.placeholder')"
+            :placeholder="$t('HACK.data.paste.placeholder')"
+            :aria-label="$t('HACK.data.paste.placeholder')"
         ></textarea>
 
         <div class="flex mt-4">
@@ -23,13 +23,13 @@
                     }
                 "
             >
-                {{ $t('editor.label.import') }}
+                {{ $t('HACK.label.import') }}
             </button>
             <button
                 class="bg-white border border-black hover:bg-gray-100 font-bold p-4 ml-8"
                 @click="$vfm.close('paste-data')"
             >
-                {{ $t('editor.label.cancel') }}
+                {{ $t('HACK.label.cancel') }}
             </button>
         </div>
     </div>
