@@ -1,7 +1,7 @@
 key,enValue,enValid,frValue,frValid
 editor.lang.en,English,1,Anglais,1
 editor.lang.fr,French,1,Français,1
-editor.saveChanges,Save Changes,1,Enregistrer les modifications,1
+editor.saveChanges,Save Chart,1,Enregistrer le Graphique,1
 editor.highcharts,Highcharts Accessible Configuration Kit,1,Trousse de Configuration Accessible Highcharts,1
 editor.untitled,Untitled,1,Sans titre,1
 editor.expand,Expand,1,Développer,1
