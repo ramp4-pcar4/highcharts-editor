@@ -1,8 +1,8 @@
 <template>
     <div class="data-section m-6">
-        <div class="text-2xl font-bold">{{ $t('editor.data.title') }}</div>
+        <div class="text-2xl font-bold">{{ $t('HACK.data.title') }}</div>
         <template v-if="!dataStore.datatableView">
-            <div class="mt-4">{{ $t('editor.data.description') }}</div>
+            <div class="mt-4">{{ $t('HACK.data.description') }}</div>
 
             <!-- drag and drop section for importing data file -->
             <div
@@ -20,10 +20,10 @@
                     </svg>
                 </div>
                 <div>
-                    {{ $t('editor.data.drag') }}
+                    {{ $t('HACK.data.drag') }}
                 </div>
                 <div>
-                    {{ $t('editor.label.or') }}
+                    {{ $t('HACK.label.or') }}
                 </div>
 
                 <!-- file upload button -->
@@ -34,7 +34,7 @@
                         :disabled="fileName !== ''"
                         @click="fileInput?.click()"
                     >
-                        {{ $t('editor.data.upload') }}
+                        {{ $t('HACK.data.upload') }}
                     </button>
                     <input
                         ref="fileInput"
@@ -43,12 +43,12 @@
                         @change="onFileUpload($event)"
                         accept=".csv,.xlsx,.xls"
                         tabindex="-1"
-                        :aria-label="$t('editor.data.upload')"
+                        :aria-label="$t('HACK.data.upload')"
                         :disabled="fileName !== ''"
                     />
                 </div>
-                <div v-if="uploadError" class="mt-2 text-red-800">{{ $t('editor.data.unsupported') }}</div>
-                <div class="mt-4 text-gray-600">{{ $t('editor.data.supported') }}</div>
+                <div v-if="uploadError" class="mt-2 text-red-800">{{ $t('HACK.data.unsupported') }}</div>
+                <div class="mt-4 text-gray-600">{{ $t('HACK.data.supported') }}</div>
                 <div v-if="fileName">
                     <div class="relative w-full">
                         <input
@@ -56,7 +56,7 @@
                             type="search"
                             readonly
                             v-model="fileName"
-                            :aria-label="$t('editor.data.filename')"
+                            :aria-label="$t('HACK.data.filename')"
                         />
                         <span
                             class="clear-btn absolute cursor-pointer"
@@ -71,7 +71,7 @@
                             >X</span
                         >
                     </div>
-                    <div class="mt-4 text-gray-600">{{ $t('editor.data.import.instructions') }}</div>
+                    <div class="mt-4 text-gray-600">{{ $t('HACK.data.import.instructions') }}</div>
                 </div>
             </div>
 
@@ -87,7 +87,7 @@
                         }
                     "
                 >
-                    {{ $t('editor.data.import') }}
+                    {{ $t('HACK.data.import') }}
                 </button>
                 <button
                     class="bg-white border border-black hover:bg-gray-100 font-bold p-4 ml-auto"
@@ -95,7 +95,7 @@
                     :class="{ 'disabled hover:bg-gray-400': fileName }"
                     :disabled="fileName !== ''"
                 >
-                    {{ $t('editor.data.paste') }}
+                    {{ $t('HACK.data.paste') }}
                 </button>
             </div>
 

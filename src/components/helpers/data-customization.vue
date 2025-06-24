@@ -1,12 +1,12 @@
 <template>
     <div class="graph-customization" v-if="activeSeries">
         <slot></slot>
-        <div class="font-bold mt-6">{{ $t('editor.customization.dataSeries') }}</div>
+        <div class="font-bold mt-6">{{ $t('HACK.customization.dataSeries') }}</div>
         <div class="relative mt-2 selector">
             <select
                 class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                 v-model="activeDataSeries"
-                :aria-label="$t('editor.customization.dataSeries')"
+                :aria-label="$t('HACK.customization.dataSeries')"
                 @change="changeChartType(false)"
             >
                 <!-- Enable insert when exactly one row is selected, enable delete when any number of rows are selected -->
@@ -24,15 +24,15 @@
             <div class="select-arrow absolute right-2 top-1/2"></div>
         </div>
 
-        <h2 class="font-bold mt-6">{{ $t('editor.customization.data.format') }}</h2>
-        <div class="font-bold mt-4">{{ $t('editor.customization.data.seriesType') }}</div>
+        <h2 class="font-bold mt-6">{{ $t('HACK.customization.data.format') }}</h2>
+        <div class="font-bold mt-4">{{ $t('HACK.customization.data.seriesType') }}</div>
         <div class="relative mt-2 selector">
             <input
                 disabled
                 type="text"
                 class="border border-black w-full p-2 rounded bg-white"
                 :value="chartType"
-                :aria-label="$t('editor.customization.data.seriesType')"
+                :aria-label="$t('HACK.customization.data.seriesType')"
                 v-if="hybrid"
             />
             <!-- TODO: decide if should allow changing series type in hybrid customization - may lead to complications -->
@@ -40,11 +40,11 @@
                 <select
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="chartType"
-                    :aria-label="$t('editor.customization.data.seriesType')"
+                    :aria-label="$t('HACK.customization.data.seriesType')"
                     @change="changeChartType()"
                 >
                     <option v-for="series in Object.keys(seriesOptions)" :key="series" :value="series">
-                        {{ $t(`editor.customization.data.series.${series}`) }}
+                        {{ $t(`HACK.customization.data.series.${series}`) }}
                     </option>
                 </select>
                 <div class="select-arrow absolute right-2 top-1/2"></div>
@@ -52,7 +52,7 @@
         </div>
 
         <div v-if="chartType !== 'pie'">
-            <div class="font-bold mt-4">{{ $t('editor.customization.data.colour') }}</div>
+            <div class="font-bold mt-4">{{ $t('HACK.customization.data.colour') }}</div>
             <div class="flex flex-col mt-2 selector">
                 <div
                     class="colour-dropdown w-full rounded border border-gray-500 flex items-center justify-between cursor-pointer"
@@ -88,29 +88,29 @@
                 </div>
             </div>
 
-            <div class="font-bold mt-4">{{ $t('editor.customization.data.dashStyle') }}</div>
+            <div class="font-bold mt-4">{{ $t('HACK.customization.data.dashStyle') }}</div>
             <div class="relative mt-2 selector">
                 <select
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="activeSeries!.dashStyle"
-                    :aria-label="$t('editor.customization.data.dashStyle')"
+                    :aria-label="$t('HACK.customization.data.dashStyle')"
                 >
                     <option v-for="dashStyle in Object.keys(dashOptions)" :key="dashStyle" :value="dashStyle">
-                        {{ $t(`editor.customization.data.${dashStyle}`) }}
+                        {{ $t(`HACK.customization.data.${dashStyle}`) }}
                     </option>
                 </select>
                 <div class="select-arrow absolute right-2 top-1/2"></div>
             </div>
 
-            <div class="font-bold mt-4">{{ $t('editor.customization.data.pointMarker') }}</div>
+            <div class="font-bold mt-4">{{ $t('HACK.customization.data.pointMarker') }}</div>
             <div class="relative mt-2 selector">
                 <select
                     class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="activeSeries!.marker!.symbol"
-                    :aria-label="$t('editor.customization.data.pointMarker')"
+                    :aria-label="$t('HACK.customization.data.pointMarker')"
                 >
                     <option v-for="pointMarker in Object.keys(markerOptions)" :key="pointMarker" :value="pointMarker">
-                        {{ $t(`editor.customization.data.${pointMarker}`) }}
+                        {{ $t(`HACK.customization.data.${pointMarker}`) }}
                     </option>
                 </select>
                 <div class="select-arrow absolute right-2 top-1/2"></div>
@@ -118,7 +118,7 @@
         </div>
 
         <div v-else>
-            <div class="font-bold mt-4">{{ $t('editor.customization.data.colours') }}</div>
+            <div class="font-bold mt-4">{{ $t('HACK.customization.data.colours') }}</div>
             <div class="flex flex-col mt-2 w-1/6">
                 <div class="flex flex-col" v-for="(color, index) in activeSeries?.colors ?? []" :key="index">
                     <div

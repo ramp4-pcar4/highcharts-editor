@@ -5,7 +5,7 @@
             :class="{ sticky: !props.plugin }"
         >
             <h1 class="w-mobile-full flex items-center truncate">
-                <span class="font-semibold text-lg m-1">{{ $t('editor.highcharts') }}</span>
+                <span class="font-semibold text-lg m-1">{{ $t('HACK.highcharts') }}</span>
             </h1>
 
             <button
@@ -13,7 +13,7 @@
                 class="bg-white border border-black hover:bg-gray-100 font-bold p-2 ml-auto mr-4"
                 v-if="!props.plugin"
             >
-                {{ appLang === 'en' ? $t('editor.lang.fr') : $t('editor.lang.en') }}
+                {{ appLang === 'en' ? $t('HACK.lang.fr') : $t('HACK.lang.en') }}
             </button>
 
             <button
@@ -21,7 +21,7 @@
                 class="bg-white border border-black hover:bg-gray-100 font-bold p-2 ml-auto mr-4"
                 v-else
             >
-                {{ $t('editor.label.cancel') }}
+                {{ $t('HACK.label.cancel') }}
             </button>
 
             <button
@@ -30,7 +30,7 @@
                 :class="{ 'disabled hover:bg-gray-400': Object.keys(chartStore.chartConfig).length === 0 }"
                 :disabled="Object.keys(chartStore.chartConfig).length === 0"
             >
-                {{ $t('editor.saveChanges') }}
+                {{ $t('HACK.saveChanges') }}
                 <span v-if="saving" class="align-middle inline-block px-1">
                     <Spinner size="16px" color="#009cd1" class="ml-1 mb-1"></Spinner>
                 </span>
@@ -110,10 +110,10 @@ const getTemplate = (): Component => {
 };
 
 if (!props.title) {
-    let prevTitle = i18n.t('editor.customization.titles.chartTitle');
+    let prevTitle = i18n.t('HACK.customization.titles.chartTitle');
 
     watch(i18n.locale, () => {
-        const title = i18n.t('editor.customization.titles.chartTitle');
+        const title = i18n.t('HACK.customization.titles.chartTitle');
         if (!chartStore.chartConfig || !chartStore.chartConfig.title) {
             chartStore.chartConfig = chartStore.chartConfig || {};
             chartStore.chartConfig.title = chartStore.chartConfig.title || { text: '' };

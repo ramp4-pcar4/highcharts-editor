@@ -1,6 +1,6 @@
 <template>
     <div class="chart-customization m-6" v-if="Object.keys(chartConfig).length">
-        <div class="text-2xl font-bold">{{ $t('editor.customization.title') }}</div>
+        <div class="text-2xl font-bold">{{ $t('HACK.customization.title') }}</div>
         <!-- header nav section for customization options -->
         <div class="mt-8 w-full">
             <div class="tab-container grid grid-cols-4">
@@ -18,7 +18,7 @@
                     }"
                     @keydown.enter="() => (activeSection = section)"
                 >
-                    {{ $t(`editor.customization.${section}`) }}
+                    {{ $t(`HACK.customization.${section}`) }}
                      <!-- small screen nav bar -->
                     <div 
                         class="nav-underline h-1 flex-1 transition-all" 
@@ -54,7 +54,7 @@
                     :chartType="chartStore.chartType"
                     class="bg-gray-200 rounded p-4 pb-8 mr-16 flex-1"
                 >
-                    <h2 class="font-bold mb-4">{{ $t('editor.graph', { num: 1 }) }}</h2>
+                    <h2 class="font-bold mb-4">{{ $t('HACK.graph', { num: 1 }) }}</h2>
                 </data-customization>
                 <span class="inline-block w-[64px]"></span>
                 <data-customization
@@ -63,7 +63,7 @@
                     :chartType="chartStore.hybridChartType"
                     class="bg-gray-200 rounded p-4 pb-8 mr-16 flex-1"
                 >
-                    <h2 class="font-bold mb-4">{{ $t('editor.graph', { num: 2 }) }}</h2>
+                    <h2 class="font-bold mb-4">{{ $t('HACK.graph', { num: 2 }) }}</h2>
                 </data-customization>
             </div>
 
@@ -108,7 +108,7 @@
 
         <div v-if="!loading">
             <!-- Highcharts preview -->
-            <div class="font-bold mt-6">{{ $t('editor.preview') }}</div>
+            <div class="font-bold mt-6">{{ $t('HACK.preview') }}</div>
             <!-- Preview of chart -->
             <div class="dv-chart-container items-stretch h-full w-full mt-2">
                 <highchart :options="chartConfig"></highchart>
@@ -213,7 +213,7 @@ const addAriaLabel = () => {
     setTimeout(() => {
         const textarea = document.querySelector('.ace_text-input');
         if (textarea) {
-            textarea.setAttribute('aria-label', t('editor.customization.advanced.editor'));
+            textarea.setAttribute('aria-label', t('HACK.customization.advanced.editor'));
         }
     }, 0);
 };

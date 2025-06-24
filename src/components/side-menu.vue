@@ -6,12 +6,12 @@
         <div class="flex items-center mt-4 mb-12">
             <button
                 class="flex items-center flex-shrink-0 px-2 py-1 mx-1 overflow-hidden"
-                :aria-label="expanded ? $t('editor.collapse') : $t('editor.expand')"
+                :aria-label="expanded ? $t('HACK.collapse') : $t('HACK.expand')"
                 @click="expanded = !expanded"
                 v-tippy="{
                     delay: '200',
                     placement: 'right',
-                    content: expanded ? $t('editor.collapse') : $t('editor.expand'),
+                    content: expanded ? $t('HACK.collapse') : $t('HACK.expand'),
                     animateFill: true
                 }"
             >
@@ -39,7 +39,7 @@
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
-                        content: $t('editor.data.title'),
+                        content: $t('HACK.data.title'),
                         onShow: () => !expanded,
                         animateFill: true
                     }"
@@ -63,7 +63,7 @@
                         ></path>
                     </svg>
                     <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
-                        $t('editor.data.title')
+                        $t('HACK.data.title')
                     }}</span>
                 </router-link>
                 <span
@@ -71,7 +71,7 @@
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
-                        content: $t('editor.data.title'),
+                        content: $t('HACK.data.title'),
                         onShow: () => !expanded,
                         animateFill: true
                     }"
@@ -100,7 +100,7 @@
                         ></path>
                     </svg>
                     <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
-                        $t('editor.data.title')
+                        $t('HACK.data.title')
                     }}</span>
                 </span>
             </li>
@@ -113,7 +113,7 @@
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
-                        content: $t('editor.toc.chartType'),
+                        content: $t('HACK.toc.chartType'),
                         onShow: () => !expanded,
                         animateFill: true
                     }"
@@ -149,7 +149,7 @@
                         ></path>
                     </svg>
                     <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
-                        $t('editor.toc.chartType')
+                        $t('HACK.toc.chartType')
                     }}</span>
                 </router-link>
                 <span
@@ -159,7 +159,7 @@
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
-                        content: $t('editor.toc.chartType'),
+                        content: $t('HACK.toc.chartType'),
                         onShow: () => !expanded,
                         animateFill: true
                     }"
@@ -200,7 +200,7 @@
                         ></path>
                     </svg>
                     <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
-                        $t('editor.toc.chartType')
+                        $t('HACK.toc.chartType')
                     }}</span>
                 </span>
             </li>
@@ -213,7 +213,7 @@
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
-                        content: $t('editor.toc.chartCustomize'),
+                        content: $t('HACK.toc.chartCustomize'),
                         onShow: () => !expanded,
                         animateFill: true
                     }"
@@ -233,7 +233,7 @@
                         ></path>
                     </svg>
                     <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
-                        $t('editor.toc.chartCustomize')
+                        $t('HACK.toc.chartCustomize')
                     }}</span>
                 </router-link>
                 <span
@@ -244,7 +244,7 @@
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
-                        content: $t('editor.toc.chartCustomize'),
+                        content: $t('HACK.toc.chartCustomize'),
                         onShow: () => !expanded,
                         animateFill: true
                     }"
@@ -266,7 +266,7 @@
                         ></path>
                     </svg>
                     <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
-                        $t('editor.toc.chartCustomize')
+                        $t('HACK.toc.chartCustomize')
                     }}</span>
                 </span>
             </li>
@@ -276,7 +276,7 @@
             <button
                 class="flex bg-black text-white justify-center border border-black w-full hover:bg-gray-400 font-bold px-4 py-2 my-2"
                 tabindex="0"
-                :aria-label="$t('editor.toc.importChart')"
+                :aria-label="$t('HACK.toc.importChart')"
                 @click="uploadHighchartsConfig"
             >
                 <svg
@@ -294,7 +294,7 @@
                     ></path>
                     <path d="M6 21H19" stroke-width="2" stroke-linecap="round"></path>
                 </svg>
-                {{ $t('editor.toc.importChart') }}
+                {{ $t('HACK.toc.importChart') }}
             </button>
             <input
                 ref="highchartsInput"
@@ -302,12 +302,12 @@
                 accept=".json"
                 class="hidden"
                 tabindex="-1"
-                :aria-label="$t('editor.toc.importChart')"
+                :aria-label="$t('HACK.toc.importChart')"
                 @change="handleConfigFileUpload"
             />
             <button
                 class="flex bg-white justify-center border border-black w-full hover:bg-gray-100 font-bold px-4 py-2 my-2"
-                :aria-label="$t('editor.toc.exportConfig')"
+                :aria-label="$t('HACK.toc.exportConfig')"
                 :class="{ 'disabled hover:bg-gray-400': btnDisabled }"
                 :disabled="btnDisabled"
                 :tabIndex="btnDisabled ? -1 : 0"
@@ -323,7 +323,7 @@
                 >
                     <path d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" stroke-width="2" stroke-linecap="round"></path>
                 </svg>
-                {{ $t('editor.toc.exportConfig') }}
+                {{ $t('HACK.toc.exportConfig') }}
             </button>
 
             <a

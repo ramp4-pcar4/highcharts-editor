@@ -1,25 +1,25 @@
 <template>
     <div class="chart-customization-title">
         <div class="font-bold mt-6">
-            {{ $t('editor.customization.titles.chart') }}
-            <span class="font-normal text-red-600">{{ $t('editor.customization.required') }}</span>
+            {{ $t('HACK.customization.titles.chart') }}
+            <span class="font-normal text-red-600">{{ $t('HACK.customization.required') }}</span>
         </div>
         <input
             class="border border-black box-border w-full mt-2 p-2 pr-6"
             :class="{ 'border-red-500': !chartConfig.title.text }"
-            :placeholder="$t('editor.customization.titles.placeholder')"
-            :aria-label="$t('editor.customization.titles.chart')"
+            :placeholder="$t('HACK.customization.titles.placeholder')"
+            :aria-label="$t('HACK.customization.titles.chart')"
             type="text"
             v-model="chartConfig.title.text"
         />
 
         <div class="font-bold mt-6">
-            {{ $t('editor.customization.titles.subtitle') }}
+            {{ $t('HACK.customization.titles.subtitle') }}
         </div>
         <input
             class="border border-black box-border w-full mt-2 p-2 pr-6"
-            :placeholder="$t('editor.customization.titles.placeholder')"
-            :aria-label="$t('editor.customization.titles.subtitle')"
+            :placeholder="$t('HACK.customization.titles.placeholder')"
+            :aria-label="$t('HACK.customization.titles.subtitle')"
             type="text"
             v-model="chartConfig.subtitle.text"
         />
