@@ -62,7 +62,7 @@ export const useDataStore = defineStore('chartData', {
                         row.unshift(categories[idx] as string);
                     });
                     // add category header
-                    this.headers.unshift('Category');
+                    this.headers.unshift(config.xAxis.title?.text || '');
                 }
 
                 this.setGridData(gridData);

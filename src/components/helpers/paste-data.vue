@@ -13,7 +13,7 @@
 
         <div class="flex mt-4">
             <button
-                class="bg-slate-600 text-white border border-black hover:bg-gray-400 font-bold p-4"
+                class="bg-black text-white border border-black hover:bg-gray-400 font-bold p-4"
                 :class="{ 'disabled hover:bg-gray-400': !pastedData }"
                 :disabled="!pastedData"
                 @click="

@@ -16,7 +16,6 @@ export const useChartStore = defineStore('chartProperties', {
         chartType: 'line' as string,
         defaultTitle: '' as string,
         hybridChartType: '' as string,
-        categoryLabel: '' as string,
         chartSeries: [] as string[],
         chartConfig: {} as HighchartsConfig,
         selectedHybridSeries: [] as string[],
@@ -40,7 +39,6 @@ export const useChartStore = defineStore('chartProperties', {
             this.chartType = 'line';
             this.defaultTitle = '';
             this.hybridChartType = '';
-            this.categoryLabel = '';
             this.chartSeries = [];
             this.chartConfig = {} as HighchartsConfig;
             this.selectedHybridSeries = [];
@@ -132,7 +130,7 @@ export const useChartStore = defineStore('chartProperties', {
                 xAxis: {
                     categories: cats,
                     title: {
-                        text: ''
+                        text: categoryLabel
                     }
                 },
                 yAxis: {
@@ -152,8 +150,6 @@ export const useChartStore = defineStore('chartProperties', {
                 }))
             };
             this.setChartType('line');
-            this.categoryLabel = categoryLabel;
-            console.log('SETUP CONFIG IN PLUGIN: ', this.chartConfig);
         },
 
         /* Update highcharts configuration for chart type **/
@@ -287,7 +283,11 @@ export const useChartStore = defineStore('chartProperties', {
 
         /* Update header (series names) value **/
         updateHeader(colIdx: number, name: string): void {
-            (this.chartConfig.series as SeriesData[])[colIdx - 1].name = name;
+            if (colIdx === 0) {
+                this.chartConfig.xAxis.title.text = name;
+            } else {
+                (this.chartConfig.series as SeriesData[])[colIdx - 1].name = name;
+            }
         },
 
         /* Update a single series value after data grid cell has been modified **/

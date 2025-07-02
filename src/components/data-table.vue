@@ -289,9 +289,9 @@ onMounted(() => {
         $papa.parse(props.uploadedFile || props.pastedFile, {
             header: true, // first row headers
             skipEmptyLines: true,
-            complete: (res) => {
+            complete: (res: any) => {
                 dataStore.setHeaders(res.meta.fields || []);
-                dataStore.setGridData(res.data.map((row) => dataStore.headers.map((header) => row[header])));
+                dataStore.setGridData(res.data.map((row: any) => dataStore.headers.map((header) => row[header])));
 
                 // default preview of datatable to line graph
                 const categories = dataStore.gridData.map((row) => row[0]);
@@ -302,20 +302,20 @@ onMounted(() => {
                     Object.values(dataStore.headers).slice(1),
                     categories,
                     seriesData,
-                    dataStore.headers[0]
+                    dataStore.headers[0] || ''
                 );
 
                 // set a non-empty default chart title
                 chartStore.chartConfig.title.text = chartStore.defaultTitle || t('HACK.customization.titles.chartTitle');
             },
-            error: (err) => {
+            error: (err: any) => {
                 console.error('Error parsing file: ', err);
             }
         });
     } else if (Object.keys(chartStore.chartConfig).length > 0 && !isPieChart) {
         const config = chartStore.chartConfig;
 
-        const headers = [chartStore.categoryLabel || ''].concat(config.series.map((s) => s.name));
+        const headers = [chartStore.chartConfig.xAxis.title.text || ''].concat(config.series.map((s) => s.name));
         dataStore.setHeaders(headers);
 
         const categories = config.xAxis?.categories || [];
