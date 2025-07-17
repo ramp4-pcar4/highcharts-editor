@@ -342,7 +342,21 @@ export const useChartStore = defineStore('chartProperties', {
             cats?: string[]
         ): void {
             // re-initialize chart config for special x y case of scatter plot data
-            if (typeof seriesData === 'object') {
+            if (seriesData.length && Array.isArray(seriesData[0])) {
+                this.chartConfig.series = this.chartConfig.series.map((series, index) =>
+                    seriesNames.includes(series.name)
+                        ? {
+                              name: series.name,
+                              type: 'scatter',
+                              color: this.defaultColours[index],
+                              dashStyle: 'solid',
+                              marker: { symbol: 'circle' },
+                              data: seriesData[index]
+                          }
+                        : series
+                );
+            } else {
+                // special case for x, y data points
                 this.chartConfig = {
                     title: {
                         text: this.defaultTitle || ''
@@ -372,19 +386,6 @@ export const useChartStore = defineStore('chartProperties', {
                         data: seriesData[index]
                     }))
                 };
-            } else {
-                this.chartConfig.series = this.chartConfig.series.map((series, index) =>
-                    seriesNames.includes(series.name)
-                        ? {
-                              name: series.name,
-                              type: 'scatter',
-                              color: this.defaultColours[index],
-                              dashStyle: 'solid',
-                              marker: { symbol: 'circle' },
-                              data: seriesData[index]
-                          }
-                        : series
-                );
             }
             this.chartConfig.legend = { enabled: true };
         },
