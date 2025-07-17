@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import type { Component, PropType } from 'vue';
 
 import { useChartStore } from './stores/chartStore';
@@ -93,11 +93,24 @@ const props = defineProps({
 const emit = defineEmits(['cancel', 'saved']);
 
 const i18n = useI18n();
+const { t } = useI18n();
 const chartStore = useChartStore();
 const dataStore = useDataStore();
 const appLang = ref('');
 const saving = ref<boolean>(false);
 const currentView = ref<CurrentView>(CurrentView.Data);
+
+const contextMenuLabels = computed(() => ({
+    viewFullscreen: t('HACK.export.viewFullscreen'),
+    printChart: t('HACK.export.printChart'),
+    downloadPNG: t('HACK.export.downloadPNG'),
+    downloadJPEG: t('HACK.export.downloadJPEG'),
+    downloadPDF: t('HACK.export.downloadPDF'),
+    downloadSVG: t('HACK.export.downloadSVG'),
+    downloadCSV: t('HACK.export.downloadCSV'),
+    downloadXLS: t('HACK.export.downloadXLS'),
+    viewData: t('HACK.export.viewData')
+}));
 
 const getTemplate = (): Component => {
     const pluginComponent: Record<CurrentView | string, Component> = {
@@ -110,10 +123,10 @@ const getTemplate = (): Component => {
 };
 
 if (!props.title) {
-    let prevTitle = i18n.t('HACK.customization.titles.chartTitle');
+    let prevTitle = t('HACK.customization.titles.chartTitle');
 
     watch(i18n.locale, () => {
-        const title = i18n.t('HACK.customization.titles.chartTitle');
+        const title = t('HACK.customization.titles.chartTitle');
         if (!chartStore.chartConfig || !chartStore.chartConfig.title) {
             chartStore.chartConfig = chartStore.chartConfig || {};
             chartStore.chartConfig.title = chartStore.chartConfig.title || { text: '' };
@@ -125,12 +138,19 @@ if (!props.title) {
     });
 }
 
+watch(i18n.locale, () => {
+    // set context menu labels based on the current language
+    chartStore.setMenuOptions(contextMenuLabels.value);
+    chartStore.refreshKey += 1;
+});
+
 onMounted(() => {
     appLang.value = props.lang || 'en';
     // set locale only when standalone usage
     if (!props.plugin) {
         i18n.locale.value = appLang.value;
     }
+    chartStore.setMenuOptions(contextMenuLabels.value);
 
     // clear store state (required for shared store state for multi-instance charts)
     if (props.plugin) {

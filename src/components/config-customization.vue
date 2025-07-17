@@ -111,7 +111,7 @@
             <div class="font-bold mt-6">{{ $t('HACK.preview') }}</div>
             <!-- Preview of chart -->
             <div class="dv-chart-container items-stretch h-full w-full mt-2">
-                <highchart :options="chartConfig"></highchart>
+                <highchart :key="chartStore.refreshKey" :options="chartConfig"></highchart>
             </div>
         </div>
     </div>
@@ -133,7 +133,11 @@ import AxesCustomization from './helpers/axes-customization.vue';
 
 import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
+import exporting from 'highcharts/modules/exporting';
+import exportData from 'highcharts/modules/export-data';
 
+exporting(Highcharts);
+exportData(Highcharts);
 dataModule(Highcharts);
 
 const chartStore = useChartStore();

@@ -2,6 +2,7 @@ export interface HighchartsConfig {
     chart?: {
         type: string;
     };
+    lang?: ExportMenuOptions;
     title: {
         text: string;
     };
@@ -38,6 +39,19 @@ export interface HighchartsConfig {
     };
     series: SeriesData[] | { data: SeriesData[] };
 }
+
+export interface ExportMenuOptions {
+    viewFullscreen: string;
+    printChart: string;
+    downloadPNG: string;
+    downloadJPEG: string;
+    downloadPDF: string;
+    downloadSVG: string;
+    downloadCSV: string;
+    downloadXLS: string;
+    viewData: string;
+}
+
 export interface SeriesData {
     name: string;
     type: string;

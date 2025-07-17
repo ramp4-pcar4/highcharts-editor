@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { HighchartsConfig, SeriesData } from '../definitions';
+import { ExportMenuOptions, HighchartsConfig, SeriesData } from '../definitions';
 
 const chartTemplates: Record<string, string> = {
     area: 'area',
@@ -14,6 +14,7 @@ const chartTemplates: Record<string, string> = {
 export const useChartStore = defineStore('chartProperties', {
     state: () => ({
         chartType: 'line' as string,
+        refreshKey: 0 as number,
         defaultTitle: '' as string,
         hybridChartType: '' as string,
         chartSeries: [] as string[],
@@ -74,6 +75,11 @@ export const useChartStore = defineStore('chartProperties', {
         /* Clear highcharts config **/
         clearChartConfig(): void {
             this.chartConfig = {};
+        },
+
+        /* Set context/export menu strings **/
+        setMenuOptions(menuOptions: ExportMenuOptions): void {
+            this.chartConfig.lang = menuOptions;
         },
 
         /* Set highcharts config (from imported json file) **/

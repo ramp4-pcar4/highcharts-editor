@@ -95,7 +95,7 @@
         <div v-if="!loading">
             <div class="font-bold mt-6">{{ $t('HACK.preview') }}</div>
             <div class="dv-chart-container items-stretch h-full w-full mt-2">
-                <highchart :options="chartConfig"></highchart>
+                <highchart :key="chartStore.refreshKey" :options="chartConfig"></highchart>
             </div>
         </div>
 
@@ -124,7 +124,11 @@ import { CurrentView } from '../definitions';
 
 import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
+import exporting from 'highcharts/modules/exporting';
+import exportData from 'highcharts/modules/export-data';
 
+exporting(Highcharts);
+exportData(Highcharts);
 dataModule(Highcharts);
 
 const emit = defineEmits(['change-view']);

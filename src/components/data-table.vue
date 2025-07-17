@@ -168,7 +168,7 @@
         <div class="font-bold mt-8">{{ $t('HACK.preview') }}</div>
         <!-- Preview of chart -->
         <div class="dv-chart-container items-stretch h-full w-full mt-2">
-            <highchart :options="chartConfig"></highchart>
+            <highchart :key="chartStore.refreshKey" :options="chartConfig"></highchart>
         </div>
 
         <div class="flex items-center mt-4">
@@ -197,7 +197,11 @@ import { CurrentView } from '../definitions';
 
 import Highcharts from 'highcharts';
 import dataModule from 'highcharts/modules/data';
+import exporting from 'highcharts/modules/exporting';
+import exportData from 'highcharts/modules/export-data';
 
+exporting(Highcharts);
+exportData(Highcharts);
 dataModule(Highcharts);
 
 const { t } = useI18n();
