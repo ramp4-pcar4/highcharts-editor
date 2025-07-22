@@ -23,6 +23,7 @@ export interface HighchartsConfig {
         categories: (number | string)[];
     };
     data?: {
+        csv: string;
         csvURL: string;
         enablePolling: boolean;
     };

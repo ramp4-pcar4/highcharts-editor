@@ -116,6 +116,47 @@ export const useChartStore = defineStore('chartProperties', {
                     }
                 }))
             };
+
+            // handle special case for highcharts configs using data property
+            if (chartConfig.data && chartConfig.data.csv) {
+                this.convertCsvToSeries();
+            }
+        },
+
+        /* Convert CSV data to series data in config **/
+        convertCsvToSeries(): void {
+            // split CSV string into lines
+            const lines = this.chartConfig.data?.csv.trim().split('\n') as string[];
+            const header = lines[0].split(';').map((h) => h.replace(/"/g, '').trim());
+            const categories = header.slice(1);
+
+            // extract series data in the format "name;val1;val2"
+            const seriesData = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(';').map((val: string) => val.trim());
+                const seriesName = values[0];
+                seriesData.push({
+                    name: seriesName,
+                    data: values.slice(1).map((val: string) => parseInt(val)),
+                    type: 'line',
+                    color: this.defaultColours[i-1],
+                    dashStyle: 'solid',
+                    marker: {
+                        symbol: 'circle'
+                    }
+                });
+            }
+
+            // fill in extracted values (catos, x-axis title, series data) into chart config
+            this.chartConfig.xAxis = {
+                categories: categories,
+                title: {
+                    text: header[0] || ''
+                }
+            };
+            this.chartConfig.series = seriesData;
+            delete this.chartConfig.data;
+            console.log('Highcharts config updated with CSV data:', this.chartConfig, seriesData);
         },
 
         /* Set default highcharts config **/
