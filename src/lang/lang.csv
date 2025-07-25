@@ -50,6 +50,7 @@ HACK.datatable.rowActions.delete,Delete row(s),1,Supprimer des lignes,1
 HACK.datatable.rowActions.insertBelow,Insert below,1,Insérer ci-dessous,1
 HACK.datatable.rowActions.insertAbove,Insert above,1,Insérer ci-dessus,1
 HACK.datatable.selectAllRows,Select all rows,1,Sélectionner toutes les lignes,1
+HACK.datatable.colHeaders,Column headers,1,En-têtes de colonnes,0
 HACK.datatable.colActions,Column actions,1,Actions de colonne,1
 HACK.datatable.colActions.delete,Delete column(s),1,Supprimer des colonnes,1
 HACK.datatable.colActions.insertLeft,Insert left,1,Insérer à gauche,1
