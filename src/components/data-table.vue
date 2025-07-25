@@ -12,7 +12,7 @@
             <!-- Row and column actions -->
             <div class="ml-auto">
                 <select
-                    class="border border-black mr-4 p-2 rounded bg-gray-300 focus:bg-white"
+                    class="border border-black mr-4 p-2 rounded bg-white focus:bg-white"
                     v-model="rowAction"
                     @change="handleRowAction()"
                     :aria-label="$t('HACK.datatable.rowActions')"
@@ -35,7 +35,7 @@
                 </select>
 
                 <select
-                    class="border border-black p-2 rounded bg-gray-300 focus:bg-white"
+                    class="border border-black p-2 rounded bg-white focus:bg-white"
                     v-model="colAction"
                     @change="handleColAction()"
                     :aria-label="$t('HACK.datatable.colActions')"
@@ -64,23 +64,25 @@
             <table class="table-auto border-collapse border-dotted border border-black w-full mt-8">
                 <thead>
                     <tr class="bg-gray-200">
-                        <td class="border border-gray-400 w-16 p-2 text-left align-middle">
+                        <td class="border border-gray-500 w-16 p-2 text-left align-middle">
                             <input
                                 type="checkbox"
                                 :checked="allRowsSelected"
+                                @click.stop 
                                 @change="toggleAllRows"
                                 :aria-label="$t('HACK.datatable.selectAllRows')"
                             />
                         </td>
                         <td
-                            class="border border-gray-400 p-2 text-left align-middle"
+                            class="border border-gray-500 p-2 text-left align-middle"
                             v-for="(header, colIdx) in headers"
                             :key="colIdx"
+                            @click="editColHeader(colIdx)"
                         >
-                            <div class="flex items-center w-full">
+                            <div class="flex items-center w-full" style="cursor: text;">
                                 <input
                                     :ref="(el) => (headerInput[colIdx] = el as HTMLInputElement | null)"
-                                    class="col-header max-w-[calc(100%-21px)] box-border border border-transparent font-bold p-1 bg-transparent focus:border-black focus:bg-white"
+                                    class="col-header max-w-[calc(100%-21px)] box-border border border-transparent font-bold p-1 bg-transparent focus:border-black focus:bg-white rounded-md"
                                     type="text"
                                     v-model="headers[colIdx]"
                                     :aria-label="$t('HACK.datatable.colHeaders')"
@@ -94,6 +96,7 @@
                                 <input
                                     class="ml-auto"
                                     type="checkbox"
+                                    @click.stop 
                                     v-model="selectedCols[colIdx]"
                                     :aria-label="$t('HACK.datatable.selectCol')"
                                 />
@@ -109,27 +112,28 @@
                 </thead>
                 <tbody>
                     <tr class="even:bg-gray-50" v-for="(row, rowIdx) in gridData" :key="rowIdx">
-                        <td class="border border-gray-400 p-2 text-left">
+                        <td class="border border-gray-500 p-2 text-left">
                             <input
                                 type="checkbox"
+                                @click.stop 
                                 v-model="selectedRows[rowIdx]"
                                 :aria-label="$t('HACK.datatable.selectRow')"
                             />
                         </td>
                         <td
-                            class="grid-cell border border-gray-400 p-2 text-left align-middle"
+                            class="grid-cell border border-gray-500 p-2 text-left align-middle"
                             v-for="(value, colIdx) in row"
                             :key="colIdx"
                             @click="editCell(rowIdx, colIdx, value)"
                         >
-                            <div class="flex items-center w-full">
+                            <div class="flex items-center w-full" style="cursor: text;">
                                 <input
                                     :ref="
                                         (el) =>
                                             (gridCellInput[rowIdx * headers.length + colIdx] =
                                                 el as HTMLInputElement | null)
                                     "
-                                    class="grid-cell max-w-[calc(100%-2px)] box-border border border-transparent p-1 bg-transparent focus:border-black focus:bg-white"
+                                    class="grid-cell max-w-[calc(100%-2px)] box-border border border-transparent bg-transparent p-1 focus:border-black focus:bg-white rounded-md"
                                     type="text"
                                     v-model="gridData[rowIdx][colIdx]"
                                     :aria-label="$t('HACK.datatable.gridcells')"
