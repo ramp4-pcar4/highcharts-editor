@@ -13,7 +13,7 @@
 
         <div class="flex mt-4">
             <button
-                class="bg-black text-white border border-black hover:bg-gray-400 font-bold p-4"
+                class="bg-black text-white rounded border border-black hover:bg-gray-900 font-bold p-4"
                 :class="{ 'disabled hover:bg-gray-400': !pastedData }"
                 :disabled="!pastedData"
                 @click="
@@ -26,7 +26,7 @@
                 {{ $t('HACK.label.import') }}
             </button>
             <button
-                class="bg-white border border-black hover:bg-gray-100 font-bold p-4 ml-8"
+                class="bg-white border border-black rounded hover:bg-gray-100 font-bold p-4 ml-8"
                 @click="$vfm.close('paste-data')"
             >
                 {{ $t('HACK.label.cancel') }}

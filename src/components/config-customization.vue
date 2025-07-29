@@ -1,6 +1,6 @@
 <template>
-    <div class="chart-customization m-6" v-if="Object.keys(chartConfig).length">
-        <div class="text-2xl font-bold">{{ $t('HACK.customization.title') }}</div>
+    <div :class="[{ hidden: hidePage }, 'chart-customization', 'md:m-6', 'm-2']" v-if="Object.keys(chartConfig).length">
+        <div class="text-xl md:text-2xl font-bold">{{ $t('HACK.customization.title') }}</div>
         <!-- header nav section for customization options -->
         <div class="mt-8 w-full">
             <div class="tab-container grid grid-cols-4">
@@ -118,7 +118,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onBeforeMount, onMounted } from 'vue';
+import { computed, ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChartStore } from '../stores/chartStore';
 import { SeriesData } from '../definitions';
@@ -157,6 +157,17 @@ let highchartsSchema = ref<string>('');
 const validator: Validator = new Validator();
 const validatorErrors = ref<any>([]);
 
+const sidemenuExpanded = ref(false);
+let observer: MutationObserver;
+const isSmallScreen = ref(false);
+const hidePage = computed(() => {
+    return sidemenuExpanded.value && isSmallScreen.value;
+});
+
+const checkScreenSize = () => {
+    isSmallScreen.value = window.innerWidth <= 500;
+};
+
 onBeforeMount(() => {
     // case of directly accessing page with no data
     if (Object.keys(chartConfig.value).length === 0) {
@@ -165,9 +176,25 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+    const sidemenu = document.getElementById('highcharts-side-menu');
+    sidemenuExpanded.value = sidemenu.classList.contains('w-60');
+    checkScreenSize();
+    //watch for class change in the side menu, if changed, updated expanded variable
+    observer = new MutationObserver(() => {
+        sidemenuExpanded.value = sidemenu.classList.contains('w-60');
+    });
+
+    observer.observe(sidemenu, { attributes: true, attributeFilter: ['class'] });
+
+    window.addEventListener('resize', checkScreenSize);
     // import highcharts schema for validation
     highchartsSchema.value = schema as any;
     updatedConfig.value = chartConfig.value; 
+});
+
+onBeforeUnmount(() => {
+    observer.disconnect();
+    window.removeEventListener('resize', checkScreenSize);
 });
 
 const mainDataSeries = computed(() => {
@@ -193,7 +220,6 @@ const hybridDataSeries = computed(() => {
 // validate updated highcharts config edited in JSON editor
 const validateConfig = () => {
     const checkValidation = validator.validate(updatedConfig.value, highchartsSchema.value as any);
-    // console.log('validating: ', updatedConfig.value, highchartsSchema.value);
     if (checkValidation.errors.length) {
         validatorErrors.value = checkValidation.errors;
         console.error('Validation errors:', checkValidation.errors);
@@ -246,7 +272,7 @@ const addAriaLabel = () => {
     color: #8B0000;
 }
 
-@media (max-width: 472px) {
+@media (max-width: 700px) {
     .tab-container {
         grid-template-columns: repeat(2, 1fr);
     }
