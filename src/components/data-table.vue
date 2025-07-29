@@ -1,18 +1,18 @@
 <template>
     <div>
         <div class="mt-4">{{ $t('HACK.data.modify') }}</div>
-        <div class="flex mt-4">
+        <div class="flex flex-col sm:flex-row mt-4">
             <button
-                class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-2"
+                class="bg-black text-white self-start border text-sm md:text-base rounded border-black hover:bg-gray-900 font-bold p-2 mb-2 sm:mb-0 overflow-visible mr-2"
                 @click="emit('back')"
             >
                 {{ $t('HACK.datatable.uploadNew') }}
             </button>
 
             <!-- Row and column actions -->
-            <div class="ml-auto">
+            <div class="ml-auto max-w-full">
                 <select
-                    class="border border-black mr-4 p-2 rounded bg-white focus:bg-white"
+                    class="border border-black p-2 rounded text-sm md:text-base bg-gray-100 focus:bg-white mb-2 mr-2 max-w-full"
                     v-model="rowAction"
                     @change="handleRowAction()"
                     :aria-label="$t('HACK.datatable.rowActions')"
@@ -35,7 +35,7 @@
                 </select>
 
                 <select
-                    class="border border-black p-2 rounded bg-white focus:bg-white"
+                    class="border border-black p-2 rounded text-sm md:text-base bg-gray-100 focus:bg-white max-w-full"
                     v-model="colAction"
                     @change="handleColAction()"
                     :aria-label="$t('HACK.datatable.colActions')"
@@ -61,14 +61,14 @@
 
         <!-- Datatable -->
         <div class="overflow-x-auto">
-            <table class="table-auto border-collapse border-dotted border border-black w-full mt-8">
+            <table class="table-auto border-collapse border-dotted border border-black w-full mt-5">
                 <thead>
                     <tr class="bg-gray-200">
                         <td class="border border-gray-500 w-16 p-2 text-left align-middle">
                             <input
                                 type="checkbox"
                                 :checked="allRowsSelected"
-                                @click.stop 
+                                @click.stop
                                 @change="toggleAllRows"
                                 :aria-label="$t('HACK.datatable.selectAllRows')"
                             />
@@ -79,7 +79,7 @@
                             :key="colIdx"
                             @click="editColHeader(colIdx)"
                         >
-                            <div class="flex items-center w-full" style="cursor: text;">
+                            <div class="flex items-center w-full" style="cursor: text">
                                 <input
                                     :ref="(el) => (headerInput[colIdx] = el as HTMLInputElement | null)"
                                     class="col-header max-w-[calc(100%-21px)] box-border border border-transparent font-bold p-1 bg-transparent focus:border-black focus:bg-white rounded-md"
@@ -96,7 +96,7 @@
                                 <input
                                     class="ml-auto"
                                     type="checkbox"
-                                    @click.stop 
+                                    @click.stop
                                     v-model="selectedCols[colIdx]"
                                     :aria-label="$t('HACK.datatable.selectCol')"
                                 />
@@ -115,7 +115,7 @@
                         <td class="border border-gray-500 p-2 text-left">
                             <input
                                 type="checkbox"
-                                @click.stop 
+                                @click.stop
                                 v-model="selectedRows[rowIdx]"
                                 :aria-label="$t('HACK.datatable.selectRow')"
                             />
@@ -126,7 +126,7 @@
                             :key="colIdx"
                             @click="editCell(rowIdx, colIdx, value)"
                         >
-                            <div class="flex items-center w-full" style="cursor: text;">
+                            <div class="flex items-center w-full" style="cursor: text">
                                 <input
                                     :ref="
                                         (el) =>
@@ -177,12 +177,14 @@
 
         <div class="flex items-center mt-4">
             <router-link class="ml-auto" :to="{ name: 'ChartType' }" v-if="!props.plugin">
-                <button class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto">
+                <button
+                    class="bg-black rounded text-white border text-sm md:text-base border-black hover:bg-gray-900 font-bold p-4 ml-auto"
+                >
                     {{ $t('HACK.datatable.templates') }}
                 </button>
             </router-link>
             <button
-                class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto"
+                class="bg-black text-white rounded text-sm md:text-base border border-black hover:bg-gray-900 font-bold p-4 ml-auto"
                 @click="emit('change-view', CurrentView.Template)"
                 v-else
             >
@@ -234,7 +236,7 @@ const chartStore = useChartStore();
 const headers = computed(() => dataStore.headers);
 const gridData = computed(() => dataStore.gridData);
 const chartConfig = computed(() => {
-    return chartStore.chartConfig
+    return chartStore.chartConfig;
 });
 
 const headerInput = ref<(HTMLInputElement | null)[]>([]);
@@ -283,7 +285,6 @@ const colActions: Record<string, string> = {
 
 onMounted(() => {
     const config = chartStore.chartConfig;
-
     let seriesArray: any[] = [];
     if (Array.isArray(config.series)) {
         seriesArray = config.series;
@@ -314,7 +315,8 @@ onMounted(() => {
                 );
 
                 // set a non-empty default chart title
-                chartStore.chartConfig.title.text = chartStore.defaultTitle || t('HACK.customization.titles.chartTitle');
+                chartStore.chartConfig.title.text =
+                    chartStore.defaultTitle || t('HACK.customization.titles.chartTitle');
             },
             error: (err: any) => {
                 console.error('Error parsing file: ', err);
