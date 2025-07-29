@@ -1,16 +1,21 @@
 <template>
     <div id="highcharts-editor-app" class="highcharts-app-container border border-gray-500">
         <header
-            class="editor-header top-0 flex border-b border-black bg-gray-200 py-2 px-2 justify-between z-40"
+            class="editor-header h-[59px] top-0 flex border-b border-black bg-gray-200 py-2 px-2 justify-between z-40"
             :class="{ sticky: !props.plugin }"
         >
             <h1 class="w-mobile-full flex items-center truncate">
-                <span class="font-semibold text-lg m-1">{{ $t('HACK.highcharts') }}</span>
+                <span class="inline lg:hidden font-semibold text-lg m-1">
+                    {{ $t('HACK.HACK') }}
+                </span>
+                <span class="hidden lg:inline font-semibold text-lg m-1">
+                    {{ $t('HACK.highcharts') }}
+                </span>
             </h1>
 
             <button
                 @click="changeLang"
-                class="bg-white border border-black hover:bg-gray-100 font-bold p-2 ml-auto mr-4"
+                class="bg-white border text-sm md:text-base rounded border-black hover:bg-gray-100 font-bold p-2 ml-auto mr-2"
                 v-if="!props.plugin"
             >
                 {{ appLang === 'en' ? $t('HACK.lang.fr') : $t('HACK.lang.en') }}
@@ -18,7 +23,7 @@
 
             <button
                 @click="emit('cancel')"
-                class="bg-white border border-black hover:bg-gray-100 font-bold p-2 ml-auto mr-4"
+                class="bg-white border text-sm md:text-base rounded border-black hover:bg-gray-100 font-bold p-2 ml-auto mr-2"
                 v-else
             >
                 {{ $t('HACK.label.cancel') }}
@@ -26,7 +31,7 @@
 
             <button
                 @click="saveChanges"
-                class="bg-black border border-black text-white hover:bg-gray-900 font-bold p-2"
+                class="bg-black border rounded text-sm md:text-base border-black text-white hover:bg-gray-900 font-bold p-2"
                 :class="{ 'disabled hover:bg-gray-400': Object.keys(chartStore.chartConfig).length === 0 }"
                 :disabled="Object.keys(chartStore.chartConfig).length === 0"
             >
@@ -39,6 +44,7 @@
 
         <div class="items-stretch flex">
             <SideMenu
+                class="flex-shrink-0"
                 :lang="appLang"
                 :plugin="props.plugin"
                 :pluginView="currentView"

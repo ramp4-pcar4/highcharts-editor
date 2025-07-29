@@ -1,17 +1,19 @@
 <template>
     <nav
-        :class="[{ 'w-72': expanded, 'self-start standalone': !plugin, 'self-stretch': plugin }]"
-        class="highcharts-side-menu w-16 duration-500 ease-in-out transition-width"
+        id="highcharts-side-menu"
+        :sidebar-expanded="sidemenuStore.expanded"
+        :class="[sidemenuStore.expanded ? 'w-60' : 'w-12 sm:w-16', plugin ? 'self-stretch' : 'self-start standalone']"
+        class="highcharts-side-menu duration-500 ease-in-out transition-width"
     >
         <div class="flex items-center mt-4 mb-12">
             <button
-                class="flex items-center flex-shrink-0 px-2 py-1 mx-1 overflow-hidden"
-                :aria-label="expanded ? $t('HACK.collapse') : $t('HACK.expand')"
-                @click="expanded = !expanded"
+                class="flex items-center flex-shrink-0 md:px-2 py-1 mx-1 overflow-hidden"
+                :aria-label="sidemenuStore.expanded ? $t('HACK.collapse') : $t('HACK.expand')"
+                @click="sidemenuStore.expanded = !sidemenuStore.expanded"
                 v-tippy="{
                     delay: '200',
                     placement: 'right',
-                    content: expanded ? $t('HACK.collapse') : $t('HACK.expand'),
+                    content: sidemenuStore.expanded ? $t('HACK.collapse') : $t('HACK.expand'),
                     animateFill: true
                 }"
             >
@@ -24,8 +26,8 @@
                     fill="none"
                     stroke="#707070"
                 >
-                    <path class="transition-all duration-500 ease-in-out" :d="`m3.5 7h${expanded ? '17' : '8.5'}`" />
-                    <path class="transition-all duration-500 ease-in-out" :d="`m3.5 12h${expanded ? '17' : '8.5'}`" />
+                    <path class="transition-all duration-500 ease-in-out" :d="`m3.5 7h${sidemenuStore.expanded ? '17' : '8.5'}`" />
+                    <path class="transition-all duration-500 ease-in-out" :d="`m3.5 12h${sidemenuStore.expanded ? '17' : '8.5'}`" />
                     <path d="m3.5 17h17" />
                 </svg>
             </button>
@@ -34,13 +36,13 @@
         <ul class="side-nav-content">
             <li>
                 <router-link
-                    class="flex items-center px-2 my-6 mx-1"
+                    class="flex items-center md:px-2 my-6 mx-1"
                     :to="{ name: 'Data' }"
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
                         content: $t('HACK.data.title'),
-                        onShow: () => !expanded,
+                        onShow: () => !sidemenuStore.expanded,
                         animateFill: true
                     }"
                     v-if="!plugin"
@@ -62,17 +64,17 @@
                             stroke-linejoin="round"
                         ></path>
                     </svg>
-                    <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
+                    <span class="flex-1 ml-5 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
                         $t('HACK.data.title')
                     }}</span>
                 </router-link>
                 <span
-                    class="flex items-center px-2 my-6 mx-1"
+                    class="flex items-center md:px-2 my-6 mx-1"
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
                         content: $t('HACK.data.title'),
-                        onShow: () => !expanded,
+                        onShow: () => !sidemenuStore.expanded,
                         animateFill: true
                     }"
                     tabindex="0"
@@ -99,14 +101,14 @@
                             stroke-linejoin="round"
                         ></path>
                     </svg>
-                    <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
+                    <span class="flex-1 ml-5 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
                         $t('HACK.data.title')
                     }}</span>
                 </span>
             </li>
             <li>
                 <router-link
-                    class="flex items-center px-2 my-6 mx-1"
+                    class="flex items-center md:px-2 my-6 mx-1"
                     :class="{ disabled: btnDisabled }"
                     :tabIndex="btnDisabled ? -1 : 0"
                     :to="{ name: 'ChartType' }"
@@ -114,7 +116,7 @@
                         delay: '200',
                         placement: 'right',
                         content: $t('HACK.toc.chartType'),
-                        onShow: () => !expanded,
+                        onShow: () => !sidemenuStore.expanded,
                         animateFill: true
                     }"
                     v-if="!plugin"
@@ -148,19 +150,19 @@
                             stroke-linejoin="round"
                         ></path>
                     </svg>
-                    <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
+                    <span class="flex-1 ml-5 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
                         $t('HACK.toc.chartType')
                     }}</span>
                 </router-link>
                 <span
-                    class="flex items-center px-2 my-6 mx-1"
+                    class="flex items-center md:px-2 my-6 mx-1"
                     :class="{ disabled: btnDisabled }"
                     :tabIndex="btnDisabled ? -1 : 0"
                     v-tippy="{
                         delay: '200',
                         placement: 'right',
                         content: $t('HACK.toc.chartType'),
-                        onShow: () => !expanded,
+                        onShow: () => !sidemenuStore.expanded,
                         animateFill: true
                     }"
                     role="button"
@@ -199,14 +201,14 @@
                             stroke-linejoin="round"
                         ></path>
                     </svg>
-                    <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
+                    <span class="flex-1 ml-5 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
                         $t('HACK.toc.chartType')
                     }}</span>
                 </span>
             </li>
             <li>
                 <router-link
-                    class="flex items-center px-2 my-6 mx-1"
+                    class="flex items-start md:px-2 my-6 mx-1"
                     :class="{ disabled: btnDisabled }"
                     :tabIndex="btnDisabled ? -1 : 0"
                     :to="{ name: 'Customization' }"
@@ -214,7 +216,7 @@
                         delay: '200',
                         placement: 'right',
                         content: $t('HACK.toc.chartCustomize'),
-                        onShow: () => !expanded,
+                        onShow: () => !sidemenuStore.expanded,
                         animateFill: true
                     }"
                     v-if="!plugin"
@@ -232,12 +234,12 @@
                             d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z"
                         ></path>
                     </svg>
-                    <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
+                    <span class="flex-1 ml-5 leading-normal overflow-ellipsis">{{
                         $t('HACK.toc.chartCustomize')
                     }}</span>
                 </router-link>
                 <span
-                    class="flex items-center px-2 my-6 mx-1"
+                    class="flex items-start rounded md:px-2 my-6 mx-1"
                     :class="{ disabled: btnDisabled }"
                     :tabIndex="btnDisabled ? -1 : 0"
                     :to="{ name: 'Customization' }"
@@ -245,7 +247,7 @@
                         delay: '200',
                         placement: 'right',
                         content: $t('HACK.toc.chartCustomize'),
-                        onShow: () => !expanded,
+                        onShow: () => !sidemenuStore.expanded,
                         animateFill: true
                     }"
                     role="button"
@@ -265,16 +267,16 @@
                             d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z"
                         ></path>
                     </svg>
-                    <span class="flex-1 ml-4 overflow-hidden leading-normal overflow-ellipsis whitespace-nowrap">{{
+                    <span class="flex-1 ml-5 leading-normal overflow-ellipsis">{{
                         $t('HACK.toc.chartCustomize')
                     }}</span>
                 </span>
             </li>
         </ul>
 
-        <div v-show="expanded">
+        <div v-show="sidemenuStore.expanded">
             <button
-                class="flex bg-black text-white justify-center border border-black w-full hover:bg-gray-400 font-bold px-4 py-2 my-2"
+                class="flex bg-black text-white rounded justify-center border border-black w-full hover:bg-gray-900 font-bold px-4 py-2 my-2"
                 tabindex="0"
                 :aria-label="$t('HACK.toc.importChart')"
                 @click="uploadHighchartsConfig"
@@ -306,7 +308,7 @@
                 @change="handleConfigFileUpload"
             />
             <button
-                class="flex bg-white justify-center border border-black w-full hover:bg-gray-100 font-bold px-4 py-2 my-2"
+                class="flex bg-white justify-center rounded border border-black w-full hover:bg-gray-100 font-bold px-4 py-2 my-2"
                 :aria-label="$t('HACK.toc.exportConfig')"
                 :class="{ 'disabled hover:bg-gray-400': btnDisabled }"
                 :disabled="btnDisabled"
@@ -359,6 +361,7 @@
 import { computed, ref } from 'vue';
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
+import { useSidemenuStore } from '../stores/sidemenuStore';
 import { saveAs } from 'file-saver';
 import { CurrentView } from '../definitions';
 
@@ -378,11 +381,11 @@ defineProps({
 
 const chartStore = useChartStore();
 const dataStore = useDataStore();
+const sidemenuStore = useSidemenuStore();
 const uploaded = computed(() => dataStore.uploaded);
 const btnDisabled = computed(() => !uploaded.value && Object.keys(chartStore.chartConfig).length === 0);
 
 const highchartsInput = ref<HTMLInputElement | null>(null);
-const expanded = ref(false);
 
 // upload an existing highcharts configured JSON
 const uploadHighchartsConfig = () => {
@@ -422,18 +425,17 @@ const exportHighchartsConfig = () => {
 
 <style lang="scss">
 .highcharts-side-menu {
-    display: flex;
     flex-direction: column;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
     top: 60px;
+    min-height: calc(100dvh - 60px);
 }
 
 .highcharts-side-menu.standalone {
-    height: calc(100vh - 60px);
+    height: calc(100dvh - 60px);
     position: sticky;
 }
 
