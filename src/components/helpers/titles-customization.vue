@@ -5,7 +5,7 @@
             <span class="font-normal text-red-600">{{ $t('HACK.customization.required') }}</span>
         </div>
         <input
-            class="border border-black box-border w-full mt-2 p-2 pr-6"
+            class="border text-sm md:text-base border-black box-border w-full mt-2 p-2 pr-6"
             :class="{ 'border-red-500': !chartConfig.title.text }"
             :placeholder="$t('HACK.customization.titles.placeholder')"
             :aria-label="$t('HACK.customization.titles.chart')"
@@ -17,7 +17,7 @@
             {{ $t('HACK.customization.titles.subtitle') }}
         </div>
         <input
-            class="border border-black box-border w-full mt-2 p-2 pr-6"
+            class="border text-sm md:text-base border-black box-border w-full mt-2 p-2 pr-6"
             :placeholder="$t('HACK.customization.titles.placeholder')"
             :aria-label="$t('HACK.customization.titles.subtitle')"
             type="text"
