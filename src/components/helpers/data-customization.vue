@@ -4,7 +4,7 @@
         <div class="font-bold mt-6">{{ $t('HACK.customization.dataSeries') }}</div>
         <div class="relative mt-2 selector">
             <select
-                class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
+                class="border text-sm md:text-base border-black w-full p-2 rounded appearance-none cursor-pointer"
                 v-model="activeDataSeries"
                 :aria-label="$t('HACK.customization.dataSeries')"
                 @change="changeChartType(false)"
@@ -38,7 +38,7 @@
             <!-- TODO: decide if should allow changing series type in hybrid customization - may lead to complications -->
             <div v-else>
                 <select
-                    class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
+                    class="border text-sm md:text-base border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="chartType"
                     :aria-label="$t('HACK.customization.data.seriesType')"
                     @change="changeChartType()"
@@ -55,7 +55,7 @@
             <div class="font-bold mt-4">{{ $t('HACK.customization.data.colour') }}</div>
             <div class="flex flex-col mt-2 selector">
                 <div
-                    class="colour-dropdown w-full rounded border border-gray-500 flex items-center justify-between cursor-pointer"
+                    class="colour-dropdown w-full text-sm md:text-base rounded border border-gray-500 flex items-center justify-between cursor-pointer"
                     @click="() => (showColourPicker = !showColourPicker)"
                     @keypress.enter="() => (showColourPicker = !showColourPicker)"
                     tabindex="0"
@@ -91,7 +91,7 @@
             <div class="font-bold mt-4">{{ $t('HACK.customization.data.dashStyle') }}</div>
             <div class="relative mt-2 selector">
                 <select
-                    class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
+                    class="border text-sm md:text-base border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="activeSeries!.dashStyle"
                     :aria-label="$t('HACK.customization.data.dashStyle')"
                 >
@@ -105,7 +105,7 @@
             <div class="font-bold mt-4">{{ $t('HACK.customization.data.pointMarker') }}</div>
             <div class="relative mt-2 selector">
                 <select
-                    class="border border-black w-full p-2 rounded appearance-none cursor-pointer"
+                    class="border text-sm md:text-base border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="activeSeries!.marker!.symbol"
                     :aria-label="$t('HACK.customization.data.pointMarker')"
                 >
