@@ -5,7 +5,7 @@
                 {{ $t('HACK.customization.axes.xaxis') }}
             </div>
             <input
-                class="border border-black box-border w-full mt-2 p-2 pr-6"
+                class="border text-sm md:text-base border-black box-border w-full mt-2 p-2 pr-6"
                 :placeholder="$t('HACK.customization.axes.placeholder')"
                 :aria-label="$t('HACK.customization.axes.xaxis')"
                 type="text"
@@ -16,7 +16,7 @@
                 {{ $t('HACK.customization.axes.yaxis') }}
             </div>
             <input
-                class="border border-black box-border w-full mt-2 p-2 pr-6"
+                class="border text-sm md:text-base border-black box-border w-full mt-2 p-2 pr-6"
                 :placeholder="$t('HACK.customization.axes.placeholder')"
                 :aria-label="$t('HACK.customization.axes.yaxis')"
                 type="text"

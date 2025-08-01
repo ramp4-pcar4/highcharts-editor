@@ -1,6 +1,6 @@
 <template>
-    <div class="data-section m-6">
-        <div class="text-2xl font-bold">{{ $t('HACK.data.title') }}</div>
+    <div :class="[{ hidden: hidePage }, 'data-section', 'md:m-6', 'm-2']">
+        <div class="text-xl md:text-2xl font-bold">{{ $t('HACK.data.title') }}</div>
         <template v-if="!dataStore.datatableView">
             <div class="mt-4">{{ $t('HACK.data.description') }}</div>
 
@@ -29,7 +29,7 @@
                 <!-- file upload button -->
                 <div class="mt-4">
                     <button
-                        class="bg-white border border-black hover:bg-gray-100 font-bold p-4"
+                        class="bg-white border rounded border-black hover:bg-gray-100 font-bold p-4"
                         :class="{ 'disabled hover:bg-gray-400': fileName }"
                         :disabled="fileName !== ''"
                         @click="fileInput?.click()"
@@ -75,9 +75,9 @@
                 </div>
             </div>
 
-            <div class="flex mt-4">
+            <div class="mt-4 flex flex-col sm:flex-row gap-4">
                 <button
-                    class="bg-black text-white border border-black hover:bg-gray-400 font-bold p-4"
+                    class="bg-black text-white rounded border border-black hover:bg-gray-900 font-bold p-4"
                     :class="{ 'disabled hover:bg-gray-400': !fileName }"
                     :disabled="!fileName"
                     @click="
@@ -90,7 +90,7 @@
                     {{ $t('HACK.data.import') }}
                 </button>
                 <button
-                    class="bg-white border border-black hover:bg-gray-100 font-bold p-4 ml-auto"
+                    class="bg-white border border-black rounded sm:ml-auto hover:bg-gray-100 font-bold p-4"
                     @click="$vfm.open('paste-data')"
                     :class="{ 'disabled hover:bg-gray-400': fileName }"
                     :disabled="fileName !== ''"
@@ -127,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { computed, ref, onBeforeUnmount, onMounted } from 'vue';
 import { VueFinalModal } from 'vue-final-modal';
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
@@ -163,10 +163,37 @@ const allowedTypes = [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 ];
 
+const sidemenuExpanded = ref(false);
+let observer: MutationObserver;
+const isSmallScreen = ref(false);
+const hidePage = computed(() => {
+    return sidemenuExpanded.value && isSmallScreen.value;
+});
+
+const checkScreenSize = () => {
+    isSmallScreen.value = window.innerWidth <= 500;
+};
+
 onMounted(() => {
+    const sidemenu = document.getElementById('highcharts-side-menu');
+    sidemenuExpanded.value = sidemenu.classList.contains('w-60');
+    checkScreenSize();
+    //watch for class change in the side menu, if changed, updated expanded variable
+    observer = new MutationObserver(() => {
+        sidemenuExpanded.value = sidemenu.classList.contains('w-60');
+    });
+
+    observer.observe(sidemenu, { attributes: true, attributeFilter: ['class'] });
+
+    window.addEventListener('resize', checkScreenSize);
     if (dataStore.gridData && dataStore.gridData.length) {
         dataStore.setDatatableView(true);
     }
+});
+
+onBeforeUnmount(() => {
+    observer.disconnect();
+    window.removeEventListener('resize', checkScreenSize);
 });
 
 const onFileUpload = (event: Event) => {

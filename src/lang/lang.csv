@@ -3,6 +3,7 @@ HACK.lang.en,English,1,Anglais,1
 HACK.lang.fr,French,1,Français,1
 HACK.saveChanges,Save Chart,1,Enregistrer le Graphique,1
 HACK.highcharts,Highcharts Accessible Configuration Kit,1,Trousse de Configuration Accessible Highcharts,1
+HACK.HACK,HACK,1,TCAH,1
 HACK.untitled,Untitled,1,Sans titre,1
 HACK.expand,Expand,1,Développer,1
 HACK.preview,Preview,1,Apéro,1
@@ -55,7 +56,7 @@ HACK.datatable.colActions.delete,Delete column(s),1,Supprimer des colonnes,1
 HACK.datatable.colActions.insertLeft,Insert left,1,Insérer à gauche,1
 HACK.datatable.colActions.insertRight,Insert right,1,Insérer à droite,1
 HACK.datatable.gridcells,Grid cell,1,Cellule de grille, 1
-HACK.datatable.templates,Choose templates,1,Choisir un modèle,1
+HACK.datatable.templates,Choose Templates,1,Choisir un modèle,1
 HACK.selection.title,Templates,1,Modèles,1
 HACK.selection.template,Select chart template,1,Sélection d'un modèle de graphique,1
 HACK.selection.template1,Select template for graph 1,1,Sélectionner un modèle pour le graphique 1,1
