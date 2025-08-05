@@ -150,7 +150,6 @@ onMounted(() => {
     if (!props.plugin) {
         i18n.locale.value = appLang.value;
     }
-    chartStore.setMenuOptions(contextMenuLabels.value);
 
     // clear store state (required for shared store state for multi-instance charts)
     if (props.plugin) {

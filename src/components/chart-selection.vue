@@ -212,7 +212,6 @@ onMounted(() => {
         .slice(1)
         .map((_, colIdx) => dataStore.gridData.map((row) => parseFloat(row[colIdx + 1])));
 
-    chartStore.setupConfig(seriesNames.value, categories, seriesData);
 });
 
 // handle chart type selection and update chart config (only called after config has been initialized in mounted)
