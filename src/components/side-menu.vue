@@ -402,7 +402,7 @@ const handleConfigFileUpload = (event: Event) => {
         const res = JSON.parse(e.target?.result as string);
         chartStore.setChartConfig(res);
         // extract data from the config file
-        dataStore.extractGridData(res);
+        dataStore.extractGridData(chartStore.chartConfig);
     };
     reader.readAsText(configFile);
 

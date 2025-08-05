@@ -35,7 +35,7 @@ export const useChartStore = defineStore('chartProperties', {
     }),
 
     actions: {
-        /* Reset store to initial state **/
+        /** Reset store to initial state */
         resetStore(): void {
             this.chartType = 'line';
             this.defaultTitle = '';
@@ -57,32 +57,32 @@ export const useChartStore = defineStore('chartProperties', {
             ];
         },
 
-        /* Set highcharts type **/
+        /** Set highcharts type */
         setChartType(chartType: string): void {
             this.chartType = chartType;
         },
 
-        /* Set hybrid highcharts type **/
+        /** Set hybrid highcharts type */
         setHybridChartType(chartType: string): void {
             this.hybridChartType = chartType;
         },
 
-        /* Set default title for highcharts **/
+        /** Set default title for highcharts */
         setDefaultTitle(title: string): void {
             this.defaultTitle = title;
         },
 
-        /* Clear highcharts config **/
+        /** Clear highcharts config */
         clearChartConfig(): void {
             this.chartConfig = {};
         },
 
-        /* Set context/export menu strings **/
+        /** Set context/export menu strings */
         setMenuOptions(menuOptions: ExportMenuOptions): void {
             this.chartConfig.lang = menuOptions;
         },
 
-        /* Set highcharts config (from imported json file) **/
+        /** Set highcharts config (from imported json file) */
         setChartConfig(chartConfig: HighchartsConfig): void {
             // add mandatory fields blank (for customization section)
             // TODO: tons of edge cases here depending on the complexity of a chart configuration
@@ -122,9 +122,49 @@ export const useChartStore = defineStore('chartProperties', {
                     }
                 }))
             };
+
+            // handle special case for highcharts configs using data property
+            if (chartConfig.data && chartConfig.data.csv) {
+                this.convertCsvToSeries();
+            }
         },
 
-        /* Set default highcharts config **/
+        /** Convert CSV data to series data in config */
+        convertCsvToSeries(): void {
+            // split CSV string into lines
+            const lines = this.chartConfig.data?.csv.trim().split('\n') as string[];
+            const header = lines[0].split(';').map((h) => h.replace(/"/g, '').trim());
+            const categories = header.slice(1);
+
+            // extract series data in the format "name;val1;val2"
+            const seriesData = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(';').map((val: string) => val.trim());
+                const seriesName = values[0];
+                seriesData.push({
+                    name: seriesName,
+                    data: values.slice(1).map((val: string) => parseInt(val)),
+                    type: 'line',
+                    color: this.defaultColours[i-1],
+                    dashStyle: 'solid',
+                    marker: {
+                        symbol: 'circle'
+                    }
+                });
+            }
+
+            // fill in extracted values (catos, x-axis title, series data) into chart config
+            this.chartConfig.xAxis = {
+                categories: categories,
+                title: {
+                    text: header[0] || ''
+                }
+            };
+            this.chartConfig.series = seriesData;
+            delete this.chartConfig.data;
+        },
+
+        /** Set default highcharts config */
         setupConfig(seriesNames: string[], cats: string[], seriesData: number[][], categoryLabel = ''): void {
             this.chartConfig = {
                 title: {
@@ -158,7 +198,7 @@ export const useChartStore = defineStore('chartProperties', {
             this.setChartType('line');
         },
 
-        /* Update highcharts configuration for chart type **/
+        /** Update highcharts configuration for chart type */
         updateConfig(
             type: string,
             series: string[],
@@ -248,7 +288,7 @@ export const useChartStore = defineStore('chartProperties', {
             }
         },
 
-        /* Update data series after deleting row(s) **/
+        /** Update data series after deleting row(s) */
         deleteRow(rowIdxs: number[]): void {
             const sortedRowIdxs = [...rowIdxs].sort((a, b) => b - a);
             // assuming all indices are valid
@@ -260,7 +300,7 @@ export const useChartStore = defineStore('chartProperties', {
             });
         },
 
-        /* Update data series after deleting column(s) **/
+        /** Update data series after deleting column(s) */
         deleteColumn(colIdxs: number[]): void {
             const sortedColIdxs = [...colIdxs].sort((a, b) => b - a);
             sortedColIdxs.forEach((colIdx: number) => {
@@ -268,7 +308,7 @@ export const useChartStore = defineStore('chartProperties', {
             });
         },
 
-        /* Update data series after inserting row **/
+        /** Update data series after inserting row */
         insertRow(rowIdx: number): void {
             this.chartConfig.xAxis.categories.splice(rowIdx, 0, '');
             this.chartConfig.series.forEach((series: SeriesData) => {
@@ -276,7 +316,7 @@ export const useChartStore = defineStore('chartProperties', {
             });
         },
 
-        /* Update data series after inserting column **/
+        /** Update data series after inserting column */
         insertColumn(colIdx: number): void {
             const defaultData = new Array(this.chartConfig.xAxis.categories.length).fill(0);
             const newSeries: SeriesData = {
@@ -287,7 +327,7 @@ export const useChartStore = defineStore('chartProperties', {
             (this.chartConfig.series as SeriesData[]).splice(colIdx - 1, 0, newSeries);
         },
 
-        /* Update header (series names) value **/
+        /** Update header (series names) value */
         updateHeader(colIdx: number, name: string): void {
             if (colIdx === 0) {
                 this.chartConfig.xAxis.title.text = name;
@@ -296,7 +336,7 @@ export const useChartStore = defineStore('chartProperties', {
             }
         },
 
-        /* Update a single series value after data grid cell has been modified **/
+        /** Update a single series value after data grid cell has been modified */
         updateVal(rowIdx: number, colIdx: number, val: string): void {
             if (colIdx) {
                 this.chartConfig.series[colIdx - 1].data[rowIdx] = parseInt(val);
@@ -305,7 +345,7 @@ export const useChartStore = defineStore('chartProperties', {
             }
         },
 
-        /* Update highcharts configuration for line chart **/
+        /** Update highcharts configuration for line chart */
         updateLineChart(seriesNames: string[], seriesData: number[][]): void {
             this.chartConfig.series = this.chartConfig.series.map((series, index) =>
                 seriesNames.includes(series.name)
@@ -322,7 +362,7 @@ export const useChartStore = defineStore('chartProperties', {
             this.chartConfig.legend = { enabled: true };
         },
 
-        /* Update highcharts configuration for bar chart **/
+        /** Update highcharts configuration for bar chart */
         updateBarChart(seriesNames: string[], seriesData: number[][]): void {
             this.chartConfig.series = this.chartConfig.series.map((series, index) =>
                 seriesNames.includes(series.name)
@@ -341,7 +381,7 @@ export const useChartStore = defineStore('chartProperties', {
             this.chartConfig.legend = { enabled: true };
         },
 
-        /* Update highcharts configuration for scatter plot **/
+        /** Update highcharts configuration for scatter plot */
         updateScatterPlot(seriesNames: string[], seriesData: { x: number; y: number }[] | number[][]): void {
             this.chartConfig.series = this.chartConfig.series.map((series, index) =>
                 seriesNames.includes(series.name)
@@ -367,7 +407,7 @@ export const useChartStore = defineStore('chartProperties', {
             };
         },
 
-        /* Update highcharts configuration for column chart **/
+        /** Update highcharts configuration for column chart */
         updateColumnChart(seriesNames: string[], seriesData: number[][]): void {
             this.chartConfig.series = this.chartConfig.series.map((series, index) =>
                 seriesNames.includes(series.name)
@@ -386,7 +426,7 @@ export const useChartStore = defineStore('chartProperties', {
             this.chartConfig.legend = { enabled: true };
         },
 
-        /* Update highcharts configuration for area chart **/
+        /** Update highcharts configuration for area chart */
         updateAreaChart(seriesNames: string[], seriesData: number[][]): void {
             this.chartConfig.series = this.chartConfig.series.map((series, index) =>
                 seriesNames.includes(series.name)
@@ -403,7 +443,7 @@ export const useChartStore = defineStore('chartProperties', {
             this.chartConfig.legend = { enabled: true };
         },
 
-        /* Update highcharts configuration for spline chart **/
+        /** Update highcharts configuration for spline chart */
         updateSplineChart(seriesNames: string[], seriesData: number[][]): void {
             this.chartConfig.series = this.chartConfig.series.map((series, index) =>
                 seriesNames.includes(series.name)
@@ -420,7 +460,7 @@ export const useChartStore = defineStore('chartProperties', {
             this.chartConfig.legend = { enabled: true };
         },
 
-        /* Update highcharts configuration for pie chart **/
+        /** Update highcharts configuration for pie chart */
         updatePieChart(
             seriesNames: string[],
             seriesIndex: number,
@@ -453,7 +493,7 @@ export const useChartStore = defineStore('chartProperties', {
             this.chartConfig.legend = { enabled: false };
         },
 
-        /* Update highcharts configuration for hybrid chart **/
+        /** Update highcharts configuration for hybrid chart */
         updateHybridChart(hybridSeries: string[], hybridType: string): void {
             this.setHybridChartType(hybridType);
             this.chartConfig.series.forEach((series, index) => {

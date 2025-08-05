@@ -161,7 +161,7 @@ onMounted(() => {
     // if passed an existing highcharts config as prop, load and jump to datatable view
     if (props.config && Object.keys(props.config).length) {
         chartStore.setChartConfig(props.config);
-        dataStore.extractGridData(props.config);
+        dataStore.extractGridData(chartStore.chartConfig);
         setTimeout(() => {
             dataStore.setDatatableView(true);
         }, 0);
