@@ -1,6 +1,6 @@
 <template>
-    <div class="chart-customization m-6" v-if="Object.keys(chartConfig).length">
-        <div class="text-2xl font-bold">{{ $t('HACK.customization.title') }}</div>
+    <div :class="[{ hidden: hidePage }, 'chart-customization', 'md:m-6', 'm-2']" v-if="Object.keys(chartConfig).length">
+        <div class="text-xl md:text-2xl font-bold">{{ $t('HACK.customization.title') }}</div>
         <!-- header nav section for customization options -->
         <div class="mt-8 w-full">
             <div class="tab-container grid grid-cols-4">
@@ -45,7 +45,7 @@
         <!-- Customize chart data options -->
         <template v-else-if="activeSection === 'dataSeries'">
             <div
-                class="flex mt-4"
+                class="flex mt-4 overflow-x-auto"
                 v-if="chartStore.hybridChartType && chartStore.hybridChartType !== chartStore.chartType && hybridDataSeries.length > 0"
             >
                 <data-customization
@@ -118,9 +118,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onBeforeMount, onMounted } from 'vue';
+import { computed, ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChartStore } from '../stores/chartStore';
+import { useSidemenuStore } from '../stores/sidemenuStore';
 import { SeriesData } from '../definitions';
 import { Vue3JsonEditor } from 'vue3-json-editor';
 import { Validator } from 'jsonschema';
@@ -141,6 +142,7 @@ exportData(Highcharts);
 dataModule(Highcharts);
 
 const chartStore = useChartStore();
+const sidemenuStore = useSidemenuStore();
 const chartConfig = computed(() => chartStore.chartConfig);
 let updatedConfig = ref<any>({});
 
@@ -157,6 +159,15 @@ let highchartsSchema = ref<string>('');
 const validator: Validator = new Validator();
 const validatorErrors = ref<any>([]);
 
+const isSmallScreen = ref(false);
+const hidePage = computed(() => {
+    return sidemenuStore.expanded && isSmallScreen.value;
+});
+
+const checkScreenSize = () => {
+    isSmallScreen.value = window.innerWidth <= 500;
+};
+
 onBeforeMount(() => {
     // case of directly accessing page with no data
     if (Object.keys(chartConfig.value).length === 0) {
@@ -165,9 +176,15 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
     // import highcharts schema for validation
     highchartsSchema.value = schema as any;
     updatedConfig.value = chartConfig.value; 
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', checkScreenSize);
 });
 
 const mainDataSeries = computed(() => {
@@ -193,7 +210,6 @@ const hybridDataSeries = computed(() => {
 // validate updated highcharts config edited in JSON editor
 const validateConfig = () => {
     const checkValidation = validator.validate(updatedConfig.value, highchartsSchema.value as any);
-    // console.log('validating: ', updatedConfig.value, highchartsSchema.value);
     if (checkValidation.errors.length) {
         validatorErrors.value = checkValidation.errors;
         console.error('Validation errors:', checkValidation.errors);
@@ -246,7 +262,7 @@ const addAriaLabel = () => {
     color: #8B0000;
 }
 
-@media (max-width: 472px) {
+@media (max-width: 700px) {
     .tab-container {
         grid-template-columns: repeat(2, 1fr);
     }

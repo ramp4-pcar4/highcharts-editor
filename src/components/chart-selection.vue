@@ -1,15 +1,15 @@
 <template>
-    <div class="chart-selection m-6">
-        <div class="text-2xl font-bold">{{ $t('HACK.selection.title') }}</div>
+    <div :class="[{ hidden: hidePage }, 'chart-selection', 'md:m-6', 'm-2']">
+        <div class="text-xl md:text-2xl font-bold">{{ $t('HACK.selection.title') }}</div>
 
         <!-- Main chart type selection (if only one chart type) -->
         <div class="font-bold mt-6">
             {{ enableHybrid ? $t('HACK.selection.template1') : $t('HACK.selection.template') }}
             <span class="text-red-600" v-if="enableHybrid">{{ $t('HACK.customization.required') }}</span>
         </div>
-        <div class="relative w-1/2 mt-2">
+        <div class="relative mt-2 max-w-[300px]">
             <select
-                class="border border-black w-full mt-2 p-2 rounded"
+                class="border border-black w-full text-sm md:text-base p-2 rounded appearance-none cursor-pointer"
                 v-model="chartType"
                 :aria-label="enableHybrid ? $t('HACK.selection.template1') : $t('HACK.selection.template')"
                 @change="handleChartSelection"
@@ -27,9 +27,9 @@
                 {{ $t('HACK.selection.template2') }}
                 <span class="font-normal">{{ $t('HACK.customization.optional') }}</span>
             </div>
-            <div class="relative w-1/2 mt-2">
+            <div class="relative mt-2 max-w-[300px]">
                 <select
-                    class="border border-black w-full mt-2 p-2 rounded"
+                    class="border text-sm md:text-base border-black w-full p-2 rounded appearance-none cursor-pointer"
                     v-model="hybridChartType"
                     :aria-label="$t('HACK.selection.template2')"
                     @change="handleHybridSelection"
@@ -102,24 +102,29 @@
         <!-- Navigate to customization page -->
         <div class="flex items-center mt-4">
             <router-link class="ml-auto" :to="{ name: 'Customization' }" v-if="!props.plugin">
-                <button class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto">
+                <button
+                    class="bg-black text-white text-sm md:text-base border border-black rounded hover:bg-gray-900 font-bold p-4 ml-auto"
+                >
                     {{ $t('HACK.customization.title') }}
                 </button>
             </router-link>
             <button
-                class="bg-black text-white border border-black hover:bg-gray-800 font-bold p-4 ml-auto"
+                class="bg-black text-white border text-sm md:text-base border-black rounded hover:bg-gray-900 font-bold p-4 ml-auto"
                 @click="emit('change-view', CurrentView.Customization)"
                 v-else
-            >{{ $t('HACK.customization.title') }}</button>
+            >
+                {{ $t('HACK.customization.title') }}
+            </button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onBeforeMount, onMounted } from 'vue';
+import { computed, ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChartStore } from '../stores/chartStore';
 import { useDataStore } from '../stores/dataStore';
+import { useSidemenuStore } from '../stores/sidemenuStore';
 import { CurrentView } from '../definitions';
 
 import Highcharts from 'highcharts';
@@ -142,6 +147,7 @@ const props = defineProps({
 });
 
 const chartStore = useChartStore();
+const sidemenuStore = useSidemenuStore();
 const chartConfig = computed(() => chartStore.chartConfig);
 
 const dataStore = useDataStore();
@@ -180,11 +186,19 @@ const hybridChartTemplates: Record<string, string> = {
 };
 
 const selectedHybridSeries = computed({
-  get: () => chartStore.selectedHybridSeries,
-  set: (val: string[]) => chartStore.setSelectedHybridSeries(val),
+    get: () => chartStore.selectedHybridSeries,
+    set: (val: string[]) => chartStore.setSelectedHybridSeries(val)
 });
 
 const loading = ref<boolean>(true);
+const isSmallScreen = ref(false);
+const hidePage = computed(() => {
+    return sidemenuStore.expanded && isSmallScreen.value;
+});
+
+const checkScreenSize = () => {
+    isSmallScreen.value = window.innerWidth <= 500;
+};
 
 onBeforeMount(() => {
     // case of directly accessing page with no data
@@ -194,6 +208,9 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+    checkScreenSize();
+
+    window.addEventListener('resize', checkScreenSize);
     chartType.value = chartStore.chartType ? chartStore.chartType : 'line';
     // default hybrid type to the same as main chart
     if (enableHybrid.value) {
@@ -213,6 +230,10 @@ onMounted(() => {
         .map((_, colIdx) => dataStore.gridData.map((row) => parseFloat(row[colIdx + 1])));
 
     chartStore.setupConfig(seriesNames.value, categories, seriesData);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', checkScreenSize);
 });
 
 // handle chart type selection and update chart config (only called after config has been initialized in mounted)

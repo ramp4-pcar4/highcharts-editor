@@ -1,12 +1,12 @@
 <template>
-    <div class="data-section m-6">
-        <div class="text-2xl font-bold">{{ $t('HACK.data.title') }}</div>
+    <div :class="[{ hidden: hidePage }, 'data-section', 'md:m-6', 'm-2']">
+        <div class="text-xl md:text-2xl font-bold">{{ $t('HACK.data.title') }}</div>
         <template v-if="!dataStore.datatableView">
             <div class="mt-4">{{ $t('HACK.data.description') }}</div>
 
             <!-- drag and drop section for importing data file -->
             <div
-                class="upload-file flex flex-col items-center justify-center mt-8 p-12 bg-gray-100 border-4 border-dashed border-gray-300"
+                class="upload-file flex flex-col items-center justify-center mt-8 p-4 sm:p-12 bg-gray-100 border-4 border-dashed border-gray-300"
                 @drop.prevent="uploadFile($event)"
                 @dragover.prevent
                 @dragleave.prevent
@@ -19,7 +19,7 @@
                         />
                     </svg>
                 </div>
-                <div>
+                <div class="text-center">
                     {{ $t('HACK.data.drag') }}
                 </div>
                 <div>
@@ -29,7 +29,7 @@
                 <!-- file upload button -->
                 <div class="mt-4">
                     <button
-                        class="bg-white border border-black hover:bg-gray-100 font-bold p-4"
+                        class="bg-white border rounded border-black hover:bg-gray-100 font-bold p-4"
                         :class="{ 'disabled hover:bg-gray-400': fileName }"
                         :disabled="fileName !== ''"
                         @click="fileInput?.click()"
@@ -75,9 +75,9 @@
                 </div>
             </div>
 
-            <div class="flex mt-4">
+            <div class="mt-4 flex flex-col sm:flex-row gap-4">
                 <button
-                    class="bg-black text-white border border-black hover:bg-gray-400 font-bold p-4"
+                    class="bg-black text-white rounded border border-black hover:bg-gray-900 font-bold p-4"
                     :class="{ 'disabled hover:bg-gray-400': !fileName }"
                     :disabled="!fileName"
                     @click="
@@ -90,7 +90,7 @@
                     {{ $t('HACK.data.import') }}
                 </button>
                 <button
-                    class="bg-white border border-black hover:bg-gray-100 font-bold p-4 ml-auto"
+                    class="bg-white border border-black rounded sm:ml-auto hover:bg-gray-100 font-bold p-4"
                     @click="$vfm.open('paste-data')"
                     :class="{ 'disabled hover:bg-gray-400': fileName }"
                     :disabled="fileName !== ''"
@@ -101,7 +101,7 @@
 
             <vue-final-modal
                 modalId="paste-data"
-                content-class="h-5/6 overflow-y-auto w-1/2 mx-4 p-7 bg-white border rounded-lg"
+                content-class="h-5/6 overflow-y-auto w-3/4 sm:w-2/3 mx-4 p-7 bg-white border rounded-lg"
                 class="flex justify-center items-center"
             >
                 <paste-data @import="parsePastedData" :pastedData="pastedData"></paste-data>
@@ -127,10 +127,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { computed, ref, onBeforeUnmount, onMounted } from 'vue';
 import { VueFinalModal } from 'vue-final-modal';
 import { useDataStore } from '../stores/dataStore';
 import { useChartStore } from '../stores/chartStore';
+import { useSidemenuStore } from '../stores/sidemenuStore';
 import { CurrentView } from '../definitions';
 
 import PasteData from './helpers/paste-data.vue';
@@ -149,6 +150,7 @@ const props = defineProps({
 
 const chartStore = useChartStore();
 const dataStore = useDataStore();
+const sidemenuStore = useSidemenuStore();
 
 const dataFile = ref<File | undefined>(undefined);
 const fileName = ref<string>('');
@@ -163,10 +165,25 @@ const allowedTypes = [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 ];
 
+const isSmallScreen = ref(false);
+const hidePage = computed(() => {
+    return sidemenuStore.expanded && isSmallScreen.value;
+});
+
+const checkScreenSize = () => {
+    isSmallScreen.value = window.innerWidth <= 500;
+};
+
 onMounted(() => {
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
     if (dataStore.gridData && dataStore.gridData.length) {
         dataStore.setDatatableView(true);
     }
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', checkScreenSize);
 });
 
 const onFileUpload = (event: Event) => {
