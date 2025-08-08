@@ -229,7 +229,6 @@ onMounted(() => {
         .slice(1)
         .map((_, colIdx) => dataStore.gridData.map((row) => parseFloat(row[colIdx + 1])));
 
-    chartStore.setupConfig(seriesNames.value, categories, seriesData);
 });
 
 onBeforeUnmount(() => {
