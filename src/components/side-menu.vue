@@ -85,7 +85,7 @@
                     <svg
                         class="flex-shrink-0"
                         :class="{
-                            'bg-gray-200 rounded-md': $route.name === 'Data' || currentView === CurrentView.Data
+                            'bg-gray-200 rounded-md': $route.name === 'Data' || pluginView === CurrentView.Data
                         }"
                         width="24"
                         height="24"
@@ -172,8 +172,7 @@
                     <svg
                         class="flex-shrink-0"
                         :class="{
-                            'bg-gray-200 rounded-md':
-                                $route.name === 'ChartType' || currentView === CurrentView.Template
+                            'bg-gray-200 rounded-md': $route.name === 'ChartType' || pluginView === CurrentView.Template
                         }"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -256,7 +255,10 @@
                 >
                     <svg
                         class="flex-shrink-0"
-                        :class="{ 'bg-gray-200 rounded-md': $route.name === 'Customization' }"
+                        :class="{
+                            'bg-gray-200 rounded-md':
+                                $route.name === 'Customization' || pluginView === CurrentView.Customization
+                        }"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
@@ -374,7 +376,7 @@ defineProps({
     lang: {
         type: String
     },
-    currentView: {
+    pluginView: {
         type: String
     }
 });
