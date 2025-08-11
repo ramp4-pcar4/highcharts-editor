@@ -2,7 +2,22 @@
     <div :class="[{ hidden: hidePage }, 'data-section', 'md:m-6', 'm-2']">
         <div class="text-xl md:text-2xl font-bold">{{ $t('HACK.data.title') }}</div>
         <template v-if="!dataStore.datatableView">
-            <div class="mt-4">{{ $t('HACK.data.description') }}</div>
+            <div class="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                {{ $t('HACK.data.description') }}
+                <button
+                    v-if="!btnDisabled"
+                    class="bg-white border border-black mt-2 rounded hover:bg-gray-100 font-bold p-4 sm:ml-auto"
+                    @click="
+                        () => {
+                            dataStore.setDatatableView(true);
+                            dataStore.toggleUploaded(true);
+                        }
+                    "
+                    :disabled="btnDisabled"
+                >
+                    {{ $t('HACK.label.cancel') }}
+                </button>
+            </div>
 
             <!-- drag and drop section for importing data file -->
             <div
@@ -157,6 +172,8 @@ const fileName = ref<string>('');
 const pastedData = ref<string>('');
 
 const fileInput = ref<HTMLInputElement | null>(null);
+
+const btnDisabled = computed(() => Object.keys(chartStore.chartConfig).length === 0);
 
 const uploadError = ref(false);
 const allowedTypes = [
