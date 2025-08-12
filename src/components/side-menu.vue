@@ -385,7 +385,11 @@ const chartStore = useChartStore();
 const dataStore = useDataStore();
 const sidemenuStore = useSidemenuStore();
 const uploaded = computed(() => dataStore.uploaded);
-const btnDisabled = computed(() => !uploaded.value && Object.keys(chartStore.chartConfig).length === 0);
+const btnDisabled = computed(() => {
+    const chartKeys = Object.keys(chartStore.chartConfig)
+    const onlyContextMenu = chartKeys.length === 1 && chartKeys[0] === 'lang';
+    return !uploaded.value && (chartKeys.length === 0 ||  onlyContextMenu);
+});
 
 const highchartsInput = ref<HTMLInputElement | null>(null);
 

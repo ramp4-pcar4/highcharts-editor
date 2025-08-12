@@ -151,17 +151,17 @@ watch(i18n.locale, () => {
 });
 
 onMounted(() => {
-    appLang.value = props.lang || 'en';
+    appLang.value = i18n.locale.value;
     // set locale only when standalone usage
     if (!props.plugin) {
         i18n.locale.value = appLang.value;
     }
-    chartStore.setMenuOptions(contextMenuLabels.value);
 
     // clear store state (required for shared store state for multi-instance charts)
     if (props.plugin) {
         dataStore.resetStore();
         chartStore.resetStore();
+        chartStore.setMenuOptions(contextMenuLabels.value);
     }
 
     // if passed an existing highcharts config as prop, load and jump to datatable view
@@ -186,6 +186,8 @@ const changeLang = (): void => {
 
 const changeView = (view: CurrentView): void => {
     currentView.value = view;
+    chartStore.setMenuOptions(contextMenuLabels.value);
+    chartStore.refreshKey += 1;
 };
 
 const saveChanges = (): void => {
