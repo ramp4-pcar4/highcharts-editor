@@ -84,12 +84,10 @@ export const useChartStore = defineStore('chartProperties', {
 
         /** Set highcharts config (from imported json file) */
         setChartConfig(chartConfig: HighchartsConfig): void {
-            const currentLang = this.chartConfig.lang;
             // add mandatory fields blank (for customization section)
             // TODO: tons of edge cases here depending on the complexity of a chart configuration
             this.chartConfig = {
                 ...chartConfig,
-                lang: chartConfig.lang || currentLang,
                 title: {
                     text: chartConfig.title?.text || ''
                 },

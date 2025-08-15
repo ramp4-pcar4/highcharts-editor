@@ -223,7 +223,7 @@ const addAriaLabel = () => {
     setTimeout(() => {
         const textarea = document.querySelector('.ace_text-input');
         if (textarea) {
-            textarea.setAttribute('aria-label', t('HACK.customization.advanced.editor'));
+            textarea.setAttribute('aria-label', t('HACK.customization.advanced'));
         }
     }, 0);
 };
