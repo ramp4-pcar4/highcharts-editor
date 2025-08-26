@@ -116,13 +116,13 @@ export const useDataStore = defineStore('chartData', {
 
         /** Add new column to grid data */
         addNewCol(selectedColIdx: string, right: boolean = true): void {
-            const newCol = '';
+            const newCol = 'Untitled';
             // determine new position based on insert right/left
             const newIdx = right ? parseInt(selectedColIdx) + 1 : parseInt(selectedColIdx);
             // add new header and empty col of values
             this.headers.splice(newIdx, 0, newCol);
             this.gridData.forEach((row) => {
-                row.splice(newIdx, 0, '');
+                row.splice(newIdx, 0, '0');
             });
         }
     }

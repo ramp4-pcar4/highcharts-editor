@@ -145,7 +145,7 @@ export const useChartStore = defineStore('chartProperties', {
                     name: seriesName,
                     data: values.slice(1).map((val: string) => parseInt(val)),
                     type: 'line',
-                    color: this.defaultColours[i-1],
+                    color: this.defaultColours[i - 1],
                     dashStyle: 'solid',
                     marker: {
                         symbol: 'circle'
@@ -322,6 +322,11 @@ export const useChartStore = defineStore('chartProperties', {
             const newSeries: SeriesData = {
                 name: 'Untitled',
                 type: this.chartType,
+                color: this.defaultColours[colIdx],
+                dashStyle: 'solid',
+                marker: {
+                    symbol: 'circle'
+                },
                 data: defaultData
             };
             (this.chartConfig.series as SeriesData[]).splice(colIdx - 1, 0, newSeries);
