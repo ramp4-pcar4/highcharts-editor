@@ -1,8 +1,8 @@
 <template>
     <div class="graph-customization" v-if="activeSeries">
         <slot></slot>
-        <div class="font-bold mt-6">{{ $t('HACK.customization.dataSeries') }}</div>
-        <div class="relative mt-2 selector">
+        <div v-if="chartType != 'pie'" class="font-bold mt-6">{{ $t('HACK.customization.dataSeries') }}</div>
+        <div v-if="chartType != 'pie'" class="relative mt-2 selector">
             <select
                 class="border text-sm md:text-base border-black w-full p-2 rounded appearance-none cursor-pointer"
                 v-model="activeDataSeries"
@@ -16,7 +16,7 @@
                     </option>
                 </template>
                 <template v-else>
-                    <option v-for="series in dataSeries" :value="series">
+                    <option v-for="(series, i) in dataSeries" :key="i" :value="i">
                         {{ series }}
                     </option>
                 </template>
@@ -163,6 +163,7 @@
 import { computed, onBeforeMount, ref } from 'vue';
 import { useDataStore } from '../../stores/dataStore';
 import { useChartStore } from '../../stores/chartStore';
+import { chart } from 'highcharts';
 
 const props = defineProps({
     dataSeries: {
@@ -185,10 +186,10 @@ const dataStore = useDataStore();
 const chartStore = useChartStore();
 const chartConfig = computed(() => chartStore.chartConfig);
 
-const activeDataSeries = ref<string>('');
+const activeDataSeries = ref<number>(0);
 const activeSeries = computed(() => {
     if (Array.isArray(chartConfig.value.series)) {
-        return chartConfig.value.series.find((s) => s.name === activeDataSeries.value);
+        return chartConfig.value.series[activeDataSeries.value];
     } else {
         return chartConfig.value.series;
     }
@@ -230,13 +231,13 @@ const markerOptions: Record<string, string> = {
 
 onBeforeMount(() => {
     const series = chartConfig.value.series;
-    activeDataSeries.value = props.dataSeries[0] ?? '';
+    activeDataSeries.value = 0;
     chartType.value = activeSeries.value?.type ?? '';
     if (chartType.value === 'pie') {
         // To ensure that dropdown and colours reflect the graph being displayed when switching back to the data series tab
         if (Array.isArray(series)) {
-            const visiblePie = series.find((s) => s.type === 'pie' && s.visible !== false);
-            activeDataSeries.value = visiblePie?.name || series[0]?.name || '';
+            const visiblePieIndex = series.findIndex((s) => s.type === 'pie' && s.visible !== false);
+            activeDataSeries.value = visiblePieIndex !== -1 ? visiblePieIndex : 0;
         }
         const activeSeriesColors = (activeSeries.value as SeriesData)?.colors;
         if (activeSeriesColors) {
@@ -270,12 +271,16 @@ const changeChartType = (updateChart = true) => {
             currentColours = [...activeSeries.value.colors];
         }
 
+        const selectedSeriesName = Array.isArray(chartConfig.value.series)
+            ? chartConfig.value.series[activeDataSeries.value]?.name
+            : undefined;
+
         chartStore.updateConfig(
             chartType.value,
             seriesNames,
             dataStore.headers,
             dataStore.gridData,
-            chartType.value === 'pie' ? selectedSeries : undefined,
+            chartType.value === 'pie' ? selectedSeriesName : undefined,
             currentColours
         );
         // set brief timeout to allow chart to re-render
